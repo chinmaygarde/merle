@@ -50,44 +50,39 @@ bool Application::IsValid() const {
   return is_valid_;
 }
 
-bool Application::Update() {
-  return true;
-}
-
 bool Application::OnRender() {
   if (!is_valid_) {
     std::cerr << "Application was invalid." << std::endl;
     return false;
   }
 
-  if (!Update()) {
+  if (!application_callback_) {
     return false;
   }
 
-  // SDLTextureNoCopyCaster color_attachment(sdl_renderer_,               //
-  //                                         texture->Get({}, 0),         //
-  //                                         size.x,                      //
-  //                                         size.y,                      //
-  //                                         texture->GetBytesPerPixel()  //
-  // );
+  const auto texture = application_callback_(*this);
 
-  // SDL_Rect dest = {};
-  // dest.x = 0;
-  // dest.y = 0;
-  // dest.w = size.x;
-  // dest.h = size.y;
-  // {
-  //   if (::SDL_RenderCopyEx(sdl_renderer_,       //
-  //                          color_attachment,    //
-  //                          nullptr,             //
-  //                          &dest,               //
-  //                          180,                 //
-  //                          NULL,                //
-  //                          SDL_FLIP_HORIZONTAL  //
-  //                          ) != 0) {
-  //     return false;
-  //   }
-  // }
+  if (!texture) {
+    return false;
+  }
+
+  const auto size = texture->GetSize();
+
+  SDLTextureNoCopyCaster sdl_texture(
+      sdl_renderer_,                                 //
+      texture->GetAllocation(),                      //
+      size.x,                                        //
+      size.y,                                        //
+      static_cast<int>(texture->GetBytesPerPixel())  //
+  );
+
+  if (::SDL_RenderCopy(sdl_renderer_,  //
+                       sdl_texture,    //
+                       nullptr,        //
+                       nullptr         //
+                       ) != 0) {
+    return false;
+  }
 
   ::SDL_RenderPresent(sdl_renderer_);
   return true;
@@ -95,6 +90,14 @@ bool Application::OnRender() {
 
 bool Application::OnWindowSizeChanged(UPoint size) {
   return true;
+}
+
+UPoint Application::GetWindowSize() const {
+  return window_size_;
+}
+
+void Application::SetRasterizerCallback(ApplicationCallback callback) {
+  application_callback_ = callback;
 }
 
 }  // namespace ns

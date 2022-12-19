@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 
 namespace ns {
 
@@ -11,10 +13,23 @@ struct TPoint {
   using Type = T;
   Type x = {};
   Type y = {};
+
+  TPoint() = default;
+
+  TPoint(Type p_x, Type p_y) : x(p_x), y(p_y) {}
+
+  constexpr bool operator==(const TPoint& other) const {
+    return x == other.x && y == other.y;
+  }
 };
 
 using Point = TPoint<int32_t>;
 using UPoint = TPoint<uint32_t>;
+
+static constexpr size_t kColorOffsetAlpha = 0;
+static constexpr size_t kColorOffsetRed = 8;
+static constexpr size_t kColorOffsetGreen = 16;
+static constexpr size_t kColorOffsetBlue = 24;
 
 struct Color {
   uint32_t color = 0u;
@@ -22,9 +37,14 @@ struct Color {
   Color() = default;
 
   constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-      : color(a << 24 | r << 16 | g << 8 | b << 0) {}
+      : color(a << kColorOffsetAlpha | r << kColorOffsetRed |
+              g << kColorOffsetGreen | b << kColorOffsetBlue) {}
 
   constexpr Color(uint32_t p_color) : color(p_color) {}
+
+  constexpr bool operator==(const Color& other) const {
+    return color == other.color;
+  }
 
   constexpr operator uint32_t() const { return color; }
 
@@ -44,17 +64,13 @@ struct Color {
     return Color(GetRed(), GetGreen(), GetBlue(), color);
   }
 
-  constexpr Color BGRA2RGBA() const {
-    return Color(GetBlue(), GetGreen(), GetRed(), GetAlpha());
-  }
+  constexpr uint8_t GetRed() const { return color >> kColorOffsetRed; }
 
-  constexpr uint8_t GetRed() const { return color >> 16; }
+  constexpr uint8_t GetGreen() const { return color >> kColorOffsetGreen; }
 
-  constexpr uint8_t GetGreen() const { return color >> 8; }
+  constexpr uint8_t GetBlue() const { return color >> kColorOffsetBlue; }
 
-  constexpr uint8_t GetBlue() const { return color >> 0; }
-
-  constexpr uint8_t GetAlpha() const { return color >> 24; }
+  constexpr uint8_t GetAlpha() const { return color >> kColorOffsetAlpha; }
 
   static Color FromComponentsF(ScalarF r, ScalarF g, ScalarF b, ScalarF a) {
     return Color{

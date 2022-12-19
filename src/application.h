@@ -2,11 +2,13 @@
 
 #include <SDL3/SDL.h>
 
+#include <functional>
 #include <memory>
 
 #include "geom.h"
 #include "macros.h"
 #include "sdl_utils.h"
+#include "texture.h"
 
 namespace ns {
 
@@ -22,14 +24,19 @@ class Application {
 
   bool Render();
 
-  bool Update();
-
   bool OnWindowSizeChanged(UPoint size);
+
+  UPoint GetWindowSize() const;
+
+  using ApplicationCallback =
+      std::function<std::shared_ptr<Texture>(const Application& application)>;
+  void SetRasterizerCallback(ApplicationCallback callback);
 
  private:
   UPoint window_size_;
   SDL_Window* sdl_window_ = nullptr;
   SDL_Renderer* sdl_renderer_ = nullptr;
+  ApplicationCallback application_callback_;
   bool is_valid_ = false;
 
   bool OnRender();

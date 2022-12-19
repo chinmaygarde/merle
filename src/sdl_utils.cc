@@ -14,14 +14,16 @@ SDLTextureNoCopyCaster::SDLTextureNoCopyCaster(SDL_Renderer* renderer,
                                          width,                      // width
                                          height,                     // height
                                          width * bytes_per_pixel,    // pitch
-                                         SDL_PIXELFORMAT_RGBA8888    // format
+                                         SDL_PIXELFORMAT_BGRA8888    // format
   );
   if (surface == NULL) {
+    std::cerr << "Could not create surface: " << SDL_GetError() << std::endl;
     return;
   }
   surface_ = surface;
   auto texture = ::SDL_CreateTextureFromSurface(renderer, surface_);
   if (texture == NULL) {
+    std::cerr << "Could not create texture: " << SDL_GetError() << std::endl;
     return;
   }
   texture_ = texture;

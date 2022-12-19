@@ -36,7 +36,9 @@ add_executable(neon_sandbox
   src/sdl_utils.cc
   src/sdl_utils.h
   src/test_runner.cc
+  src/texture.cc
   src/test_runner.h
+  src/texture.h
   src/tests.cc
 )
 
