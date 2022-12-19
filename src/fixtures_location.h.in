@@ -1,0 +1,3 @@
+#pragma once
+
+#cmakedefine NS_ASSETS_LOCATION "@NS_ASSETS_LOCATION@" "/"
