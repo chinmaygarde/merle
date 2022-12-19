@@ -35,6 +35,8 @@ add_executable(neon_sandbox
   src/playground.h
   src/sdl_utils.cc
   src/sdl_utils.h
+  src/test_runner.cc
+  src/test_runner.h
   src/tests.cc
 )
 
