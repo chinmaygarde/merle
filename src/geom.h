@@ -6,6 +6,16 @@ namespace ns {
 
 using ScalarF = float;
 
+template <class T>
+struct TPoint {
+  using Type = T;
+  Type x = {};
+  Type y = {};
+};
+
+using Point = TPoint<int32_t>;
+using UPoint = TPoint<uint32_t>;
+
 struct Color {
   uint32_t color = 0u;
 

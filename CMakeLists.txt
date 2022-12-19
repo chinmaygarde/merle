@@ -27,11 +27,15 @@ add_subdirectory(third_party/glm)
 include(GoogleTest)
 
 add_executable(neon_sandbox
-  src/tests.cc
-  src/macros.h
+  src/application.cc
+  src/application.h
   src/geom.h
-  src/playground.h
+  src/macros.h
   src/playground.cc
+  src/playground.h
+  src/sdl_utils.cc
+  src/sdl_utils.h
+  src/tests.cc
 )
 
 target_compile_options(neon_sandbox
