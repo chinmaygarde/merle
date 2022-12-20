@@ -26,23 +26,14 @@ add_subdirectory(third_party/glm)
 
 include(GoogleTest)
 
-add_executable(neon_sandbox
-  src/application.cc
-  src/application.h
+add_library(neon_sandbox_lib
   src/geom.h
   src/macros.h
-  src/playground.cc
-  src/playground.h
-  src/sdl_utils.cc
-  src/sdl_utils.h
-  src/test_runner.cc
   src/texture.cc
-  src/test_runner.h
   src/texture.h
-  src/tests.cc
 )
 
-target_compile_options(neon_sandbox
+target_compile_options(neon_sandbox_lib
   PRIVATE
     -Werror
     -Wall
@@ -52,11 +43,24 @@ target_compile_options(neon_sandbox
     -Wno-deprecated-declarations
 )
 
+add_executable(neon_sandbox
+  src/application.cc
+  src/application.h
+  src/playground.cc
+  src/playground.h
+  src/sdl_utils.cc
+  src/sdl_utils.h
+  src/test_runner.cc
+  src/test_runner.h
+  src/tests.cc
+)
+
 target_link_libraries(neon_sandbox
   PUBLIC
-    SDL3
     glm
     gtest_main
+    neon_sandbox_lib
+    SDL3
 )
 
 get_filename_component(NS_ASSETS_LOCATION assets ABSOLUTE)
@@ -64,3 +68,11 @@ configure_file(src/fixtures_location.h.in fixtures_location.h @ONLY)
 target_include_directories(neon_sandbox PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 gtest_discover_tests(neon_sandbox)
+
+add_executable(neon_sandbox_benchmarks
+  src/benchmarks.cc
+)
+
+target_link_libraries(neon_sandbox_benchmarks neon_sandbox_lib benchmark::benchmark)
+target_include_directories(neon_sandbox_benchmarks PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+

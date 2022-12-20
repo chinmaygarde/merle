@@ -29,11 +29,7 @@ TEST_F(NeonSandboxTest, CanDisplayTexture) {
         if (!texture->Resize(size)) {
           return nullptr;
         }
-        for (uint32_t y = 0; y < size.y; y++) {
-          for (uint32_t x = 0; x < size.x; x++) {
-            (*texture)[{x, y}] = kColorBlue;
-          }
-        }
+        texture->Clear(kColorBlue);
         return texture;
       });
   ASSERT_TRUE(Run(application));

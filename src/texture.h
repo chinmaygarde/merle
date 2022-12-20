@@ -43,11 +43,15 @@ class Texture {
 
   const UPoint& GetSize() const { return size_; }
 
+  void Clear(Color color);
+
  private:
   uint8_t* allocation_ = nullptr;
   UPoint size_ = {};
 
   NS_DISALLOW_COPY_AND_ASSIGN(Texture);
 };
+
+void SetHaveNeon(bool have_neon);
 
 }  // namespace ns
