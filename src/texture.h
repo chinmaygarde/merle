@@ -45,6 +45,8 @@ class Texture {
 
   void Clear(Color color);
 
+  void ConvertToGrayScale();
+
  private:
   uint8_t* allocation_ = nullptr;
   UPoint size_ = {};

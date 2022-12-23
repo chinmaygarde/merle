@@ -30,6 +30,26 @@ static void BM_ClearNoNeon(benchmark::State& state) {
 }
 BENCHMARK(BM_ClearNoNeon)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void BM_Grayscale(benchmark::State& state) {
+  SetHaveNeon(true);
+  Texture texture;
+  NS_ASSERT(texture.Resize({8192, 8192}));
+  while (state.KeepRunning()) {
+    texture.ConvertToGrayScale();
+  }
+}
+BENCHMARK(BM_Grayscale)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void BM_GrayscaleNoNeon(benchmark::State& state) {
+  SetHaveNeon(false);
+  Texture texture;
+  NS_ASSERT(texture.Resize({8192, 8192}));
+  while (state.KeepRunning()) {
+    texture.ConvertToGrayScale();
+  }
+}
+BENCHMARK(BM_GrayscaleNoNeon)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();
