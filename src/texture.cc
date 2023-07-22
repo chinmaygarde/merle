@@ -43,7 +43,7 @@ void Texture::ToGrayscale() {
     return;
   }
   for (size_t i = 0; i < size_.x * size_.y; i++) {
-    uint8x8x4_t colors = vld4_u8((uint8_t*)allocation_);
+    // uint8x8x4_t colors = vld4_u8((uint8_t*)allocation_);
   }
 }
 

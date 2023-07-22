@@ -13,7 +13,12 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/tools")
 
 project(neon_sandbox
-  LANGUAGES C CXX OBJC OBJCXX)
+  LANGUAGES
+    C
+    CXX
+    OBJC
+    OBJCXX
+)
 
 enable_testing()
 
