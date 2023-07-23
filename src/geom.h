@@ -1,5 +1,6 @@
 #pragma once
 
+#include <_types/_uint8_t.h>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -11,12 +12,13 @@ using ScalarF = float;
 template <class T>
 struct TPoint {
   using Type = T;
+
   Type x = {};
   Type y = {};
 
-  TPoint() = default;
+  constexpr TPoint() = default;
 
-  TPoint(Type p_x, Type p_y) : x(p_x), y(p_y) {}
+  constexpr TPoint(Type p_x, Type p_y) : x(p_x), y(p_y) {}
 
   constexpr bool operator==(const TPoint& other) const {
     return x == other.x && y == other.y;
@@ -26,19 +28,21 @@ struct TPoint {
 using Point = TPoint<int32_t>;
 using UPoint = TPoint<uint32_t>;
 
-static constexpr size_t kColorOffsetAlpha = 0;
-static constexpr size_t kColorOffsetRed = 8;
-static constexpr size_t kColorOffsetGreen = 16;
-static constexpr size_t kColorOffsetBlue = 24;
-
 struct Color {
-  uint32_t color = 0u;
+  union {
+    uint32_t color = {};
+    struct {
+      uint8_t blue;
+      uint8_t green;
+      uint8_t red;
+      uint8_t alpha;
+    };
+  };
 
-  Color() = default;
+  constexpr Color() = default;
 
   constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-      : color(a << kColorOffsetAlpha | r << kColorOffsetRed |
-              g << kColorOffsetGreen | b << kColorOffsetBlue) {}
+      : blue(b), green(g), red(r), alpha(a) {}
 
   constexpr Color(uint32_t p_color) : color(p_color) {}
 
@@ -49,30 +53,25 @@ struct Color {
   constexpr operator uint32_t() const { return color; }
 
   constexpr Color WithRed(uint8_t color) const {
-    return Color(color, GetGreen(), GetBlue(), GetAlpha());
+    return Color(color, green, blue, alpha);
   }
 
   constexpr Color WithGreen(uint8_t color) const {
-    return Color(GetRed(), color, GetBlue(), GetAlpha());
+    return Color(red, color, blue, alpha);
   }
 
   constexpr Color WithBlue(uint8_t color) const {
-    return Color(GetRed(), GetGreen(), color, GetAlpha());
+    return Color(red, green, color, alpha);
   }
 
   constexpr Color WithAlpha(uint8_t color) const {
-    return Color(GetRed(), GetGreen(), GetBlue(), color);
+    return Color(red, green, blue, color);
   }
 
-  constexpr uint8_t GetRed() const { return color >> kColorOffsetRed; }
-
-  constexpr uint8_t GetGreen() const { return color >> kColorOffsetGreen; }
-
-  constexpr uint8_t GetBlue() const { return color >> kColorOffsetBlue; }
-
-  constexpr uint8_t GetAlpha() const { return color >> kColorOffsetAlpha; }
-
-  static Color FromComponentsF(ScalarF r, ScalarF g, ScalarF b, ScalarF a) {
+  static constexpr Color FromComponentsF(ScalarF r,
+                                         ScalarF g,
+                                         ScalarF b,
+                                         ScalarF a) {
     return Color{
         static_cast<uint8_t>(255 * r),
         static_cast<uint8_t>(255 * g),
@@ -87,7 +86,7 @@ struct Color {
                  static_cast<uint8_t>(std::rand() % 255), 255};
   }
 
-  static Color Gray(ScalarF gray) {
+  static constexpr Color Gray(ScalarF gray) {
     const uint8_t g = 255 * gray;
     return Color{g, g, g, 255};
   }
@@ -241,5 +240,7 @@ constexpr Color kColorWheat = {245, 222, 179, 255};
 constexpr Color kColorWhitesmoke = {245, 245, 245, 255};
 constexpr Color kColorYellow = {255, 255, 0, 255};
 constexpr Color kColorYellowGreen = {154, 205, 50, 255};
+
+static_assert(sizeof(kColorRed) == sizeof(uint32_t));
 
 }  // namespace ns
