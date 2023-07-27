@@ -1,4 +1,3 @@
-#include <arm_neon.h>
 #include <gtest/gtest.h>
 #include "application.h"
 #include "fixtures_location.h"

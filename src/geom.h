@@ -1,6 +1,5 @@
 #pragma once
 
-#include <_types/_uint8_t.h>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -20,9 +19,9 @@ struct TPoint {
 
   constexpr TPoint(Type p_x, Type p_y) : x(p_x), y(p_y) {}
 
-  constexpr bool operator==(const TPoint& other) const {
-    return x == other.x && y == other.y;
-  }
+  constexpr bool operator==(const TPoint& other) const = default;
+
+  constexpr bool operator!=(const TPoint& other) const = default;
 };
 
 using Point = TPoint<int32_t>;
@@ -48,6 +47,10 @@ struct Color {
 
   constexpr bool operator==(const Color& other) const {
     return color == other.color;
+  }
+
+  constexpr bool operator!=(const Color& other) const {
+    return !(*this == other);
   }
 
   constexpr operator uint32_t() const { return color; }
