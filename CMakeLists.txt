@@ -48,6 +48,11 @@ target_compile_options(neon_sandbox_lib
     -Wno-deprecated-declarations
 )
 
+target_include_directories(neon_sandbox_lib
+  PUBLIC
+    third_party/stb
+)
+
 add_executable(neon_sandbox
   src/application.cc
   src/application.h
@@ -56,6 +61,7 @@ add_executable(neon_sandbox
   src/sdl_utils.cc
   src/sdl_utils.h
   src/test_runner.cc
+  src/test_runner.h
   src/test_runner.h
   src/tests.cc
 )
@@ -70,7 +76,10 @@ target_link_libraries(neon_sandbox
 
 get_filename_component(NS_ASSETS_LOCATION assets ABSOLUTE)
 configure_file(src/fixtures_location.h.in fixtures_location.h @ONLY)
-target_include_directories(neon_sandbox PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(neon_sandbox
+  PUBLIC
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 gtest_discover_tests(neon_sandbox)
 

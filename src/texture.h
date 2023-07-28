@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "geom.h"
 #include "macros.h"
 
@@ -11,6 +13,11 @@ class Texture {
 
   ~Texture() { std::free(allocation_); }
 
+  Texture(Texture&& other) {
+    std::swap(allocation_, other.allocation_);
+    std::swap(size_, other.size_);
+  }
+
   size_t GetBytesPerPixel() const { return sizeof(Color); }
 
   Color& operator[](const UPoint& pos) {
@@ -20,6 +27,12 @@ class Texture {
   }
 
   const Color* At(const UPoint& pos = {}) const {
+    auto* colors = reinterpret_cast<Color*>(allocation_);
+    const auto index = size_.x * pos.y + pos.x;
+    return colors + index;
+  }
+
+  Color* At(const UPoint& pos = {}) {
     auto* colors = reinterpret_cast<Color*>(allocation_);
     const auto index = size_.x * pos.y + pos.x;
     return colors + index;
@@ -47,13 +60,13 @@ class Texture {
 
   void ToGrayscale();
 
+  static std::optional<Texture> CreateFromFile(const char* name);
+
  private:
   uint8_t* allocation_ = nullptr;
   UPoint size_ = {};
 
   NS_DISALLOW_COPY_AND_ASSIGN(Texture);
 };
-
-void SetHaveNeon(bool have_neon);
 
 }  // namespace ns
