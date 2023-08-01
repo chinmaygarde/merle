@@ -18,6 +18,7 @@ project(neon_sandbox
     CXX
     OBJC
     OBJCXX
+    ISPC
 )
 
 enable_testing()
@@ -51,6 +52,15 @@ target_compile_options(neon_sandbox_lib
 target_include_directories(neon_sandbox_lib
   PUBLIC
     third_party/stb
+)
+
+add_library(neon_sandbox_ispc
+  src/texture.ispc
+)
+
+target_link_libraries(neon_sandbox_lib
+  PUBLIC
+    neon_sandbox_ispc
 )
 
 add_executable(neon_sandbox
