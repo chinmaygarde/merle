@@ -17,7 +17,8 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
 
   stbi_uc* decoded = ::stbi_load(name, &x, &y, &channels, STBI_rgb_alpha);
 
-  if (channels != STBI_rgb_alpha || x < 0 || y < 0) {
+  if (decoded == nullptr || x < 0 || y < 0) {
+    std::cout << "Could not load image: " << name << std::endl;
     return std::nullopt;
   }
 
@@ -25,12 +26,14 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
 
   if (!texture.Resize({static_cast<uint32_t>(x), static_cast<uint32_t>(y)})) {
     ::stbi_image_free(decoded);
+    std::cout << "Could not create texture allocation for image: " << name
+              << std::endl;
     return std::nullopt;
   }
 
-  ::memmove(reinterpret_cast<uint8_t*>(texture.At()),  //
-            decoded,                                   //
-            x * y * STBI_rgb_alpha                     //
+  ::memcpy(reinterpret_cast<uint8_t*>(texture.At()),  //
+           decoded,                                   //
+           x * y * STBI_rgb_alpha                     //
   );
 
   ::stbi_image_free(decoded);
@@ -46,9 +49,22 @@ void Texture::Clear(Color color) {
 }
 
 void Texture::ToGrayscale() {
-  ispc::ToGrayscale(reinterpret_cast<ispc::Color*>(allocation_),  //
-                    size_.x * size_.y                             //
+  ispc::ToGrayscale(reinterpret_cast<uint32_t*>(allocation_),  //
+                    size_.x * size_.y                          //
   );
+}
+
+void Texture::Composite(const Texture& texture, UPoint point) {
+  Rect texture_rect(point, texture.GetSize());
+  const auto& rect = Rect{size_}.Intersection(texture_rect);
+  if (!rect.has_value()) {
+    return;
+  }
+  for (uint32_t y = 0; y < rect->size.y; y++) {
+    const uint8_t* src = reinterpret_cast<const uint8_t*>(texture.At({0, y}));
+    uint8_t* dst = reinterpret_cast<uint8_t*>(At({point.x, point.y + y}));
+    ::memcpy(dst, src, rect->size.x * 4);
+  }
 }
 
 }  // namespace ns

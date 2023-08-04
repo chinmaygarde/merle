@@ -60,6 +60,8 @@ class Texture {
 
   void ToGrayscale();
 
+  void Composite(const Texture& texture, UPoint point);
+
   static std::optional<Texture> CreateFromFile(const char* name);
 
  private:

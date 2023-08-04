@@ -16,6 +16,8 @@ project(neon_sandbox
   LANGUAGES
     C
     CXX
+    OBJC
+    OBJCXX
     ISPC
 )
 

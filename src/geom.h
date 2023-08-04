@@ -1,8 +1,10 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <optional>
 
 namespace ns {
 
@@ -22,26 +24,88 @@ struct TPoint {
   constexpr bool operator==(const TPoint& other) const = default;
 
   constexpr bool operator!=(const TPoint& other) const = default;
+
+  constexpr bool IsEmpty() const { return x < Type{} || y < Type{}; }
+};
+
+template <class T>
+struct TRect {
+  TPoint<T> origin;
+  TPoint<T> size;
+
+  constexpr TRect() = default;
+
+  constexpr TRect(TPoint<T> p_origin, TPoint<T> p_size)
+      : origin(p_origin), size(p_size) {}
+
+  constexpr TRect(T x, T y, T width, T height)
+      : origin({x, y}), size({width, height}) {}
+
+  constexpr TRect(TPoint<T> sz) : origin({0, 0}), size(sz.x, sz.y) {}
+
+  constexpr std::array<T, 4> GetLTRB() const {
+    const auto left = std::min(origin.x, origin.x + size.x);
+    const auto top = std::min(origin.y, origin.y + size.y);
+    const auto right = std::max(origin.x, origin.x + size.x);
+    const auto bottom = std::max(origin.y, origin.y + size.y);
+    return {left, top, right, bottom};
+  }
+
+  constexpr TPoint<T> GetLT() const {
+    const auto left = std::min(origin.x, origin.x + size.width);
+    const auto top = std::min(origin.y, origin.y + size.height);
+    return {left, top};
+  }
+
+  constexpr TPoint<T> GetRB() const {
+    const auto right = std::max(origin.x, origin.x + size.width);
+    const auto bottom = std::max(origin.y, origin.y + size.height);
+    return {right, bottom};
+  }
+
+  constexpr static TRect MakeLTRB(T left, T top, T right, T bottom) {
+    return TRect(left, top, right - left, bottom - top);
+  }
+
+  constexpr std::optional<TRect> Intersection(const TRect& o) const {
+    auto this_ltrb = GetLTRB();
+    auto other_ltrb = o.GetLTRB();
+    auto intersection =
+        TRect::MakeLTRB(std::max(this_ltrb[0], other_ltrb[0]),  //
+                        std::max(this_ltrb[1], other_ltrb[1]),  //
+                        std::min(this_ltrb[2], other_ltrb[2]),  //
+                        std::min(this_ltrb[3], other_ltrb[3])   //
+        );
+    if (intersection.size.IsEmpty()) {
+      return std::nullopt;
+    }
+    return intersection;
+  }
+
+  constexpr bool operator==(const TRect& other) const = default;
+
+  constexpr bool operator!=(const TRect& other) const = default;
 };
 
 using Point = TPoint<int32_t>;
 using UPoint = TPoint<uint32_t>;
+using Rect = TRect<uint32_t>;
 
 struct Color {
   union {
     uint32_t color = {};
     struct {
-      uint8_t alpha;
       uint8_t red;
       uint8_t green;
       uint8_t blue;
+      uint8_t alpha;
     };
   };
 
   constexpr Color() = default;
 
   constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-      : alpha(a), red(r), green(g), blue(b) {}
+      : red(r), green(g), blue(b), alpha(a) {}
 
   constexpr Color(uint32_t p_color) : color(p_color) {}
 
