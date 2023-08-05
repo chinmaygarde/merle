@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <optional>
 
 #include "geom.h"
@@ -44,6 +45,21 @@ class Texture {
   // }
 
   uint8_t* GetAllocation() { return allocation_; }
+
+  const uint8_t* GetAllocation() const { return allocation_; }
+
+  enum class Component : uint8_t {
+    kRed,
+    kGreen,
+    kBlue,
+    kAlpha,
+  };
+
+  const uint8_t* GetComponent(Component comp, UPoint point) const {
+    const uint8_t* comp_allocation =
+        allocation_ + size_.GetArea() * static_cast<uint8_t>(comp);
+    return (comp_allocation + size_.x * point.y) + point.x;
+  }
 
   bool Resize(UPoint size) {
     if (size_ == size) {

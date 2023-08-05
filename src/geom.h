@@ -26,6 +26,8 @@ struct TPoint {
   constexpr bool operator!=(const TPoint& other) const = default;
 
   constexpr bool IsEmpty() const { return x < Type{} || y < Type{}; }
+
+  constexpr Type GetArea() const { return x * y; }
 };
 
 template <class T>

@@ -37,6 +37,7 @@ class Application {
   SDL_Window* sdl_window_ = nullptr;
   SDL_Renderer* sdl_renderer_ = nullptr;
   ApplicationCallback application_callback_;
+  Texture onscreen_tex_;
   bool is_valid_ = false;
 
   bool OnRender();

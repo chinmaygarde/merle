@@ -65,17 +65,30 @@ void Texture::ToGrayscale() {
 }
 
 void Texture::Composite(const Texture& texture, UPoint point) {
-  // Rect texture_rect(point, texture.GetSize());
-  // const auto& rect = Rect{size_}.Intersection(texture_rect);
-  // if (!rect.has_value()) {
-  //   return;
-  // }
-  // for (uint32_t y = 0; y < rect->size.y; y++) {
-  //   const uint8_t* src = reinterpret_cast<const uint8_t*>(texture.At({0,
-  //   y})); uint8_t* dst = reinterpret_cast<uint8_t*>(At({point.x, point.y +
-  //   y}));
-  //   ::memcpy(dst, src, rect->size.x * 4);
-  // }
+  Rect texture_rect(point, texture.GetSize());
+  const auto& rect = Rect{size_}.Intersection(texture_rect);
+  if (!rect.has_value()) {
+    return;
+  }
+
+  for (uint32_t y = 0; y < rect->size.y; y++) {
+    ::memcpy(const_cast<uint8_t*>(
+                 GetComponent(Component::kRed, {point.x, point.y + y})),  //
+             texture.GetComponent(Component::kRed, {0, y}),               //
+             rect->size.x);
+    ::memcpy(const_cast<uint8_t*>(
+                 GetComponent(Component::kGreen, {point.x, point.y + y})),  //
+             texture.GetComponent(Component::kGreen, {0, y}),               //
+             rect->size.x);
+    ::memcpy(const_cast<uint8_t*>(
+                 GetComponent(Component::kBlue, {point.x, point.y + y})),  //
+             texture.GetComponent(Component::kBlue, {0, y}),               //
+             rect->size.x);
+    ::memcpy(const_cast<uint8_t*>(
+                 GetComponent(Component::kAlpha, {point.x, point.y + y})),  //
+             texture.GetComponent(Component::kAlpha, {0, y}),               //
+             rect->size.x);
+  }
 }
 
 bool Texture::CopyRGBA(Texture& texture) const {
