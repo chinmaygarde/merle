@@ -31,9 +31,9 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
     return std::nullopt;
   }
 
-  ::memcpy(reinterpret_cast<uint8_t*>(texture.At()),  //
-           decoded,                                   //
-           x * y * STBI_rgb_alpha                     //
+  ::memcpy(texture.GetAllocation(),  //
+           decoded,                  //
+           x * y * STBI_rgb_alpha    //
   );
 
   ::stbi_image_free(decoded);
@@ -41,11 +41,21 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
   return texture;
 }
 
+// ispc::Color ToColor(const Color& color) {
+//   ispc::Color ispc_color;
+//   ispc_color.red = color.red;
+//   ispc_color.green = color.green;
+//   ispc_color.blue = color.blue;
+//   ispc_color.alpha = color.alpha;
+//   return ispc_color;
+// }
+
 void Texture::Clear(Color color) {
-  ispc::Clear(reinterpret_cast<uint32_t*>(allocation_),  //
-              size_.x * size_.y,                         //
-              color.color                                //
-  );
+  const auto length = size_.x * size_.y;
+  ::memset(allocation_ + length * 0, color.red, length);
+  ::memset(allocation_ + length * 1, color.green, length);
+  ::memset(allocation_ + length * 2, color.blue, length);
+  ::memset(allocation_ + length * 3, color.alpha, length);
 }
 
 void Texture::ToGrayscale() {
@@ -55,16 +65,33 @@ void Texture::ToGrayscale() {
 }
 
 void Texture::Composite(const Texture& texture, UPoint point) {
-  Rect texture_rect(point, texture.GetSize());
-  const auto& rect = Rect{size_}.Intersection(texture_rect);
-  if (!rect.has_value()) {
-    return;
+  // Rect texture_rect(point, texture.GetSize());
+  // const auto& rect = Rect{size_}.Intersection(texture_rect);
+  // if (!rect.has_value()) {
+  //   return;
+  // }
+  // for (uint32_t y = 0; y < rect->size.y; y++) {
+  //   const uint8_t* src = reinterpret_cast<const uint8_t*>(texture.At({0,
+  //   y})); uint8_t* dst = reinterpret_cast<uint8_t*>(At({point.x, point.y +
+  //   y}));
+  //   ::memcpy(dst, src, rect->size.x * 4);
+  // }
+}
+
+bool Texture::CopyRGBA(Texture& texture) const {
+  if (texture.GetSize() != GetSize()) {
+    return false;
   }
-  for (uint32_t y = 0; y < rect->size.y; y++) {
-    const uint8_t* src = reinterpret_cast<const uint8_t*>(texture.At({0, y}));
-    uint8_t* dst = reinterpret_cast<uint8_t*>(At({point.x, point.y + y}));
-    ::memcpy(dst, src, rect->size.x * 4);
-  }
+  const auto length = size_.x * size_.y;
+  ispc::ToRGBA(
+      allocation_ + length * 0,                                 // red
+      allocation_ + length * 1,                                 // green
+      allocation_ + length * 2,                                 // blue
+      allocation_ + length * 3,                                 // alpha
+      reinterpret_cast<ispc::Color*>(texture.GetAllocation()),  // color(out)
+      length                                                    // length
+  );
+  return true;
 }
 
 }  // namespace ns

@@ -1,9 +1,24 @@
 
-export void Clear(uniform uint32 buffer[],
-                  uniform uint64 size,
-                  uniform uint32 color) {
-  foreach (index = 0 ... size) {
-    buffer[index] = color;
+struct Color {
+  uint8 red;
+  uint8 green;
+  uint8 blue;
+  uint8 alpha;
+};
+
+export void ToRGBA(uniform uint8 red[],
+                   uniform uint8 green[],
+                   uniform uint8 blue[],
+                   uniform uint8 alpha[],
+                   uniform Color rgba[],
+                   uniform uint64 size) {
+  foreach (i = 0 ... size) {
+    Color c;
+    c.red = red[i];
+    c.green = green[i];
+    c.blue = blue[i];
+    c.alpha = alpha[i];
+    rgba[i] = c;
   }
 }
 
@@ -22,10 +37,6 @@ export void Clear(uniform uint32 buffer[],
    (a << ALPHA_SHIFT))
 
 export void ToGrayscale(uniform uint32 buffer[], uniform uint64 size) {
-  print("Program Count = %d\n", programCount);
-  print("Target Width = %d\n", TARGET_WIDTH);
-  print("Target Element Width = %d\n", TARGET_ELEMENT_WIDTH);
-  assert(false);
   foreach (index = 0 ... size) {
     uint32 color = buffer[index];
     uint8 red = GET_RED(color);

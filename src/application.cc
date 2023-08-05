@@ -68,12 +68,21 @@ bool Application::OnRender() {
 
   const auto size = texture->GetSize();
 
+  Texture rgba_tex;
+  if (!rgba_tex.Resize(size)) {
+    return false;
+  }
+
+  if (!texture->CopyRGBA(rgba_tex)) {
+    return false;
+  }
+
   SDLTextureNoCopyCaster sdl_texture(
       sdl_renderer_,                                 //
-      texture->GetAllocation(),                      //
+      rgba_tex.GetAllocation(),                      //
       size.x,                                        //
       size.y,                                        //
-      static_cast<int>(texture->GetBytesPerPixel())  //
+      static_cast<int>(rgba_tex.GetBytesPerPixel())  //
   );
 
   if (::SDL_RenderCopy(sdl_renderer_,  //

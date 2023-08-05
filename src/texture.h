@@ -20,25 +20,30 @@ class Texture {
 
   size_t GetBytesPerPixel() const { return sizeof(Color); }
 
-  Color& operator[](const UPoint& pos) {
+  Color operator[](const UPoint& pos) {
     auto* colors = reinterpret_cast<Color*>(allocation_);
     const auto index = size_.x * pos.y + pos.x;
-    return colors[index];
+    const auto length = size_.x * size_.y;
+    return Color(colors[index + length * 0u],  //
+                 colors[index + length * 1u],  //
+                 colors[index + length * 2u],  //
+                 colors[index + length * 3u]   //
+    );
   }
 
-  const Color* At(const UPoint& pos = {}) const {
-    auto* colors = reinterpret_cast<Color*>(allocation_);
-    const auto index = size_.x * pos.y + pos.x;
-    return colors + index;
-  }
+  // const Color* At(const UPoint& pos = {}) const {
+  //   auto* colors = reinterpret_cast<Color*>(allocation_);
+  //   const auto index = size_.x * pos.y + pos.x;
+  //   return colors + index;
+  // }
 
-  Color* At(const UPoint& pos = {}) {
-    auto* colors = reinterpret_cast<Color*>(allocation_);
-    const auto index = size_.x * pos.y + pos.x;
-    return colors + index;
-  }
+  // Color* At(const UPoint& pos = {}) {
+  //   auto* colors = reinterpret_cast<Color*>(allocation_);
+  //   const auto index = size_.x * pos.y + pos.x;
+  //   return colors + index;
+  // }
 
-  const Color* GetAllocation() const { return At(); }
+  uint8_t* GetAllocation() { return allocation_; }
 
   bool Resize(UPoint size) {
     if (size_ == size) {
@@ -59,6 +64,8 @@ class Texture {
   void Clear(Color color);
 
   void ToGrayscale();
+
+  bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);
 

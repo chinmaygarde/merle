@@ -28,7 +28,7 @@ TEST_F(NeonSandboxTest, CanCreateTexture) {
   ASSERT_EQ(texture[UPoint(0, 0)], kColorRoyalBlue);
 }
 
-TEST_F(NeonSandboxTest, CanDisplayTexture) {
+TEST_F(NeonSandboxTest, CanDisplayColorTexture) {
   Application application;
   auto texture = std::make_shared<Texture>();
   application.SetRasterizerCallback(

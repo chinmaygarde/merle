@@ -58,6 +58,8 @@ add_library(neon_sandbox_ispc
   src/texture.ispc
 )
 
+set_property(TARGET neon_sandbox_ispc PROPERTY ISPC_INSTRUCTION_SETS neon-i32x8)
+
 target_link_libraries(neon_sandbox_lib
   PUBLIC
     neon_sandbox_ispc
