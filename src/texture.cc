@@ -1,10 +1,10 @@
 #include "texture.h"
 
-#include <cstring>
-#include <optional>
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#include <cstring>
+#include <optional>
 
 #include "texture_ispc.h"
 
