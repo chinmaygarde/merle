@@ -121,8 +121,18 @@ void Texture::Exposure(float exposure) {
   ispc::Exposure(allocation_ + length * 0,  // red
                  allocation_ + length * 1,  // green
                  allocation_ + length * 2,  // blue
-                 exposure,                  // blue
+                 exposure,                  // exposure
                  length                     // length
+  );
+}
+
+void Texture::Brightness(float brightness) {
+  const auto length = size_.x * size_.y;
+  ispc::Brightness(allocation_ + length * 0,  // red
+                   allocation_ + length * 1,  // green
+                   allocation_ + length * 2,  // blue
+                   brightness,                // brightness
+                   length                     // length
   );
 }
 

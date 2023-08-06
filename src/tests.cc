@@ -113,7 +113,26 @@ TEST_F(NeonSandboxTest, CanAdjustExposure) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
-        texture->Exposure(2.0f);
+        texture->Exposure(0.8f);
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
+TEST_F(NeonSandboxTest, CanAdjustBrightness) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
+  ASSERT_TRUE(image.has_value());
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Clear(Color{0, 0, 255, 255});
+        texture->Composite(*image, {25, 25});
+        texture->Brightness(0.5f);
         return texture;
       });
   ASSERT_TRUE(Run(application));

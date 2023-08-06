@@ -82,8 +82,21 @@ export void Exposure(uniform uint8 reds[],
                      uniform uint64 size) {
   uniform float factor = pow(2, exposure);
   foreach (i = 0 ... size) {
-    reds[i] = saturating_mul(reds[i], factor);
-    greens[i] = saturating_mul(greens[i], factor);
-    blues[i] = saturating_mul(blues[i], factor);
+    reds[i] = min(reds[i] * factor, 255.f);
+    greens[i] = min(greens[i] * factor, 255.f);
+    blues[i] = min(blues[i] * factor, 255.f);
+  }
+}
+
+export void Brightness(uniform uint8 reds[],
+                       uniform uint8 greens[],
+                       uniform uint8 blues[],
+                       uniform float exposure,
+                       uniform uint64 size) {
+  uniform uint8 factor = 255 * exposure;
+  foreach (i = 0 ... size) {
+    reds[i] = saturating_add(reds[i], factor);
+    greens[i] = saturating_add(greens[i], factor);
+    blues[i] = saturating_add(blues[i], factor);
   }
 }

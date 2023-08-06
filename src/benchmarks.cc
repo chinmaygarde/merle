@@ -60,6 +60,15 @@ static void BM_Exposure(benchmark::State& state) {
 }
 BENCHMARK(BM_Exposure)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void BM_Brightness(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Brightness(0.5f);
+  }
+}
+BENCHMARK(BM_Brightness)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();
