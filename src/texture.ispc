@@ -6,6 +6,13 @@ struct Color {
   uint8 alpha;
 };
 
+enum Component {
+  kRed,
+  kGreen,
+  kBlue,
+  kAlpha,
+};
+
 // This still end up being slower than direct memset on M1 MacBook Air.
 export void Clear(uniform uint8 red[],
                   uniform uint8 green[],
@@ -119,5 +126,45 @@ export void RGBALevels(uniform uint8 reds[],
     greens[i] = min(greens[i] * green_level, 255.f);
     blues[i] = min(blues[i] * blue_level, 255.f);
     alphas[i] = min(alphas[i] * alpha_level, 255.f);
+  }
+}
+
+inline uint8 Select(uniform Component comp,
+                    uint8 red,
+                    uint8 green,
+                    uint8 blue,
+                    uint8 alpha) {
+  switch (comp) {
+    case kRed:
+      return red;
+    case kGreen:
+      return green;
+    case kBlue:
+      return blue;
+    case kAlpha:
+      return alpha;
+  }
+  return 0;
+}
+
+export void Swizzle(uniform uint8 reds[],
+                    uniform uint8 greens[],
+                    uniform uint8 blues[],
+                    uniform uint8 alphas[],
+                    uniform Component red_swizzle,
+                    uniform Component green_swizzle,
+                    uniform Component blue_swizzle,
+                    uniform Component alpha_swizzle,
+                    uniform uint64 size) {
+  foreach (i = 0 ... size) {
+    uint8 red = reds[i];
+    uint8 green = greens[i];
+    uint8 blue = blues[i];
+    uint8 alpha = alphas[i];
+
+    reds[i] = Select(red_swizzle, red, green, blue, alpha);
+    greens[i] = Select(green_swizzle, red, green, blue, alpha);
+    blues[i] = Select(blue_swizzle, red, green, blue, alpha);
+    alphas[i] = Select(alpha_swizzle, red, green, blue, alpha);
   }
 }

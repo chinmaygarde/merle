@@ -1,3 +1,4 @@
+#include "CMakeFiles/neon_sandbox_ispc.dir/texture_ispc.h"
 #include "benchmark/benchmark.h"
 #include "texture.h"
 
@@ -77,6 +78,19 @@ static void RGBALevels(benchmark::State& state) {
   }
 }
 BENCHMARK(RGBALevels)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void Swizzle(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Swizzle(Component::kAlpha,  //
+                    Component::kRed,    //
+                    Component::kGreen,  //
+                    Component::kAlpha   //
+    );
+  }
+}
+BENCHMARK(Swizzle)->Unit(benchmark::TimeUnit::kMillisecond);
 
 }  // namespace ns
 

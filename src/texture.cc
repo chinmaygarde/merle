@@ -150,4 +150,21 @@ void Texture::RGBALevels(float red, float green, float blue, float alpha) {
   );
 }
 
+void Texture::Swizzle(Component red,
+                      Component green,
+                      Component blue,
+                      Component alpha) {
+  const auto length = size_.x * size_.y;
+  ispc::Swizzle(allocation_ + length * 0,             // red
+                allocation_ + length * 1,             // green
+                allocation_ + length * 2,             // blue
+                allocation_ + length * 3,             // alpha
+                static_cast<ispc::Component>(red),    // red swizzle
+                static_cast<ispc::Component>(green),  // green swizzle
+                static_cast<ispc::Component>(blue),   // blue swizzle
+                static_cast<ispc::Component>(alpha),  // alpha swizzle
+                length                                // length
+  );
+}
+
 }  // namespace ns
