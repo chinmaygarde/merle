@@ -31,24 +31,21 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
     return std::nullopt;
   }
 
-  ::memcpy(texture.GetAllocation(),  //
-           decoded,                  //
-           x * y * STBI_rgb_alpha    //
+  auto allocation = texture.GetAllocation();
+  auto length = texture.GetSize().GetArea();
+
+  ispc::FromRGBA(reinterpret_cast<ispc::Color*>(decoded),  // rgba
+                 allocation + length * 0,                  // red
+                 allocation + length * 1,                  // green
+                 allocation + length * 2,                  // blue
+                 allocation + length * 3,                  // alpha
+                 length                                    // length
   );
 
   ::stbi_image_free(decoded);
 
   return texture;
 }
-
-// ispc::Color ToColor(const Color& color) {
-//   ispc::Color ispc_color;
-//   ispc_color.red = color.red;
-//   ispc_color.green = color.green;
-//   ispc_color.blue = color.blue;
-//   ispc_color.alpha = color.alpha;
-//   return ispc_color;
-// }
 
 void Texture::Clear(Color color) {
   const auto length = size_.x * size_.y;
