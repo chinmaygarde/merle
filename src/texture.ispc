@@ -6,6 +6,21 @@ struct Color {
   uint8 alpha;
 };
 
+// This still end up being slower than direct memset on M1 MacBook Air.
+export void Clear(uniform uint8 red[],
+                  uniform uint8 green[],
+                  uniform uint8 blue[],
+                  uniform uint8 alpha[],
+                  uniform const Color& color,
+                  uniform uint64 size) {
+  foreach (i = 0 ... size) {
+    red[i] = color.red;
+    green[i] = color.green;
+    blue[i] = color.blue;
+    alpha[i] = color.alpha;
+  }
+}
+
 export void ToRGBA(uniform uint8 red[],
                    uniform uint8 green[],
                    uniform uint8 blue[],
@@ -18,6 +33,7 @@ export void ToRGBA(uniform uint8 red[],
     c.green = green[i];
     c.blue = blue[i];
     c.alpha = alpha[i];
+#pragma ignore warning(perf)  // scatter
     rgba[i] = c;
   }
 }
@@ -29,6 +45,7 @@ export void FromRGBA(uniform Color rgba[],
                      uniform uint8 alpha[],
                      uniform uint64 size) {
   foreach (i = 0 ... size) {
+#pragma ignore warning(perf)  // gather
     Color c = rgba[i];
     red[i] = c.red;
     green[i] = c.green;
