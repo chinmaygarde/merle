@@ -1,4 +1,4 @@
-Neon Sandbox
+SIMD Sandbox
 ============
 
 Nothing to see here. Go away.
