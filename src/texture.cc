@@ -107,4 +107,13 @@ bool Texture::CopyRGBA(Texture& texture) const {
   return true;
 }
 
+void Texture::Invert() {
+  const auto length = size_.x * size_.y;
+  ispc::Invert(allocation_ + length * 0,  // red
+               allocation_ + length * 1,  // green
+               allocation_ + length * 2,  // blue
+               length                     // length
+  );
+}
+
 }  // namespace ns

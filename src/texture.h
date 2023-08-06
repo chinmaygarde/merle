@@ -81,6 +81,8 @@ class Texture {
 
   void ToGrayscale();
 
+  void Invert();
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

@@ -63,3 +63,14 @@ export void ToGrayscale(uniform uint8 reds[],
         0.2126 * reds[i] + 0.7152 * greens[i] + 0.0722 * blues[i];
   }
 }
+
+export void Invert(uniform uint8 reds[],
+                   uniform uint8 greens[],
+                   uniform uint8 blues[],
+                   uniform uint64 size) {
+  foreach (i = 0 ... size) {
+    reds[i] = 255 - reds[i];
+    greens[i] = 255 - greens[i];
+    blues[i] = 255 - blues[i];
+  }
+}

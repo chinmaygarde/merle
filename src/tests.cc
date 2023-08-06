@@ -80,4 +80,24 @@ TEST_F(NeonSandboxTest, CanDisplayGrascaleImage) {
   ASSERT_TRUE(Run(application));
 }
 
+TEST_F(NeonSandboxTest, CanDisplayInvertedImage) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
+  ASSERT_TRUE(image.has_value());
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Clear(Color{0, 0, 255, 255});
+        texture->Composite(*image, {25, 25});
+        texture->ToGrayscale();
+        texture->Invert();
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
 }  // namespace ns
