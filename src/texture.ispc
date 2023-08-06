@@ -37,3 +37,17 @@ export void FromRGBA(uniform Color rgba[],
   }
 }
 
+export void ToGrayscale(uniform uint8 reds[],
+                        uniform uint8 greens[],
+                        uniform uint8 blues[],
+                        uniform uint64 size) {
+  foreach (i = 0 ... size) {
+    uint8 red = reds[i];
+    uint8 green = greens[i];
+    uint8 blue = blues[i];
+    uint8 gray = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    reds[i] = gray;
+    greens[i] = gray;
+    blues[i] = gray;
+  }
+}

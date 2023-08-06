@@ -56,8 +56,11 @@ void Texture::Clear(Color color) {
 }
 
 void Texture::ToGrayscale() {
-  ispc::ToGrayscale(reinterpret_cast<uint32_t*>(allocation_),  //
-                    size_.x * size_.y                          //
+  const auto length = size_.GetArea();
+  ispc::ToGrayscale(allocation_ + length * 0,  // red
+                    allocation_ + length * 1,  // green
+                    allocation_ + length * 2,  // blue
+                    length                     // length
   );
 }
 

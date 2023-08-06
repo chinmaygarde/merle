@@ -56,6 +56,24 @@ TEST_F(NeonSandboxTest, CanDisplayImage) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
+TEST_F(NeonSandboxTest, CanDisplayGrascaleImage) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
+  ASSERT_TRUE(image.has_value());
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Clear(Color{0, 0, 255, 255});
+        texture->Composite(*image, {25, 25});
         texture->ToGrayscale();
         return texture;
       });
