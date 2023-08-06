@@ -116,4 +116,14 @@ void Texture::Invert() {
   );
 }
 
+void Texture::Exposure(float exposure) {
+  const auto length = size_.x * size_.y;
+  ispc::Exposure(allocation_ + length * 0,  // red
+                 allocation_ + length * 1,  // green
+                 allocation_ + length * 2,  // blue
+                 exposure,                  // blue
+                 length                     // length
+  );
+}
+
 }  // namespace ns

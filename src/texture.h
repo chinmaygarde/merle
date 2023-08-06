@@ -83,6 +83,8 @@ class Texture {
 
   void Invert();
 
+  void Exposure(float exposure);
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

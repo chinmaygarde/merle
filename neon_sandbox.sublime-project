@@ -2,8 +2,8 @@
   "build_systems": [
     {
       "name": "Neon Sandbox Build All",
-      "shell_cmd": "ninja && ./neon_sandbox --gtest_filter=\"*CanDisplayInvertedImage*\"",
-      // "shell_cmd": "ninja && ./neon_sandbox_benchmarks",
+      // "shell_cmd": "ninja && ./neon_sandbox --gtest_filter=\"*CanAdjustExposure*\"",
+      "shell_cmd": "ninja && ./neon_sandbox_benchmarks",
       "working_dir": "${project_path}/build",
       "file_regex": "(.*):(\\d+):(\\d+)(.*)",
       "shell": true,

@@ -42,6 +42,24 @@ static void BM_Grayscale(benchmark::State& state) {
 }
 BENCHMARK(BM_Grayscale)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void BM_Invert(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Invert();
+  }
+}
+BENCHMARK(BM_Invert)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void BM_Exposure(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Exposure(2.0f);
+  }
+}
+BENCHMARK(BM_Exposure)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

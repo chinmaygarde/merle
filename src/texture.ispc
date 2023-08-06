@@ -74,3 +74,16 @@ export void Invert(uniform uint8 reds[],
     blues[i] = 255 - blues[i];
   }
 }
+
+export void Exposure(uniform uint8 reds[],
+                     uniform uint8 greens[],
+                     uniform uint8 blues[],
+                     uniform float exposure,
+                     uniform uint64 size) {
+  uniform float factor = pow(2, exposure);
+  foreach (i = 0 ... size) {
+    reds[i] = saturating_mul(reds[i], factor);
+    greens[i] = saturating_mul(greens[i], factor);
+    blues[i] = saturating_mul(blues[i], factor);
+  }
+}
