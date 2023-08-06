@@ -100,3 +100,24 @@ export void Brightness(uniform uint8 reds[],
     blues[i] = saturating_add(blues[i], factor);
   }
 }
+
+export void RGBALevels(uniform uint8 reds[],
+                       uniform uint8 greens[],
+                       uniform uint8 blues[],
+                       uniform uint8 alphas[],
+                       uniform float red_level,
+                       uniform float green_level,
+                       uniform float blue_level,
+                       uniform float alpha_level,
+                       uniform uint64 size) {
+  red_level = max(red_level, 0.0f);
+  green_level = max(green_level, 0.0f);
+  blue_level = max(blue_level, 0.0f);
+  alpha_level = max(alpha_level, 0.0f);
+  foreach (i = 0 ... size) {
+    reds[i] = min(reds[i] * red_level, 255.f);
+    greens[i] = min(greens[i] * green_level, 255.f);
+    blues[i] = min(blues[i] * blue_level, 255.f);
+    alphas[i] = min(alphas[i] * alpha_level, 255.f);
+  }
+}

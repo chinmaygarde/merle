@@ -87,6 +87,8 @@ class Texture {
 
   void Brightness(float brightness);
 
+  void RGBALevels(float red, float green, float blue, float alpha);
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

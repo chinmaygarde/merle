@@ -136,4 +136,18 @@ void Texture::Brightness(float brightness) {
   );
 }
 
+void Texture::RGBALevels(float red, float green, float blue, float alpha) {
+  const auto length = size_.x * size_.y;
+  ispc::RGBALevels(allocation_ + length * 0,  // red
+                   allocation_ + length * 1,  // green
+                   allocation_ + length * 2,  // blue
+                   allocation_ + length * 3,  // alpha
+                   red,                       // red level
+                   green,                     // green level
+                   blue,                      // blue level
+                   alpha,                     // alpha level
+                   length                     // length
+  );
+}
+
 }  // namespace ns

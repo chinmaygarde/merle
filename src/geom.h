@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -9,6 +10,15 @@
 namespace ns {
 
 using ScalarF = float;
+
+struct UnitScalarF {
+  UnitScalarF(ScalarF val) : value_(std::clamp(val, 0.0f, 1.0f)) {}
+
+  constexpr operator ScalarF() const { return value_; }
+
+ private:
+  ScalarF value_ = 1.0f;
+};
 
 template <class T>
 struct TPoint {
