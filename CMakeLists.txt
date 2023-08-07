@@ -78,6 +78,16 @@ add_executable(neon_sandbox
   src/test_runner.h
   src/test_runner.h
   src/tests.cc
+  # third_party/imgui/imgui_tables.cpp
+  # third_party/imgui/imgui_demo.cpp
+  # third_party/imgui/imgui_draw.cpp
+  # third_party/imgui/imgui.cpp
+  # third_party/imgui/imgui_widgets.cpp
+  # third_party/imgui/backends/imgui_impl_sdlrenderer3.cpp
+  # third_party/imgui/imgui.h
+  # third_party/imgui/imconfig.h
+  # third_party/imgui/backends/imgui_impl_sdlrenderer3.h
+  # third_party/imgui/imgui_internal.h
 )
 
 target_link_libraries(neon_sandbox
@@ -93,6 +103,7 @@ configure_file(src/fixtures_location.h.in fixtures_location.h @ONLY)
 target_include_directories(neon_sandbox
   PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
+    third_party/imgui
 )
 
 gtest_discover_tests(neon_sandbox)

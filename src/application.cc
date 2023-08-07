@@ -8,7 +8,7 @@ Application::Application(UPoint size) {
   Uint32 window_flags = 0;
 
   // window_flags |= SDL_WINDOW_ALLOW_HIGHDPI;
-  window_flags |= SDL_WINDOW_RESIZABLE;
+  window_flags |= SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
 
   sdl_window_ = ::SDL_CreateWindow("Neon Sandbox",
                                    SDL_WINDOWPOS_CENTERED,  //
@@ -23,7 +23,9 @@ Application::Application(UPoint size) {
     return;
   }
 
-  sdl_renderer_ = ::SDL_CreateRenderer(sdl_window_, nullptr, 0);
+  sdl_renderer_ = ::SDL_CreateRenderer(
+      sdl_window_, nullptr,
+      SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
 
   if (!sdl_renderer_) {
     std::cerr << "Could not create renderer: " << SDL_GetError() << std::endl;
