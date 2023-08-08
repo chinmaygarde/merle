@@ -70,8 +70,6 @@ target_link_libraries(neon_sandbox_lib
 add_executable(neon_sandbox
   src/application.cc
   src/application.h
-  src/playground.cc
-  src/playground.h
   src/sdl_utils.cc
   src/sdl_utils.h
   src/test_runner.cc
