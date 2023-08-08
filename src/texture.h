@@ -78,7 +78,14 @@ class Texture {
 
   void Contrast(float contrast);
 
-  void Saturation(float saturation);
+  //----------------------------------------------------------------------------
+  /// @brief      Adjust the saturation of the image. Negative values desaturate
+  ///             the image and positive values increase the saturation. The
+  ///             values must be between -1.0f and 1.0f.
+  ///
+  /// @param[in]  saturation  The saturation
+  ///
+  void Saturation(float saturation = 0.0f);
 
   bool CopyRGBA(Texture& texture) const;
 

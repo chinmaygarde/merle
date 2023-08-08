@@ -226,7 +226,7 @@ TEST_F(NeonSandboxTest, CanAdjustContrast) {
 TEST_F(NeonSandboxTest, CanAdjustSaturation) {
   Application application;
   auto texture = std::make_shared<Texture>();
-  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
   ASSERT_TRUE(image.has_value());
   application.SetRasterizerCallback(
       [&](const Application& app) -> std::shared_ptr<Texture> {
@@ -234,9 +234,10 @@ TEST_F(NeonSandboxTest, CanAdjustSaturation) {
         if (!texture->Resize(size)) {
           return nullptr;
         }
+        texture->Clear(kColorBlack);
         texture->Composite(*image, {25, 25});
-        static float saturation = 1.0f;
-        ImGui::SliderFloat("Saturation", &saturation, 0.0f, 2.0f);
+        static float saturation = 0.0f;
+        ImGui::SliderFloat("Saturation", &saturation, -1.0f, 1.0f);
         texture->Saturation(saturation);
         return texture;
       });

@@ -220,7 +220,7 @@ export void Saturation(uniform uint8 reds[],
                        uniform int64 size,
                        uniform float saturation) {
   uniform float luminance_weights[3] = {0.2125f, 0.7154f, 0.0721f};
-  saturation = clamp(saturation, 0.0f, 2.0f);
+  saturation = clamp(saturation + 1.0f, 0.0f, 2.0f);
   foreach (i = 0 ... size) {
     float r = reds[i] / 255.0f;
     float g = greens[i] / 255.0f;

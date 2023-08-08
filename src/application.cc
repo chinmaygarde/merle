@@ -130,6 +130,7 @@ bool Application::OnRender() {
 }
 
 bool Application::OnWindowSizeChanged(UPoint size) {
+  window_size_ = size;
   return true;
 }
 
