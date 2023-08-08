@@ -87,6 +87,14 @@ class Texture {
   ///
   void Saturation(float saturation = 0.0f);
 
+  //----------------------------------------------------------------------------
+  /// @brief      Adjust the vibrance of the image. The values must be between
+  ///            -2.0f and 2.0f.
+  ///
+  /// @param[in]  vibrance  The vibrance
+  ///
+  void Vibrance(float vibrance = 0.0f);
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

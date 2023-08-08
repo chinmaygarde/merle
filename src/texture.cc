@@ -214,7 +214,17 @@ void Texture::Saturation(float saturation) {
                    allocation_ + length * 1,  // green
                    allocation_ + length * 2,  // blue
                    length,                    // length
-                   saturation                 // contrast
+                   saturation                 // saturation
+  );
+}
+
+void Texture::Vibrance(float vibrance) {
+  const auto length = size_.x * size_.y;
+  ispc::Saturation(allocation_ + length * 0,  // red
+                   allocation_ + length * 1,  // green
+                   allocation_ + length * 2,  // blue
+                   length,                    // length
+                   vibrance                   // vibrance
   );
 }
 

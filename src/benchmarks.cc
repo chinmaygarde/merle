@@ -118,6 +118,15 @@ static void Saturation(benchmark::State& state) {
 }
 BENCHMARK(Saturation)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void Vibrance(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Vibrance(1.5f);
+  }
+}
+BENCHMARK(Vibrance)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

@@ -233,3 +233,24 @@ export void Saturation(uniform uint8 reds[],
     blues[i] = clamp(Mix(luminance, b, saturation), 0.0f, 1.0f) * 255;
   }
 }
+
+export void Vibrance(uniform uint8 reds[],
+                     uniform uint8 greens[],
+                     uniform uint8 blues[],
+                     uniform int64 size,
+                     uniform float vibrance) {
+  vibrance = clamp(vibrance, -2.0f, 2.0f);
+  foreach (i = 0 ... size) {
+    float r = reds[i] / 255.0f;
+    float g = greens[i] / 255.0f;
+    float b = blues[i] / 255.0f;
+
+    float average = (r + g + b) / 3.0f;
+    float max = max(r, max(g, b));
+    float amt = (max - average) * (-vibrance * 3.0f);
+
+    reds[i] = Mix(r, max, amt) * 255;
+    greens[i] = Mix(r, max, amt) * 255;
+    blues[i] = Mix(r, max, amt) * 255;
+  }
+}

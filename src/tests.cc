@@ -244,4 +244,25 @@ TEST_F(NeonSandboxTest, CanAdjustSaturation) {
   ASSERT_TRUE(Run(application));
 }
 
+TEST_F(NeonSandboxTest, CanAdjustVibrance) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
+  ASSERT_TRUE(image.has_value());
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Clear(kColorBlack);
+        texture->Composite(*image, {25, 25});
+        static float vibrance = 0.0f;
+        ImGui::SliderFloat("Vibrance", &vibrance, -2.0f, 2.0f);
+        texture->Saturation(vibrance);
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
 }  // namespace ns
