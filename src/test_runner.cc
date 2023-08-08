@@ -23,14 +23,14 @@ bool TestRunner::Run(Application& application) const {
     ::SDL_Event event;
     if (::SDL_PollEvent(&event) == 1) {
       switch (event.type) {
-        case SDL_KEYUP:
+        case SDL_EVENT_KEY_UP:
           switch (event.key.keysym.sym) {
             case SDL_KeyCode::SDLK_q:
             case SDL_KeyCode::SDLK_ESCAPE:
-              if ((event.key.keysym.mod & KMOD_LSHIFT) ||
-                  (event.key.keysym.mod & KMOD_RSHIFT) ||
-                  (event.key.keysym.mod & KMOD_LCTRL) ||
-                  (event.key.keysym.mod & KMOD_RCTRL)) {
+              if ((event.key.keysym.mod & SDL_KMOD_LSHIFT) ||
+                  (event.key.keysym.mod & SDL_KMOD_RSHIFT) ||
+                  (event.key.keysym.mod & SDL_KMOD_LCTRL) ||
+                  (event.key.keysym.mod & SDL_KMOD_RCTRL)) {
                 gSkipRemainingTests = true;
               }
               is_running = false;
@@ -39,26 +39,24 @@ bool TestRunner::Run(Application& application) const {
               break;
           }
           break;
-        case SDL_QUIT:
+        case SDL_EVENT_QUIT:
           is_running = false;
           break;
-        case SDL_WINDOWEVENT:
-          switch (event.window.event) {
-            case SDL_WINDOWEVENT_RESIZED:
-            case SDL_WINDOWEVENT_SIZE_CHANGED:
-              UPoint size;
-              if (event.window.data1 > 0) {
-                size.x = event.window.data1;
-              }
-              if (event.window.data2 > 0) {
-                size.y = event.window.data2;
-              }
-              if (!application.OnWindowSizeChanged(size)) {
-                std::cout << "Window resizing failed." << std::endl;
-                is_running = false;
-              }
-              break;
+        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+          UPoint size;
+          if (event.window.data1 > 0) {
+            size.x = event.window.data1;
           }
+          if (event.window.data2 > 0) {
+            size.y = event.window.data2;
+          }
+          if (!application.OnWindowSizeChanged(size)) {
+            std::cout << "Window resizing failed." << std::endl;
+            is_running = false;
+          }
+          break;
+
           break;
       }
     }

@@ -11,11 +11,9 @@ Application::Application(UPoint size) {
   window_flags |= SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
 
   sdl_window_ = ::SDL_CreateWindow("Neon Sandbox",
-                                   SDL_WINDOWPOS_CENTERED,  //
-                                   SDL_WINDOWPOS_CENTERED,  //
-                                   window_size_.x,          //
-                                   window_size_.y,          //
-                                   window_flags             //
+                                   window_size_.x,  //
+                                   window_size_.y,  //
+                                   window_flags     //
   );
 
   if (!sdl_window_) {
@@ -86,11 +84,11 @@ bool Application::OnRender() {
       static_cast<int>(onscreen_tex_.GetBytesPerPixel())  //
   );
 
-  if (::SDL_RenderCopy(sdl_renderer_,  //
-                       sdl_texture,    //
-                       nullptr,        //
-                       nullptr         //
-                       ) != 0) {
+  if (::SDL_RenderTexture(sdl_renderer_,  //
+                          sdl_texture,    //
+                          nullptr,        //
+                          nullptr         //
+                          ) != 0) {
     return false;
   }
 

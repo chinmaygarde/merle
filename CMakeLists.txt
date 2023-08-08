@@ -95,7 +95,7 @@ target_link_libraries(neon_sandbox
     glm
     gtest_main
     neon_sandbox_lib
-    SDL3
+    SDL3::SDL3
 )
 
 get_filename_component(NS_ASSETS_LOCATION assets ABSOLUTE)

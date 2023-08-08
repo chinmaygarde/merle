@@ -35,7 +35,7 @@ SDLTextureNoCopyCaster::~SDLTextureNoCopyCaster() {
   }
 
   if (surface_) {
-    ::SDL_FreeSurface(surface_);
+    ::SDL_DestroySurface(surface_);
   }
 }
 
