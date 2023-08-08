@@ -28,29 +28,6 @@ class Texture {
 
   size_t GetBytesPerPixel() const { return sizeof(Color); }
 
-  Color operator[](const UPoint& pos) {
-    auto* colors = reinterpret_cast<Color*>(allocation_);
-    const auto index = size_.x * pos.y + pos.x;
-    const auto length = size_.x * size_.y;
-    return Color(colors[index + length * 0u],  //
-                 colors[index + length * 1u],  //
-                 colors[index + length * 2u],  //
-                 colors[index + length * 3u]   //
-    );
-  }
-
-  // const Color* At(const UPoint& pos = {}) const {
-  //   auto* colors = reinterpret_cast<Color*>(allocation_);
-  //   const auto index = size_.x * pos.y + pos.x;
-  //   return colors + index;
-  // }
-
-  // Color* At(const UPoint& pos = {}) {
-  //   auto* colors = reinterpret_cast<Color*>(allocation_);
-  //   const auto index = size_.x * pos.y + pos.x;
-  //   return colors + index;
-  // }
-
   uint8_t* GetAllocation() { return allocation_; }
 
   const uint8_t* GetAllocation() const { return allocation_; }

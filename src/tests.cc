@@ -15,20 +15,6 @@ TEST_F(NeonSandboxTest, Setup) {
   ASSERT_FALSE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Scratch) {
-  Texture texture;
-  texture.Resize({1, 1});
-  texture[{0, 0}] = kColorRed;
-  texture.ToGrayscale();
-}
-
-TEST_F(NeonSandboxTest, CanCreateTexture) {
-  Texture texture;
-  ASSERT_TRUE(texture.Resize({1, 1}));
-  texture[{0, 0}] = kColorRoyalBlue;
-  ASSERT_EQ(texture[UPoint(0, 0)], kColorRoyalBlue);
-}
-
 TEST_F(NeonSandboxTest, CanDisplayColorTexture) {
   Application application;
   auto texture = std::make_shared<Texture>();
