@@ -72,6 +72,10 @@ class Texture {
 
   void Swizzle(Component red, Component green, Component blue, Component alpha);
 
+  void ColorMatrix(const Matrix& matrix);
+
+  void Sepia();
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

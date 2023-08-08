@@ -13,6 +13,10 @@ enum Component {
   kAlpha,
 };
 
+struct Matrix {
+  float e[4][4];
+};
+
 // This still end up being slower than direct memset on M1 MacBook Air.
 export void Clear(uniform uint8 red[],
                   uniform uint8 green[],
@@ -166,5 +170,27 @@ export void Swizzle(uniform uint8 reds[],
     greens[i] = Select(green_swizzle, red, green, blue, alpha);
     blues[i] = Select(blue_swizzle, red, green, blue, alpha);
     alphas[i] = Select(alpha_swizzle, red, green, blue, alpha);
+  }
+}
+
+export void ColorMatrix(uniform uint8 reds[],
+                        uniform uint8 greens[],
+                        uniform uint8 blues[],
+                        uniform uint8 alphas[],
+                        uniform int64 size,
+                        uniform const Matrix& m) {
+  foreach (i = 0 ... size) {
+    float r = reds[i] / 255.0f;
+    float g = greens[i] / 255.0f;
+    float b = blues[i] / 255.0f;
+    float a = alphas[i] / 255.0f;
+    float r1 = r * m.e[0][0] + g * m.e[0][1] + b * m.e[0][2] + a * m.e[0][3];
+    float g1 = r * m.e[1][0] + g * m.e[1][1] + b * m.e[1][2] + a * m.e[1][3];
+    float b1 = r * m.e[2][0] + g * m.e[2][1] + b * m.e[2][2] + a * m.e[2][3];
+    float a1 = r * m.e[3][0] + g * m.e[3][1] + b * m.e[3][2] + a * m.e[3][3];
+    reds[i] = clamp(r1, 0.0f, 1.0f) * 255;
+    greens[i] = clamp(g1, 0.0f, 1.0f) * 255;
+    blues[i] = clamp(b1, 0.0f, 1.0f) * 255;
+    alphas[i] = clamp(a1, 0.0f, 1.0f) * 255;
   }
 }

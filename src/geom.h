@@ -20,6 +20,39 @@ struct UnitScalarF {
   ScalarF value_ = 1.0f;
 };
 
+struct Matrix {
+  union {
+    ScalarF m[16];
+    ScalarF e[4][4];
+  };
+  constexpr Matrix()
+      : m{
+            // clang-format off
+    1.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 1.0f,
+            // clang-format on
+        } {}
+
+  constexpr Matrix(
+      // clang-format off
+    ScalarF m00, ScalarF m01, ScalarF m02, ScalarF m03, //
+    ScalarF m10, ScalarF m11, ScalarF m12, ScalarF m13, //
+    ScalarF m20, ScalarF m21, ScalarF m22, ScalarF m23, //
+    ScalarF m30, ScalarF m31, ScalarF m32, ScalarF m33  //
+                   // clang-format on
+      )
+      : m{
+            // clang-format off
+    m00, m01, m02, m03, //
+    m10, m11, m12, m13, //
+    m20, m21, m22, m23, //
+    m30, m31, m32, m33  //
+                 // clang-format on
+        } {}
+};
+
 template <class T>
 struct TPoint {
   using Type = T;

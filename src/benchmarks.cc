@@ -91,6 +91,15 @@ static void Swizzle(benchmark::State& state) {
 }
 BENCHMARK(Swizzle)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void Sepia(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Sepia();
+  }
+}
+BENCHMARK(Sepia)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

@@ -179,4 +179,23 @@ void Texture::Swizzle(Component red,
   );
 }
 
+void Texture::ColorMatrix(const Matrix& matrix) {
+  const auto length = size_.x * size_.y;
+  ispc::ColorMatrix(allocation_ + length * 0,  // red
+                    allocation_ + length * 1,  // green
+                    allocation_ + length * 2,  // blue
+                    allocation_ + length * 3,  // alpha
+                    length,                    // length
+                    reinterpret_cast<const ispc::Matrix&>(matrix.e));
+}
+
+void Texture::Sepia() {
+  ColorMatrix(Matrix{
+      0.3588, 0.7044, 0.1368, 0.0,  //
+      0.2990, 0.5870, 0.1140, 0.0,  //
+      0.2392, 0.4696, 0.0912, 0.0,  //
+      0, 0, 0, 1.0,                 //
+  });
+}
+
 }  // namespace ns
