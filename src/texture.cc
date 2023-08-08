@@ -47,12 +47,24 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
   return texture;
 }
 
-void Texture::Clear(Color color) {
+void Texture::Clear(Color color,
+                    bool clear_red,
+                    bool clear_green,
+                    bool clear_blue,
+                    bool clear_alpha) {
   const auto length = size_.x * size_.y;
-  ::memset(allocation_ + length * 0, color.red, length);
-  ::memset(allocation_ + length * 1, color.green, length);
-  ::memset(allocation_ + length * 2, color.blue, length);
-  ::memset(allocation_ + length * 3, color.alpha, length);
+  if (clear_red) {
+    ::memset(allocation_ + length * 0, color.red, length);
+  }
+  if (clear_green) {
+    ::memset(allocation_ + length * 1, color.green, length);
+  }
+  if (clear_blue) {
+    ::memset(allocation_ + length * 2, color.blue, length);
+  }
+  if (clear_alpha) {
+    ::memset(allocation_ + length * 3, color.alpha, length);
+  }
 }
 
 void Texture::ToGrayscale() {

@@ -54,7 +54,11 @@ class Texture {
 
   const UPoint& GetSize() const { return size_; }
 
-  void Clear(Color color);
+  void Clear(Color color,
+             bool clear_red = true,
+             bool clear_green = true,
+             bool clear_blue = true,
+             bool clear_alpha = true);
 
   void ToGrayscale();
 
