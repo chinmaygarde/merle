@@ -78,6 +78,8 @@ class Texture {
 
   void Contrast(float contrast);
 
+  void Saturation(float saturation);
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

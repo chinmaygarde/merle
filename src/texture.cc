@@ -208,4 +208,14 @@ void Texture::Contrast(float contrast) {
   );
 }
 
+void Texture::Saturation(float saturation) {
+  const auto length = size_.x * size_.y;
+  ispc::Saturation(allocation_ + length * 0,  // red
+                   allocation_ + length * 1,  // green
+                   allocation_ + length * 2,  // blue
+                   length,                    // length
+                   saturation                 // contrast
+  );
+}
+
 }  // namespace ns

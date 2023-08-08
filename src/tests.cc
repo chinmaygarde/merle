@@ -223,4 +223,24 @@ TEST_F(NeonSandboxTest, CanAdjustContrast) {
   ASSERT_TRUE(Run(application));
 }
 
+TEST_F(NeonSandboxTest, CanAdjustSaturation) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
+  ASSERT_TRUE(image.has_value());
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Composite(*image, {25, 25});
+        static float saturation = 1.0f;
+        ImGui::SliderFloat("Saturation", &saturation, 0.0f, 2.0f);
+        texture->Saturation(saturation);
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
 }  // namespace ns

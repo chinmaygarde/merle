@@ -109,6 +109,15 @@ static void Contrast(benchmark::State& state) {
 }
 BENCHMARK(Contrast)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void Saturation(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Saturation(.05f);
+  }
+}
+BENCHMARK(Saturation)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();
