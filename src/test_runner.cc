@@ -1,6 +1,7 @@
 #include "test_runner.h"
 
 #include <SDL3/SDL.h>
+#include <backends/imgui_impl_sdl3.h>
 
 #include <sstream>
 
@@ -22,6 +23,7 @@ bool TestRunner::Run(Application& application) const {
     success = is_running = application.Render();
     ::SDL_Event event;
     if (::SDL_PollEvent(&event) == 1) {
+      ImGui_ImplSDL3_ProcessEvent(&event);
       switch (event.type) {
         case SDL_EVENT_KEY_UP:
           switch (event.key.keysym.sym) {

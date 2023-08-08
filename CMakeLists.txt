@@ -78,16 +78,18 @@ add_executable(neon_sandbox
   src/test_runner.h
   src/test_runner.h
   src/tests.cc
-  # third_party/imgui/imgui_tables.cpp
-  # third_party/imgui/imgui_demo.cpp
-  # third_party/imgui/imgui_draw.cpp
-  # third_party/imgui/imgui.cpp
-  # third_party/imgui/imgui_widgets.cpp
-  # third_party/imgui/backends/imgui_impl_sdlrenderer3.cpp
-  # third_party/imgui/imgui.h
-  # third_party/imgui/imconfig.h
-  # third_party/imgui/backends/imgui_impl_sdlrenderer3.h
-  # third_party/imgui/imgui_internal.h
+  third_party/imgui/backends/imgui_impl_sdl3.cpp
+  third_party/imgui/backends/imgui_impl_sdl3.h
+  third_party/imgui/backends/imgui_impl_sdlrenderer3.cpp
+  third_party/imgui/backends/imgui_impl_sdlrenderer3.h
+  third_party/imgui/imconfig.h
+  third_party/imgui/imgui.cpp
+  third_party/imgui/imgui.h
+  third_party/imgui/imgui_demo.cpp
+  third_party/imgui/imgui_draw.cpp
+  third_party/imgui/imgui_internal.h
+  third_party/imgui/imgui_tables.cpp
+  third_party/imgui/imgui_widgets.cpp
 )
 
 target_link_libraries(neon_sandbox
