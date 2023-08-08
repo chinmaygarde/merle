@@ -194,3 +194,18 @@ export void ColorMatrix(uniform uint8 reds[],
     alphas[i] = clamp(a1, 0.0f, 1.0f) * 255;
   }
 }
+
+export void Contrast(uniform uint8 reds[],
+                     uniform uint8 greens[],
+                     uniform uint8 blues[],
+                     uniform int64 size,
+                     uniform float contrast) {
+  foreach (i = 0 ... size) {
+    float r = reds[i] / 255.0f;
+    float g = greens[i] / 255.0f;
+    float b = blues[i] / 255.0f;
+    reds[i] = clamp(((r - 0.5f) * contrast) + 0.5f, 0.0f, 1.0f) * 255;
+    greens[i] = clamp(((g - 0.5f) * contrast) + 0.5f, 0.0f, 1.0f) * 255;
+    blues[i] = clamp(((b - 0.5f) * contrast) + 0.5f, 0.0f, 1.0f) * 255;
+  }
+}

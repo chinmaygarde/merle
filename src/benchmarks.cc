@@ -100,6 +100,15 @@ static void Sepia(benchmark::State& state) {
 }
 BENCHMARK(Sepia)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void Contrast(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Contrast(3.0f);
+  }
+}
+BENCHMARK(Contrast)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();
