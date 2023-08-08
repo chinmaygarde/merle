@@ -3,6 +3,7 @@
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_sdlrenderer3.h>
 #include <imgui.h>
+#include "SDL_render.h"
 #include "SDL_video.h"
 
 namespace ns {
@@ -114,6 +115,8 @@ bool Application::OnRender() {
       static_cast<int>(onscreen_tex_.GetBytesPerPixel())  //
   );
 
+  ::SDL_SetRenderDrawColor(sdl_renderer_, 0, 0, 0, 255);
+  ::SDL_RenderClear(sdl_renderer_);
   if (::SDL_RenderTexture(sdl_renderer_,  //
                           sdl_texture,    //
                           nullptr,        //
@@ -121,7 +124,6 @@ bool Application::OnRender() {
                           ) != 0) {
     return false;
   }
-
   ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
   ::SDL_RenderPresent(sdl_renderer_);
   return true;
