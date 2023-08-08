@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <imgui.h>
 #include "application.h"
 #include "fixtures_location.h"
 #include "geom.h"
@@ -100,7 +101,9 @@ TEST_F(NeonSandboxTest, CanAdjustExposure) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
-        texture->Exposure(0.8f);
+        static float exposure = 0.0f;
+        ImGui::SliderFloat("Exposure", &exposure, -1.0f, 2.0f);
+        texture->Exposure(exposure);
         return texture;
       });
   ASSERT_TRUE(Run(application));
@@ -119,7 +122,9 @@ TEST_F(NeonSandboxTest, CanAdjustBrightness) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
-        texture->Brightness(0.5f);
+        static float brightness = 0.0f;
+        ImGui::SliderFloat("Brightness", &brightness, 0.0f, 3.0f);
+        texture->Brightness(brightness);
         return texture;
       });
   ASSERT_TRUE(Run(application));
@@ -138,7 +143,9 @@ TEST_F(NeonSandboxTest, CanAdjustRGBALevels) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
-        texture->RGBALevels(1.0f, 0.0, 0.0, 1.0f);
+        static float vals[] = {1.0f, 1.0f, 1.0f, 1.0f};
+        ImGui::SliderFloat4("RGBA Levels", vals, 0.0f, 1.0f);
+        texture->RGBALevels(vals[0], vals[1], vals[2], vals[3]);
         return texture;
       });
   ASSERT_TRUE(Run(application));
@@ -149,18 +156,30 @@ TEST_F(NeonSandboxTest, CanSwizzle) {
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
   ASSERT_TRUE(image.has_value());
-  application.SetRasterizerCallback(
-      [&](const Application& app) -> std::shared_ptr<Texture> {
-        const auto size = app.GetWindowSize();
-        if (!texture->Resize(size)) {
-          return nullptr;
-        }
-        texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
-        texture->Swizzle(Component::kBlue, Component::kRed, Component::kBlue,
-                         Component::kAlpha);
-        return texture;
-      });
+  application.SetRasterizerCallback([&](const Application& app)
+                                        -> std::shared_ptr<Texture> {
+    const auto size = app.GetWindowSize();
+    if (!texture->Resize(size)) {
+      return nullptr;
+    }
+    texture->Clear(Color{0, 0, 255, 255});
+    texture->Composite(*image, {25, 25});
+    static const char* kComponentNames[] = {"Red", "Green", "Blue", "Alpha"};
+    static int red = 0;
+    ImGui::Combo("Red", &red, kComponentNames, IM_ARRAYSIZE(kComponentNames));
+    static int green = 0;
+    ImGui::Combo("Green", &green, kComponentNames,
+                 IM_ARRAYSIZE(kComponentNames));
+    static int blue = 2;
+    ImGui::Combo("Blue", &blue, kComponentNames, IM_ARRAYSIZE(kComponentNames));
+    static int alpha = 3;
+    ImGui::Combo("Alpha", &alpha, kComponentNames,
+                 IM_ARRAYSIZE(kComponentNames));
+    texture->Swizzle(static_cast<Component>(red), static_cast<Component>(green),
+                     static_cast<Component>(blue),
+                     static_cast<Component>(alpha));
+    return texture;
+  });
   ASSERT_TRUE(Run(application));
 }
 

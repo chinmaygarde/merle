@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#define NS_ASSERT(x)                                             \
-  {                                                              \
-    if (!(x)) {                                                  \
-      std::cout << "SFT: Assertion " #x " failed." << std::endl; \
-      std::abort();                                              \
-    }                                                            \
+#define NS_ASSERT(x)                                            \
+  {                                                             \
+    if (!(x)) {                                                 \
+      std::cout << "NS: Assertion " #x " failed." << std::endl; \
+      std::abort();                                             \
+    }                                                           \
   }
 
 #define NS_DISALLOW_COPY(TypeName) TypeName(const TypeName&) = delete

@@ -100,7 +100,7 @@ export void Brightness(uniform uint8 reds[],
                        uniform uint8 blues[],
                        uniform float exposure,
                        uniform uint64 size) {
-  uniform uint8 factor = 255 * exposure;
+  uniform uint8 factor = 255 * clamp(exposure, 0.0f, 1.0f);
   foreach (i = 0 ... size) {
     reds[i] = saturating_add(reds[i], factor);
     greens[i] = saturating_add(greens[i], factor);
