@@ -16,7 +16,7 @@ TEST_F(NeonSandboxTest, Setup) {
   ASSERT_FALSE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanDisplayColorTexture) {
+TEST_F(NeonSandboxTest, Clear) {
   Application application;
   auto texture = std::make_shared<Texture>();
   application.SetRasterizerCallback(
@@ -31,7 +31,7 @@ TEST_F(NeonSandboxTest, CanDisplayColorTexture) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanDisplayImage) {
+TEST_F(NeonSandboxTest, Composite) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -49,7 +49,7 @@ TEST_F(NeonSandboxTest, CanDisplayImage) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanDisplayGrascaleImage) {
+TEST_F(NeonSandboxTest, Grayscale) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -68,7 +68,7 @@ TEST_F(NeonSandboxTest, CanDisplayGrascaleImage) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanDisplayInvertedImage) {
+TEST_F(NeonSandboxTest, Invert) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
@@ -88,7 +88,7 @@ TEST_F(NeonSandboxTest, CanDisplayInvertedImage) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanAdjustExposure) {
+TEST_F(NeonSandboxTest, Exposure) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
@@ -109,7 +109,7 @@ TEST_F(NeonSandboxTest, CanAdjustExposure) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanAdjustBrightness) {
+TEST_F(NeonSandboxTest, Brightness) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
@@ -130,7 +130,7 @@ TEST_F(NeonSandboxTest, CanAdjustBrightness) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanAdjustRGBALevels) {
+TEST_F(NeonSandboxTest, RGBALevels) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -151,7 +151,7 @@ TEST_F(NeonSandboxTest, CanAdjustRGBALevels) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanSwizzle) {
+TEST_F(NeonSandboxTest, Swizzle) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -183,7 +183,7 @@ TEST_F(NeonSandboxTest, CanSwizzle) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanDisplaySepiaImage) {
+TEST_F(NeonSandboxTest, Sepia) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -202,7 +202,7 @@ TEST_F(NeonSandboxTest, CanDisplaySepiaImage) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanAdjustContrast) {
+TEST_F(NeonSandboxTest, Contrast) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -223,7 +223,7 @@ TEST_F(NeonSandboxTest, CanAdjustContrast) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanAdjustSaturation) {
+TEST_F(NeonSandboxTest, Saturation) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
@@ -244,7 +244,7 @@ TEST_F(NeonSandboxTest, CanAdjustSaturation) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanAdjustVibrance) {
+TEST_F(NeonSandboxTest, Vibrance) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
@@ -265,7 +265,7 @@ TEST_F(NeonSandboxTest, CanAdjustVibrance) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, CanAdjustHue) {
+TEST_F(NeonSandboxTest, Hue) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
