@@ -32,12 +32,12 @@ export void Clear(uniform uint8 red[],
   }
 }
 
-export void ToRGBA(uniform uint8 red[],
-                   uniform uint8 green[],
-                   uniform uint8 blue[],
-                   uniform uint8 alpha[],
-                   uniform Color rgba[],
-                   uniform uint64 size) {
+export void CopyToRGBA(uniform uint8 red[],
+                       uniform uint8 green[],
+                       uniform uint8 blue[],
+                       uniform uint8 alpha[],
+                       uniform Color rgba[],
+                       uniform uint64 size) {
   foreach (i = 0 ... size) {
     Color c;
     c.red = red[i];
@@ -65,10 +65,10 @@ export void FromRGBA(uniform Color rgba[],
   }
 }
 
-export void ToGrayscale(uniform uint8 reds[],
-                        uniform uint8 greens[],
-                        uniform uint8 blues[],
-                        uniform uint64 size) {
+export void Grayscale(uniform uint8 reds[],
+                      uniform uint8 greens[],
+                      uniform uint8 blues[],
+                      uniform uint64 size) {
   foreach (i = 0 ... size) {
     reds[i] = greens[i] = blues[i] =
         0.2126 * reds[i] + 0.7152 * greens[i] + 0.0722 * blues[i];

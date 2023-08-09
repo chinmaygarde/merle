@@ -62,7 +62,7 @@ TEST_F(NeonSandboxTest, Grayscale) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
-        texture->ToGrayscale();
+        texture->Grayscale();
         return texture;
       });
   ASSERT_TRUE(Run(application));
@@ -81,7 +81,7 @@ TEST_F(NeonSandboxTest, Invert) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
-        texture->ToGrayscale();
+        texture->Grayscale();
         texture->Invert();
         return texture;
       });

@@ -60,7 +60,7 @@ class Texture {
              bool clear_blue = true,
              bool clear_alpha = true);
 
-  void ToGrayscale();
+  void Grayscale();
 
   void Invert();
 
@@ -99,7 +99,7 @@ class Texture {
 
   void Opacity(UnitScalarF opacity);
 
-  bool CopyRGBA(Texture& texture) const;
+  bool CopyToRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);
 

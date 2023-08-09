@@ -103,7 +103,7 @@ bool Application::OnRender() {
     return false;
   }
 
-  if (!texture->CopyRGBA(onscreen_tex_)) {
+  if (!texture->CopyToRGBA(onscreen_tex_)) {
     return false;
   }
 

@@ -67,12 +67,12 @@ void Texture::Clear(Color color,
   }
 }
 
-void Texture::ToGrayscale() {
+void Texture::Grayscale() {
   const auto length = size_.GetArea();
-  ispc::ToGrayscale(allocation_ + length * 0,  // red
-                    allocation_ + length * 1,  // green
-                    allocation_ + length * 2,  // blue
-                    length                     // length
+  ispc::Grayscale(allocation_ + length * 0,  // red
+                  allocation_ + length * 1,  // green
+                  allocation_ + length * 2,  // blue
+                  length                     // length
   );
 }
 
@@ -103,12 +103,12 @@ void Texture::Composite(const Texture& texture, UPoint point) {
   }
 }
 
-bool Texture::CopyRGBA(Texture& texture) const {
+bool Texture::CopyToRGBA(Texture& texture) const {
   if (texture.GetSize() != GetSize()) {
     return false;
   }
   const auto length = size_.x * size_.y;
-  ispc::ToRGBA(
+  ispc::CopyToRGBA(
       allocation_ + length * 0,                                 // red
       allocation_ + length * 1,                                 // green
       allocation_ + length * 2,                                 // blue

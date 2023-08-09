@@ -30,7 +30,7 @@ static void ToRGBA(benchmark::State& state) {
   NS_ASSERT(rgba.Resize(kBenchmarkCanvasSize));
   texture.Clear(kColorBlue);
   while (state.KeepRunning()) {
-    texture.CopyRGBA(rgba);
+    texture.CopyToRGBA(rgba);
   }
 }
 BENCHMARK(ToRGBA)->Unit(benchmark::TimeUnit::kMillisecond);
@@ -39,7 +39,7 @@ static void Grayscale(benchmark::State& state) {
   Texture texture;
   NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
   while (state.KeepRunning()) {
-    texture.ToGrayscale();
+    texture.Grayscale();
   }
 }
 BENCHMARK(Grayscale)->Unit(benchmark::TimeUnit::kMillisecond);
