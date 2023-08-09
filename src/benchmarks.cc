@@ -127,6 +127,15 @@ static void Vibrance(benchmark::State& state) {
 }
 BENCHMARK(Vibrance)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void Hue(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Hue(Degrees{90});
+  }
+}
+BENCHMARK(Hue)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

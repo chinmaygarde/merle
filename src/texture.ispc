@@ -261,3 +261,48 @@ export void Vibrance(uniform uint8 reds[],
     blues[i] = Mix(r, max, amt) * 255;
   }
 }
+
+export void Hue(uniform uint8 reds[],
+                uniform uint8 greens[],
+                uniform uint8 blues[],
+                uniform int64 size,
+                uniform float hue_adjustment) {
+  // See
+  // http://stackoverflow.com/questions/9234724/how-to-change-hue-of-a-texture-with-glsl.
+  uniform Vec3 kRGBToYPrime = {0.299, 0.587, 0.114};
+  uniform Vec3 kRGBToI = {0.595716, -0.274453, -0.321263};
+  uniform Vec3 kRGBToQ = {
+      0.211456,
+      -0.522591,
+      0.31135,
+  };
+  uniform Vec3 kYIQToR = {1.0, 0.9563, 0.6210};
+  uniform Vec3 kYIQToG = {1.0, -0.2721, -0.6474};
+  uniform Vec3 kYIQToB = {1.0, -1.1070, 1.7046};
+
+  foreach (i = 0 ... size) {
+    Vec3 color = {reds[i] / 255.0f, greens[i] / 255.0f, blues[i] / 255.0f};
+
+    // Convert to YIQ
+    float YPrime = Dot3(color, kRGBToYPrime);
+    float I = Dot3(color, kRGBToI);
+    float Q = Dot3(color, kRGBToQ);
+
+    // Calculate the hue and chroma
+    float hue = atan2(Q, I);
+    float chroma = sqrt(I * I + Q * Q);
+
+    // Make the user's adjustments
+    hue += hue_adjustment;
+
+    // Convert back to YIQ
+    Q = chroma * sin(hue);
+    I = chroma * cos(hue);
+
+    // Convert back to RGB
+    Vec3 yIQ = {YPrime, I, Q};
+    reds[i] = clamp(Dot3(yIQ, kYIQToR), 0.0f, 1.0f) * 255.0f;
+    greens[i] = clamp(Dot3(yIQ, kYIQToG), 0.0f, 1.0f) * 255.0f;
+    blues[i] = clamp(Dot3(yIQ, kYIQToB), 0.0f, 1.0f) * 255.0f;
+  }
+}

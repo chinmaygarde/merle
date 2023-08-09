@@ -228,4 +228,14 @@ void Texture::Vibrance(float vibrance) {
   );
 }
 
+void Texture::Hue(Radians hue) {
+  const auto length = size_.x * size_.y;
+  ispc::Hue(allocation_ + length * 0,  // red
+            allocation_ + length * 1,  // green
+            allocation_ + length * 2,  // blue
+            length,                    // length
+            hue.radians                // hue
+  );
+}
+
 }  // namespace ns

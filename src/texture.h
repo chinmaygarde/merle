@@ -95,6 +95,8 @@ class Texture {
   ///
   void Vibrance(float vibrance = 0.0f);
 
+  void Hue(Radians hue);
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

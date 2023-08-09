@@ -265,4 +265,25 @@ TEST_F(NeonSandboxTest, CanAdjustVibrance) {
   ASSERT_TRUE(Run(application));
 }
 
+TEST_F(NeonSandboxTest, CanAdjustHue) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
+  ASSERT_TRUE(image.has_value());
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Clear(kColorBlack);
+        texture->Composite(*image, {25, 25});
+        static float hue = 0.0f;
+        ImGui::SliderFloat("Hue Adjustment (Degrees)", &hue, 0.0f, 360.0f);
+        texture->Hue(Degrees{hue});
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
 }  // namespace ns
