@@ -225,16 +225,18 @@ inline float Dot3(const T1& v1, const T2& v2) {
   return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
 }
 
+// https://en.wikipedia.org/wiki/Relative_luminance
+static const uniform Vec3 kLuminanceWeights = {0.2126f, 0.7152f, 0.0722f};
+
 export void Saturation(uniform uint8 reds[],
                        uniform uint8 greens[],
                        uniform uint8 blues[],
                        uniform int64 size,
                        uniform float saturation) {
-  uniform Vec3 luminance_weights = {0.2125f, 0.7154f, 0.0721f};
   saturation = clamp(saturation + 1.0f, 0.0f, 2.0f);
   foreach (i = 0 ... size) {
     Vec3 color = {reds[i] / 255.0f, greens[i] / 255.0f, blues[i] / 255.0f};
-    float luminance = Dot3(color, luminance_weights);
+    float luminance = Dot3(color, kLuminanceWeights);
     reds[i] = clamp(Mix(luminance, color.x, saturation), 0.0f, 1.0f) * 255;
     greens[i] = clamp(Mix(luminance, color.y, saturation), 0.0f, 1.0f) * 255;
     blues[i] = clamp(Mix(luminance, color.z, saturation), 0.0f, 1.0f) * 255;
@@ -312,5 +314,32 @@ export void Opacity(uniform uint8 alphas[],
                     uniform float opacity) {
   foreach (i = 0 ... size) {
     alphas[i] = ((alphas[i] / 255.0f) * opacity) * 255.0f;
+  }
+}
+
+export uniform float AverageLuminance(uniform uint8 reds[],
+                                      uniform uint8 greens[],
+                                      uniform uint8 blues[],
+                                      uniform int64 size) {
+  double luma = 0.0;
+  foreach (i = 0 ... size) {
+    Vec3 c = {reds[i] / 255.0f, greens[i] / 255.0f, blues[i] / 255.0f};
+    luma += Dot3(c, kLuminanceWeights);
+  }
+  return reduce_add(luma) / (double)size;
+}
+
+export void LuminanceThreshold(uniform uint8 reds[],
+                               uniform uint8 greens[],
+                               uniform uint8 blues[],
+                               uniform int64 size,
+                               uniform float luma_threshold) {
+  foreach (i = 0 ... size) {
+    Vec3 c = {reds[i] / 255.0f, greens[i] / 255.0f, blues[i] / 255.0f};
+    float luma = Dot3(c, kLuminanceWeights);
+    uint8 color = luma > luma_threshold ? 255 : 0;
+    reds[i] = color;
+    greens[i] = color;
+    blues[i] = color;
   }
 }

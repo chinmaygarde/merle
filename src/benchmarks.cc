@@ -1,4 +1,6 @@
+#include "CMakeFiles/neon_sandbox_ispc.dir/texture_ispc.h"
 #include "benchmark/benchmark.h"
+#include "geom.h"
 #include "texture.h"
 
 namespace ns {
@@ -144,6 +146,26 @@ static void Opacity(benchmark::State& state) {
   }
 }
 BENCHMARK(Opacity)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void AverageLuminance(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  while (state.KeepRunning()) {
+    texture.AverageLuminance();
+  }
+}
+BENCHMARK(AverageLuminance)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void LuminanceThreshold(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  while (state.KeepRunning()) {
+    texture.LuminanceThreshold(0.5f);
+  }
+}
+BENCHMARK(LuminanceThreshold)->Unit(benchmark::TimeUnit::kMillisecond);
 
 }  // namespace ns
 

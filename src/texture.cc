@@ -246,4 +246,23 @@ void Texture::Opacity(UnitScalarF opacity) {
   );
 }
 
+float Texture::AverageLuminance() const {
+  const auto length = size_.x * size_.y;
+  return ispc::AverageLuminance(allocation_ + length * 0,  // red
+                                allocation_ + length * 1,  // green
+                                allocation_ + length * 2,  // blue
+                                length                     // length
+  );
+}
+
+void Texture::LuminanceThreshold(float luminance) {
+  const auto length = size_.x * size_.y;
+  ispc::LuminanceThreshold(allocation_ + length * 0,  // red
+                           allocation_ + length * 1,  // green
+                           allocation_ + length * 2,  // blue
+                           length,                    // length
+                           luminance                  // luma threshold
+  );
+}
+
 }  // namespace ns

@@ -103,6 +103,10 @@ class Texture {
 
   void Composite(const Texture& texture, UPoint point);
 
+  float AverageLuminance() const;
+
+  void LuminanceThreshold(float luminance);
+
   static std::optional<Texture> CreateFromFile(const char* name);
 
  private:
