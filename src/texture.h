@@ -97,6 +97,8 @@ class Texture {
 
   void Hue(Radians hue);
 
+  void Opacity(UnitScalarF opacity);
+
   bool CopyRGBA(Texture& texture) const;
 
   void Composite(const Texture& texture, UPoint point);

@@ -306,3 +306,11 @@ export void Hue(uniform uint8 reds[],
     blues[i] = clamp(Dot3(yIQ, kYIQToB), 0.0f, 1.0f) * 255.0f;
   }
 }
+
+export void Opacity(uniform uint8 alphas[],
+                    uniform int64 size,
+                    uniform float opacity) {
+  foreach (i = 0 ... size) {
+    alphas[i] = ((alphas[i] / 255.0f) * opacity) * 255.0f;
+  }
+}

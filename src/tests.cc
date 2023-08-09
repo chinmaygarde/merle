@@ -286,4 +286,25 @@ TEST_F(NeonSandboxTest, Hue) {
   ASSERT_TRUE(Run(application));
 }
 
+TEST_F(NeonSandboxTest, Opacity) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
+  ASSERT_TRUE(image.has_value());
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Clear(kColorBlack);
+        texture->Composite(*image, {25, 25});
+        static float opacity = 0.5f;
+        ImGui::SliderFloat("Opacity", &opacity, 0.0f, 1.0f);
+        texture->Opacity(opacity);
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
 }  // namespace ns

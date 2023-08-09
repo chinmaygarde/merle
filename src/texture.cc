@@ -238,4 +238,12 @@ void Texture::Hue(Radians hue) {
   );
 }
 
+void Texture::Opacity(UnitScalarF opacity) {
+  const auto length = size_.x * size_.y;
+  ispc::Opacity(allocation_ + length * 3,  // alphas
+                length,                    // length
+                opacity                    // opacity
+  );
+}
+
 }  // namespace ns

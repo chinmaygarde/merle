@@ -136,6 +136,15 @@ static void Hue(benchmark::State& state) {
 }
 BENCHMARK(Hue)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void Opacity(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  while (state.KeepRunning()) {
+    texture.Opacity(0.5f);
+  }
+}
+BENCHMARK(Opacity)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();
