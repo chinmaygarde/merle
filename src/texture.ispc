@@ -214,23 +214,30 @@ float Mix(float x, float y, float a) {
   return x * (1.0f - a) + y * a;
 }
 
+struct Vec3 {
+  float x;
+  float y;
+  float z;
+};
+
+template <typename T1, typename T2>
+inline float Dot3(const T1& v1, const T2& v2) {
+  return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+}
+
 export void Saturation(uniform uint8 reds[],
                        uniform uint8 greens[],
                        uniform uint8 blues[],
                        uniform int64 size,
                        uniform float saturation) {
-  uniform float luminance_weights[3] = {0.2125f, 0.7154f, 0.0721f};
+  uniform Vec3 luminance_weights = {0.2125f, 0.7154f, 0.0721f};
   saturation = clamp(saturation + 1.0f, 0.0f, 2.0f);
   foreach (i = 0 ... size) {
-    float r = reds[i] / 255.0f;
-    float g = greens[i] / 255.0f;
-    float b = blues[i] / 255.0f;
-    float luminance = r * luminance_weights[0] +  //
-                      g * luminance_weights[1] +  //
-                      b * luminance_weights[2];
-    reds[i] = clamp(Mix(luminance, r, saturation), 0.0f, 1.0f) * 255;
-    greens[i] = clamp(Mix(luminance, g, saturation), 0.0f, 1.0f) * 255;
-    blues[i] = clamp(Mix(luminance, b, saturation), 0.0f, 1.0f) * 255;
+    Vec3 color = {reds[i] / 255.0f, greens[i] / 255.0f, blues[i] / 255.0f};
+    float luminance = Dot3(color, luminance_weights);
+    reds[i] = clamp(Mix(luminance, color.x, saturation), 0.0f, 1.0f) * 255;
+    greens[i] = clamp(Mix(luminance, color.y, saturation), 0.0f, 1.0f) * 255;
+    blues[i] = clamp(Mix(luminance, color.z, saturation), 0.0f, 1.0f) * 255;
   }
 }
 

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -135,6 +136,27 @@ struct TRect {
 using Point = TPoint<int32_t>;
 using UPoint = TPoint<uint32_t>;
 using Rect = TRect<uint32_t>;
+
+struct Radians {
+  ScalarF radians = 0.0;
+
+  constexpr Radians() = default;
+
+  explicit constexpr Radians(ScalarF p_radians) : radians(p_radians) {}
+};
+
+struct Degrees {
+  ScalarF degrees = 0.0;
+
+  constexpr Degrees() = default;
+
+  explicit constexpr Degrees(ScalarF p_degrees)
+      : degrees(std::fmodf(p_degrees, 360.0f)) {}
+
+  constexpr operator Radians() const {
+    return Radians(degrees * M_PI / 180.0f);
+  };
+};
 
 struct Color {
   union {
