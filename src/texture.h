@@ -107,6 +107,8 @@ class Texture {
 
   void LuminanceThreshold(float luminance);
 
+  bool BoxBlur(const Texture& src, uint8_t radius = 1u);
+
   static std::optional<Texture> CreateFromFile(const char* name);
 
  private:

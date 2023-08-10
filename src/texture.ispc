@@ -343,3 +343,59 @@ export void LuminanceThreshold(uniform uint8 reds[],
     blues[i] = color;
   }
 }
+
+inline uint8 Sample(uniform uint8 color[],
+                    uniform int64 width,
+                    int64 x,
+                    uniform int64 y) {
+#pragma ignore warning(perf)
+  return color[width * y + x];
+}
+
+inline void Set(uniform uint8 color[],
+                uint8 value,
+                uniform int64 width,
+                int64 x,
+                uniform int64 y) {
+#pragma ignore warning(perf)
+  color[width * y + x] = value;
+}
+
+export void BoxBlur(uniform uint8 src_r[],
+                    uniform uint8 src_g[],
+                    uniform uint8 src_b[],
+                    uniform uint8 src_a[],
+                    uniform uint8 dst_r[],
+                    uniform uint8 dst_g[],
+                    uniform uint8 dst_b[],
+                    uniform uint8 dst_a[],
+                    uniform int64 width,
+                    uniform int64 height,
+                    uniform uint8 radius) {
+  uniform uint64 sample_count = 0;
+  for (uniform int8 sy = -radius; sy < radius + 1; sy++) {
+    for (uniform int8 sx = -radius; sx < radius + 1; sx++) {
+      sample_count++;
+    }
+  }
+  for (uniform size_t y = radius; y < height - radius; y++) {
+    foreach (x = radius...(width - radius)) {
+      uint64 sr = 0;
+      uint64 sg = 0;
+      uint64 sb = 0;
+      uint64 sa = 0;
+      for (uniform int8 sy = -radius; sy < radius + 1; sy++) {
+        for (uniform int8 sx = -radius; sx < radius + 1; sx++) {
+          sr += Sample(src_r, width, x + sx, y + sy);
+          sg += Sample(src_g, width, x + sx, y + sy);
+          sb += Sample(src_b, width, x + sx, y + sy);
+          sa += Sample(src_a, width, x + sx, y + sy);
+        }
+      }
+      Set(dst_r, sr / sample_count, width, x, y);
+      Set(dst_g, sg / sample_count, width, x, y);
+      Set(dst_b, sb / sample_count, width, x, y);
+      Set(dst_a, sa / sample_count, width, x, y);
+    }
+  }
+}

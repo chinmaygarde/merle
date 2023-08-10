@@ -167,6 +167,19 @@ static void LuminanceThreshold(benchmark::State& state) {
 }
 BENCHMARK(LuminanceThreshold)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void BoxBlur(benchmark::State& state) {
+  Texture texture;
+  Texture blur;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(blur.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  texture.Clear(kColorBlack);
+  while (state.KeepRunning()) {
+    blur.BoxBlur(texture, 2);
+  }
+}
+BENCHMARK(BoxBlur)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

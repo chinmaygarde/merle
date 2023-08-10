@@ -265,4 +265,24 @@ void Texture::LuminanceThreshold(float luminance) {
   );
 }
 
+bool Texture::BoxBlur(const Texture& src, uint8_t radius) {
+  if (size_ != src.size_) {
+    return false;
+  }
+  const auto length = size_.x * size_.y;
+  ispc::BoxBlur(src.allocation_ + length * 0,  // src r
+                src.allocation_ + length * 1,  // src g
+                src.allocation_ + length * 2,  // src b
+                src.allocation_ + length * 3,  // src a
+                allocation_ + length * 0,      // dst r
+                allocation_ + length * 1,      // dst g
+                allocation_ + length * 2,      // dst b
+                allocation_ + length * 3,      // dst a
+                size_.x,                       // width
+                size_.y,                       // height
+                radius                         // radius
+  );
+  return true;
+}
+
 }  // namespace ns
