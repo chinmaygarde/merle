@@ -344,23 +344,6 @@ export void LuminanceThreshold(uniform uint8 reds[],
   }
 }
 
-inline uint8 Sample(uniform uint8 color[],
-                    uniform int64 width,
-                    int64 x,
-                    uniform int64 y) {
-#pragma ignore warning(perf)
-  return color[width * y + x];
-}
-
-inline void Set(uniform uint8 color[],
-                uint8 value,
-                uniform int64 width,
-                int64 x,
-                uniform int64 y) {
-#pragma ignore warning(perf)
-  color[width * y + x] = value;
-}
-
 export void BoxBlur(uniform uint8 src_r[],
                     uniform uint8 src_g[],
                     uniform uint8 src_b[],
@@ -386,16 +369,18 @@ export void BoxBlur(uniform uint8 src_r[],
       uint64 sa = 0;
       for (uniform int8 sy = -radius; sy < radius + 1; sy++) {
         for (uniform int8 sx = -radius; sx < radius + 1; sx++) {
-          sr += Sample(src_r, width, x + sx, y + sy);
-          sg += Sample(src_g, width, x + sx, y + sy);
-          sb += Sample(src_b, width, x + sx, y + sy);
-          sa += Sample(src_a, width, x + sx, y + sy);
+          int64 offset = (width * (y + sy)) + x + sx;
+          sr += src_r[offset];
+          sg += src_g[offset];
+          sb += src_b[offset];
+          sa += src_a[offset];
         }
       }
-      Set(dst_r, sr / sample_count, width, x, y);
-      Set(dst_g, sg / sample_count, width, x, y);
-      Set(dst_b, sb / sample_count, width, x, y);
-      Set(dst_a, sa / sample_count, width, x, y);
+      int64 offset = width * y + x;
+      dst_r[offset] = sr / sample_count;
+      dst_g[offset] = sg / sample_count;
+      dst_b[offset] = sb / sample_count;
+      dst_a[offset] = sa / sample_count;
     }
   }
 }

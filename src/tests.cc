@@ -350,7 +350,7 @@ TEST_F(NeonSandboxTest, BoxBlur) {
         texture->Clear(kColorBlack);
         texture->Composite(*image, {25, 25});
 
-        static int radius = 0;
+        static int radius = 1;
         ImGui::SliderInt("Radius", &radius, 0, 4);
         blur_texture->BoxBlur(*texture, radius);
 
