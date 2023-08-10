@@ -109,6 +109,8 @@ class Texture {
 
   bool BoxBlur(const Texture& src, uint8_t radius = 1u);
 
+  bool GaussianBlur(const Texture& src, uint8_t radius, float sigma);
+
   static std::optional<Texture> CreateFromFile(const char* name);
 
  private:

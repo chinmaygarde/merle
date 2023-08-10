@@ -180,6 +180,19 @@ static void BoxBlur(benchmark::State& state) {
 }
 BENCHMARK(BoxBlur)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void GaussianBlur(benchmark::State& state) {
+  Texture texture;
+  Texture blur;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(blur.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  texture.Clear(kColorBlack);
+  while (state.KeepRunning()) {
+    blur.GaussianBlur(texture, 2, 4.0f);
+  }
+}
+BENCHMARK(GaussianBlur)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();
