@@ -344,59 +344,20 @@ export void LuminanceThreshold(uniform uint8 reds[],
   }
 }
 
-export void BoxBlur(uniform uint8 src_r[],
-                    uniform uint8 src_g[],
-                    uniform uint8 src_b[],
-                    uniform uint8 src_a[],
-                    uniform uint8 dst_r[],
-                    uniform uint8 dst_g[],
-                    uniform uint8 dst_b[],
-                    uniform uint8 dst_a[],
-                    uniform int64 width,
-                    uniform int64 height,
-                    uniform uint8 radius) {
-  uniform uint64 sample_count = (2 * radius + 1) * (2 * radius + 1);
-  for (uniform size_t y = radius; y < height - radius; y++) {
-    foreach (x = radius...(width - radius)) {
-      uint64 sr = 0;
-      uint64 sg = 0;
-      uint64 sb = 0;
-      uint64 sa = 0;
-      for (uniform int8 sy = -radius; sy < radius + 1; sy++) {
-        for (uniform int8 sx = -radius; sx < radius + 1; sx++) {
-          int64 offset = (width * (y + sy)) + x + sx;
-          sr += src_r[offset];
-          sg += src_g[offset];
-          sb += src_b[offset];
-          sa += src_a[offset];
-        }
-      }
-      int64 offset = width * y + x;
-      dst_r[offset] = sr / sample_count;
-      dst_g[offset] = sg / sample_count;
-      dst_b[offset] = sb / sample_count;
-      dst_a[offset] = sa / sample_count;
-    }
-  }
-}
-
-export void GaussianBlur(uniform uint8 src_r[],
-                         uniform uint8 src_g[],
-                         uniform uint8 src_b[],
-                         uniform uint8 src_a[],
-                         uniform uint8 dst_r[],
-                         uniform uint8 dst_g[],
-                         uniform uint8 dst_b[],
-                         uniform uint8 dst_a[],
-                         uniform int64 width,
-                         uniform int64 height,
-                         uniform float kernel[],
-                         uniform int64 kernel_size) {
+export void ConvolutionNxN(uniform uint8 src_r[],
+                           uniform uint8 src_g[],
+                           uniform uint8 src_b[],
+                           uniform uint8 src_a[],
+                           uniform uint8 dst_r[],
+                           uniform uint8 dst_g[],
+                           uniform uint8 dst_b[],
+                           uniform uint8 dst_a[],
+                           uniform int64 width,
+                           uniform int64 height,
+                           uniform float kernel[],
+                           uniform int64 kernel_size) {
   uniform int64 kernel_width = sqrt((uniform float)kernel_size);
   uniform int64 radius = (kernel_width - 1u) / 2u;
-
-  // Apply the Gaussian blur to each pixel.
-  // x and y here are pixel coordinates.
   for (uniform size_t y = radius; y < height - radius; y++) {
     foreach (x = radius...(width - radius)) {
       float sr = 0.0f;
@@ -408,17 +369,17 @@ export void GaussianBlur(uniform uint8 src_r[],
           varying int64 offset = (width * (y + sy)) + x + sx;
           uniform float gauss =
               kernel[(sy + radius) * kernel_width + (sx + radius)];
-          sr += (src_r[offset] / 255.0f) * gauss;
-          sg += (src_g[offset] / 255.0f) * gauss;
-          sb += (src_b[offset] / 255.0f) * gauss;
-          sa += (src_a[offset] / 255.0f) * gauss;
+          sr += src_r[offset] * gauss;
+          sg += src_g[offset] * gauss;
+          sb += src_b[offset] * gauss;
+          sa += src_a[offset] * gauss;
         }
       }
       int64 offset = width * y + x;
-      dst_r[offset] = sr * 255;
-      dst_g[offset] = sg * 255;
-      dst_b[offset] = sb * 255;
-      dst_a[offset] = sa * 255;
+      dst_r[offset] = sr;
+      dst_g[offset] = sg;
+      dst_b[offset] = sb;
+      dst_a[offset] = sa;
     }
   }
 }

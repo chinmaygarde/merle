@@ -267,23 +267,10 @@ void Texture::LuminanceThreshold(float luminance) {
 }
 
 bool Texture::BoxBlur(const Texture& src, uint8_t radius) {
-  if (size_ != src.size_) {
-    return false;
-  }
-  const auto length = size_.x * size_.y;
-  ispc::BoxBlur(src.allocation_ + length * 0,  // src r
-                src.allocation_ + length * 1,  // src g
-                src.allocation_ + length * 2,  // src b
-                src.allocation_ + length * 3,  // src a
-                allocation_ + length * 0,      // dst r
-                allocation_ + length * 1,      // dst g
-                allocation_ + length * 2,      // dst b
-                allocation_ + length * 3,      // dst a
-                size_.x,                       // width
-                size_.y,                       // height
-                radius                         // radius
-  );
-  return true;
+  const auto kernel_width = 2 * radius + 1;
+  const auto kernel_length = kernel_width * kernel_width;
+  std::vector<float> kernel(kernel_length, 1.0f / kernel_length);
+  return ConvolutionNxN(src, kernel);
 }
 
 static std::vector<float> CreateGaussianKernel(uint8_t radius, float sigma) {
@@ -313,25 +300,7 @@ static std::vector<float> CreateGaussianKernel(uint8_t radius, float sigma) {
 }
 
 bool Texture::GaussianBlur(const Texture& src, uint8_t radius, float sigma) {
-  if (size_ != src.size_) {
-    return false;
-  }
-  const auto kernel = CreateGaussianKernel(radius, sigma);
-  const auto length = size_.x * size_.y;
-  ispc::GaussianBlur(src.allocation_ + length * 0,       // src r
-                     src.allocation_ + length * 1,       // src g
-                     src.allocation_ + length * 2,       // src b
-                     src.allocation_ + length * 3,       // src a
-                     allocation_ + length * 0,           // dst r
-                     allocation_ + length * 1,           // dst g
-                     allocation_ + length * 2,           // dst b
-                     allocation_ + length * 3,           // dst a
-                     size_.x,                            // width
-                     size_.y,                            // height
-                     const_cast<float*>(kernel.data()),  // kernel
-                     kernel.size()                       // kernel size
-  );
-  return true;
+  return ConvolutionNxN(src, CreateGaussianKernel(radius, sigma));
 }
 
 bool Texture::Sobel(const Texture& src,
@@ -374,6 +343,28 @@ void Texture::Historam(Histogram& hist) {
                   hist.values.data() + 2,    // hb
                   hist.values.data() + 3     // ha
   );
+}
+
+bool Texture::ConvolutionNxN(const Texture& src,
+                             const std::vector<float>& kernel) {
+  if (size_ != src.size_) {
+    return false;
+  }
+  const auto length = size_.x * size_.y;
+  ispc::ConvolutionNxN(src.allocation_ + length * 0,       // src r
+                       src.allocation_ + length * 1,       // src g
+                       src.allocation_ + length * 2,       // src b
+                       src.allocation_ + length * 3,       // src a
+                       allocation_ + length * 0,           // dst r
+                       allocation_ + length * 1,           // dst g
+                       allocation_ + length * 2,           // dst b
+                       allocation_ + length * 3,           // dst a
+                       size_.x,                            // width
+                       size_.y,                            // height
+                       const_cast<float*>(kernel.data()),  // kernel
+                       kernel.size()                       // kernel size
+  );
+  return true;
 }
 
 }  // namespace ns

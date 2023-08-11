@@ -123,6 +123,8 @@ class Texture {
 
   bool GaussianBlur(const Texture& src, uint8_t radius, float sigma);
 
+  bool ConvolutionNxN(const Texture& src, const std::vector<float>& kernel);
+
   bool Sobel(const Texture& src,
              Component src_component,
              Component dst_component);
