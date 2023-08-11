@@ -452,3 +452,73 @@ export void GaussianBlur(uniform uint8 src_r[],
   }
   delete[] lut;
 }
+
+export void Sobel(uniform uint8 src[],
+                  uniform uint8 dst[],
+                  uniform int64 width,
+                  uniform int64 height) {
+  // https://en.wikipedia.org/wiki/Sobel_operator
+  static uniform uint8 xt[9] = {
+      // clang-format off
+    1, 0, -1,
+    2, 0, -2,
+    1, 0, -1
+      // clang-format on
+  };
+  static uniform uint8 yt[9] = {
+      // clang-format off
+    1,  2,  1,
+    0,  0,  0,
+   -1, -2, -1
+      // clang-format on
+  };
+#define SAMPLE(x, y) src[(y)*width + (x)]
+#define SET(x, y) dst[(y)*width + (x)]
+  for (uniform size_t y = 1; y < height - 1; y++) {
+    foreach (x = 1...(width - 1)) {
+      uint8 top_left = SAMPLE(x - 1, y - 1);
+      uint8 top_mid = SAMPLE(x + 0, y - 1);
+      uint8 top_right = SAMPLE(x + 1, y - 1);
+      uint8 mid_left = SAMPLE(x - 1, y + 0);
+      uint8 mid_mid = SAMPLE(x + 0, y + 0);
+      uint8 mid_right = SAMPLE(x + 1, y + 0);
+      uint8 low_left = SAMPLE(x - 1, y + 1);
+      uint8 low_mid = SAMPLE(x + 0, y + 1);
+      uint8 low_right = SAMPLE(x + 1, y + 1);
+
+      // Calculate on X
+      uint64 gx = 0;
+      gx += top_left * xt[0];
+      gx += top_mid * xt[1];
+      gx += top_right * xt[2];
+      gx += mid_left * xt[3];
+      gx += mid_mid * xt[4];
+      gx += mid_right * xt[5];
+      gx += low_left * xt[6];
+      gx += low_mid * xt[7];
+      gx += low_right * xt[8];
+
+      gx /= 8;
+
+      // Calculate on Y
+      uint64 gy = 0;
+      gy += top_left * yt[0];
+      gy += top_mid * yt[1];
+      gy += top_right * yt[2];
+      gy += mid_left * yt[3];
+      gy += mid_mid * yt[4];
+      gy += mid_right * yt[5];
+      gy += low_left * yt[6];
+      gy += low_mid * yt[7];
+      gy += low_right * yt[8];
+
+      gy /= 8;
+
+      uint8 magnitude = sqrt((float)(gx * gx + gy * gy));
+
+      SET(x, y) = magnitude;
+    }
+  }
+#undef SET
+#undef SAMPLE
+}

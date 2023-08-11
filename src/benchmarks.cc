@@ -173,7 +173,7 @@ static void BoxBlur(benchmark::State& state) {
   NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
   NS_ASSERT(blur.Resize(kBenchmarkCanvasSize));
   texture.Clear(kColorWhite);
-  texture.Clear(kColorBlack);
+  blur.Clear(kColorBlack);
   while (state.KeepRunning()) {
     blur.BoxBlur(texture, 2);
   }
@@ -186,12 +186,35 @@ static void GaussianBlur(benchmark::State& state) {
   NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
   NS_ASSERT(blur.Resize(kBenchmarkCanvasSize));
   texture.Clear(kColorWhite);
-  texture.Clear(kColorBlack);
+  blur.Clear(kColorBlack);
   while (state.KeepRunning()) {
     blur.GaussianBlur(texture, 2, 4.0f);
   }
 }
 BENCHMARK(GaussianBlur)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void Sobel(benchmark::State& state) {
+  Texture texture;
+  Texture sobel;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(sobel.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  sobel.Clear(kColorBlack);
+  while (state.KeepRunning()) {
+    sobel.Sobel(texture, Component::kRed, Component::kRed);
+  }
+}
+BENCHMARK(Sobel)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void DuplicateChannel(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  while (state.KeepRunning()) {
+    texture.DuplicateChannel(Component::kRed, Component::kBlue);
+  }
+}
+BENCHMARK(DuplicateChannel)->Unit(benchmark::TimeUnit::kMillisecond);
 
 }  // namespace ns
 

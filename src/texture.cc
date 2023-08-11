@@ -1,4 +1,5 @@
 #include "texture.h"
+#include <stdint.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -304,6 +305,34 @@ bool Texture::GaussianBlur(const Texture& src, uint8_t radius, float sigma) {
                      sigma                          // sigma
   );
   return true;
+}
+
+bool Texture::Sobel(const Texture& src,
+                    Component src_component,
+                    Component dst_component) {
+  if (size_ != src.size_) {
+    return false;
+  }
+  const auto length = size_.x * size_.y;
+  ispc::Sobel(
+      src.allocation_ + length * static_cast<uint8_t>(src_component),  // src
+      allocation_ + length * static_cast<uint8_t>(dst_component),      // dst
+      size_.x,                                                         // width
+      size_.y                                                          // height
+  );
+  return true;
+}
+
+void Texture::DuplicateChannel(Component src, Component dst) {
+  if (src == dst) {
+    return;
+  }
+
+  const auto length = size_.x * size_.y;
+  ::memmove(allocation_ + length * static_cast<uint8_t>(dst),  // dst
+            allocation_ + length * static_cast<uint8_t>(src),  // src
+            length                                             // length
+  );
 }
 
 }  // namespace ns

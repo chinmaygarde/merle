@@ -111,6 +111,12 @@ class Texture {
 
   bool GaussianBlur(const Texture& src, uint8_t radius, float sigma);
 
+  bool Sobel(const Texture& src,
+             Component src_component,
+             Component dst_component);
+
+  void DuplicateChannel(Component src, Component dst);
+
   static std::optional<Texture> CreateFromFile(const char* name);
 
  private:
