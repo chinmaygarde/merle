@@ -331,7 +331,7 @@ void Texture::DuplicateChannel(Component src, Component dst) {
   );
 }
 
-void Texture::Historam(Histogram& hist) {
+void Texture::Historam(Histogram& hist) const {
   const auto length = size_.x * size_.y;
   ispc::Histogram(allocation_ + length * 0,  // r
                   allocation_ + length * 1,  // g

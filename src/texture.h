@@ -29,6 +29,8 @@ struct Histogram {
 
 class Texture {
  public:
+  static std::optional<Texture> CreateFromFile(const char* name);
+
   Texture() = default;
 
   ~Texture() { std::free(allocation_); }
@@ -131,9 +133,7 @@ class Texture {
 
   void DuplicateChannel(Component src, Component dst);
 
-  static std::optional<Texture> CreateFromFile(const char* name);
-
-  void Historam(Histogram& hist);
+  void Historam(Histogram& hist) const;
 
  private:
   uint8_t* allocation_ = nullptr;
