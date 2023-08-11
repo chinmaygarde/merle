@@ -286,23 +286,50 @@ bool Texture::BoxBlur(const Texture& src, uint8_t radius) {
   return true;
 }
 
+static std::vector<float> CreateGaussianKernel(uint8_t radius, float sigma) {
+  std::vector<float> kernel;
+  size_t kernel_width = 2 * radius + 1;
+  kernel.resize(kernel_width * kernel_width);
+
+  float gaussian_sum = 0.0f;
+  // Construct the Gaussian kernel.
+  for (int8_t y = -radius; y < radius + 1; y++) {
+    for (int8_t x = -radius; x < radius + 1; x++) {
+      // https://en.wikipedia.org/wiki/Gaussian_blur
+      float gauss = std::exp(-((x * x) + (y * y)) / (2 * sigma * sigma)) /
+                    (2 * M_PI * sigma * sigma);
+
+      kernel[(y + radius) * kernel_width + (x + radius)] = gauss;
+      gaussian_sum += gauss;
+    }
+  }
+  // Normalize the kernel.
+  for (int8_t y = -radius; y < radius + 1; y++) {
+    for (int8_t x = -radius; x < radius + 1; x++) {
+      kernel[(y + radius) * kernel_width + (x + radius)] /= gaussian_sum;
+    }
+  }
+  return kernel;
+}
+
 bool Texture::GaussianBlur(const Texture& src, uint8_t radius, float sigma) {
   if (size_ != src.size_) {
     return false;
   }
+  const auto kernel = CreateGaussianKernel(radius, sigma);
   const auto length = size_.x * size_.y;
-  ispc::GaussianBlur(src.allocation_ + length * 0,  // src r
-                     src.allocation_ + length * 1,  // src g
-                     src.allocation_ + length * 2,  // src b
-                     src.allocation_ + length * 3,  // src a
-                     allocation_ + length * 0,      // dst r
-                     allocation_ + length * 1,      // dst g
-                     allocation_ + length * 2,      // dst b
-                     allocation_ + length * 3,      // dst a
-                     size_.x,                       // width
-                     size_.y,                       // height
-                     radius,                        // radius
-                     sigma                          // sigma
+  ispc::GaussianBlur(src.allocation_ + length * 0,       // src r
+                     src.allocation_ + length * 1,       // src g
+                     src.allocation_ + length * 2,       // src b
+                     src.allocation_ + length * 3,       // src a
+                     allocation_ + length * 0,           // dst r
+                     allocation_ + length * 1,           // dst g
+                     allocation_ + length * 2,           // dst b
+                     allocation_ + length * 3,           // dst a
+                     size_.x,                            // width
+                     size_.y,                            // height
+                     const_cast<float*>(kernel.data()),  // kernel
+                     kernel.size()                       // kernel size
   );
   return true;
 }

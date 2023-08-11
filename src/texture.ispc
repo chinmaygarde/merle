@@ -390,37 +390,11 @@ export void GaussianBlur(uniform uint8 src_r[],
                          uniform uint8 dst_a[],
                          uniform int64 width,
                          uniform int64 height,
-                         uniform uint8 radius,
-                         uniform float sigma) {
-  // Construct the Gaussian lookup table for the given radius and sigma. This
-  // could be done in C++ code too but its easier to read here. Just make sure
-  // to use all uniforms so the gang shares the same table.
-  uniform size_t lut_size = (2 * radius + 1);
-  uniform float* lut = new float[lut_size * lut_size];
-  uniform float gauss_sum = 0.f;
-  // x and y here are coordinates in the Gaussian lookup table.
-  for (uniform int8 y = -radius; y < radius + 1; y++) {
-    for (uniform int8 x = -radius; x < radius + 1; x++) {
-      // https://en.wikipedia.org/wiki/Gaussian_blur
-      uniform float gauss = exp(-((x * x) + (y * y)) / (2 * sigma * sigma)) /
-                            (2 * PI * sigma * sigma);
-// Compiler says this is a scatter but everything is a uniform. Not sure I
-// understand this one.
-#pragma ignore warning(perf)
-      lut[(y + radius) * lut_size + (x + radius)] = gauss;
-      gauss_sum += gauss;
-    }
-  }
-  // Normalize the lookup table.
-  // x and y here are coordinates in the Gaussian lookup table.
-  for (uniform int8 y = -radius; y < radius + 1; y++) {
-    for (uniform int8 x = -radius; x < radius + 1; x++) {
-      // Compiler says this is a gather but everything is a uniform. Not sure I
-      // understand this one.
-#pragma ignore warning(perf)
-      lut[(y + radius) * lut_size + (x + radius)] /= gauss_sum;
-    }
-  }
+                         uniform float kernel[],
+                         uniform int64 kernel_size) {
+  uniform int64 kernel_width = sqrt((uniform float)kernel_size);
+  uniform int64 radius = (kernel_width - 1u) / 2u;
+
   // Apply the Gaussian blur to each pixel.
   // x and y here are pixel coordinates.
   for (uniform size_t y = radius; y < height - radius; y++) {
@@ -429,14 +403,14 @@ export void GaussianBlur(uniform uint8 src_r[],
       float sg = 0.0f;
       float sb = 0.0f;
       float sa = 0.0f;
-      for (uniform int8 sy = -radius; sy < radius + 1; sy++) {
-        for (uniform int8 sx = -radius; sx < radius + 1; sx++) {
+      for (uniform int64 sy = -radius; sy < radius + 1; sy++) {
+        for (uniform int64 sx = -radius; sx < radius + 1; sx++) {
           varying int64 offset = (width * (y + sy)) + x + sx;
 // Compiler says this is a gather. But since these are all uniforms,
 // this can be a uniform float variable. But that crashes the
 // compiler.
 #pragma ignore warning(perf)
-          float gauss = lut[(sy + radius) * lut_size + (sx + radius)];
+          float gauss = kernel[(sy + radius) * kernel_width + (sx + radius)];
           sr += (src_r[offset] / 255.0f) * gauss;
           sg += (src_g[offset] / 255.0f) * gauss;
           sb += (src_b[offset] / 255.0f) * gauss;
@@ -450,7 +424,6 @@ export void GaussianBlur(uniform uint8 src_r[],
       dst_a[offset] = sa * 255;
     }
   }
-  delete[] lut;
 }
 
 export void Sobel(uniform uint8 src[],
