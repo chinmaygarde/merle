@@ -406,11 +406,8 @@ export void GaussianBlur(uniform uint8 src_r[],
       for (uniform int64 sy = -radius; sy < radius + 1; sy++) {
         for (uniform int64 sx = -radius; sx < radius + 1; sx++) {
           varying int64 offset = (width * (y + sy)) + x + sx;
-// Compiler says this is a gather. But since these are all uniforms,
-// this can be a uniform float variable. But that crashes the
-// compiler.
-#pragma ignore warning(perf)
-          float gauss = kernel[(sy + radius) * kernel_width + (sx + radius)];
+          uniform float gauss =
+              kernel[(sy + radius) * kernel_width + (sx + radius)];
           sr += (src_r[offset] / 255.0f) * gauss;
           sg += (src_g[offset] / 255.0f) * gauss;
           sb += (src_b[offset] / 255.0f) * gauss;
