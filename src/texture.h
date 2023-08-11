@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <optional>
+#include <vector>
 
 #include "geom.h"
 #include "macros.h"
@@ -13,6 +14,17 @@ enum class Component : uint8_t {
   kGreen,
   kBlue,
   kAlpha,
+};
+
+struct Histogram {
+  std::vector<uint64_t> values;
+
+  Histogram() { Reset(); }
+
+  void Reset() {
+    values.clear();
+    values.resize(255u * 4u);
+  }
 };
 
 class Texture {
@@ -118,6 +130,8 @@ class Texture {
   void DuplicateChannel(Component src, Component dst);
 
   static std::optional<Texture> CreateFromFile(const char* name);
+
+  void Historam(Histogram& hist);
 
  private:
   uint8_t* allocation_ = nullptr;

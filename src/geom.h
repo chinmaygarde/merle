@@ -13,7 +13,7 @@ namespace ns {
 using ScalarF = float;
 
 struct UnitScalarF {
-  UnitScalarF(ScalarF val) : value_(std::clamp(val, 0.0f, 1.0f)) {}
+  constexpr UnitScalarF(ScalarF val) : value_(std::clamp(val, 0.0f, 1.0f)) {}
 
   constexpr operator ScalarF() const { return value_; }
 

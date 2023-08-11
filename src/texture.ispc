@@ -522,3 +522,20 @@ export void Sobel(uniform uint8 src[],
 #undef SET
 #undef SAMPLE
 }
+
+export void Histogram(uniform uint8 r[],
+                      uniform uint8 g[],
+                      uniform uint8 b[],
+                      uniform uint8 a[],
+                      uniform size_t len,
+                      uniform uint64 hr[],
+                      uniform uint64 hg[],
+                      uniform uint64 hb[],
+                      uniform uint64 ha[]) {
+  foreach (i = 0...len) {
+    atomic_add_local(&hr[r[i]], 1u);
+    atomic_add_local(&hg[g[i]], 1u);
+    atomic_add_local(&hb[b[i]], 1u);
+    atomic_add_local(&ha[a[i]], 1u);
+  }
+}
