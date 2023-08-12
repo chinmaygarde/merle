@@ -1,4 +1,7 @@
-# Filter Library
+---
+title: Filter Reference
+---
+# Filter Reference
 
 ## Color Filters
 

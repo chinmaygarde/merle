@@ -9,9 +9,12 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.instant
-    - navigation.path
+    - navigation.expand
     - content.code.copy
+    - content.action.view
     - content.tabs.link
+    - toc.follow
+    - navigation.top
   palette:
     - scheme: default
       media: "(prefers-color-scheme: light)"
@@ -31,8 +34,11 @@ plugins:
 edit_uri: edit/main/docs/
 
 repo_url: https://github.com/chinmaygarde/merle
+repo_name: chinmaygarde/merle
 
 markdown_extensions:
+  - admonition
+  - pymdownx.details
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.highlight:
@@ -42,3 +48,6 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - toc:
+      permalink: true
+      title: On this page

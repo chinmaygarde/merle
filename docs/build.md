@@ -1,4 +1,4 @@
-# Building
+# Build
 ## Prerequisites
 - `cmake`
 -  `ninja`: Optional but common tools assume you have this installed.
