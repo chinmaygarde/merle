@@ -1,4 +1,3 @@
 # Merle
 
-A SIMD image manipulation library.
-
+A "portable" SIMD image manipulation library.
