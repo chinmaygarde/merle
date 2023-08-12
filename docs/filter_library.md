@@ -99,10 +99,30 @@ Increase or decrease the saturation of an image.
 
 ### Vibrance
 
-Adjust the vibrance of the image
+Adjust the vibrance of the image.
 
 | Argument | Description|
 |-|-|
 |`vibrance`|The saturation adjustment to apply. `0.0` specifies no adjustment. `-2.0` to `2.0` is a recommended range.|
 
 ![Vibrance Filter](assets/vibrance.png)
+
+### Hue
+
+The angle of adjustment of the hue of the image.
+
+| Argument | Description|
+|-|-|
+|`hue`|The angle of adjustment of the hue of the image.|
+
+![Hue Filter](assets/hue.png)
+
+### Opacity
+
+Set the opacity of an image.
+
+| Argument | Description|
+|-|-|
+|`opacity`|The new opacity of the image. The values must be between `0.0` and `1.0`.|
+
+![Opacity](assets/opacity.png)
