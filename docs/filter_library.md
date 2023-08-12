@@ -26,3 +26,11 @@ Converts the RGB channels of an image to grayscale. This filter takes no argumen
 Inverts the RGB channels of an image. This filter takes no arguments.
 ![Invert Filter](assets/invert.png)
 
+### Exposure
+
+Update the exposure of the image.
+
+| Argument | Description|
+|-|-|
+|`exposure`|The exposure adjustment to apply. `0` specifies no change. `-2` to `2` is a recommended range to supply.|
+![Exposure Filter](assets/exposure.png)

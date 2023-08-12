@@ -101,7 +101,7 @@ TEST_F(MerleTest, Exposure) {
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
         static float exposure = 0.0f;
-        ImGui::SliderFloat("Exposure", &exposure, -1.0f, 2.0f);
+        ImGui::SliderFloat("Exposure", &exposure, -2.0f, 2.0f);
         texture->Exposure(exposure);
         return texture;
       });
