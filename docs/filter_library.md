@@ -21,3 +21,8 @@ Clears one or more channels of an existing image with a particular color.
 
 Converts the RGB channels of an image to grayscale. This filter takes no arguments.
 ![Grayscale Filter](assets/grayscale.png)
+### Invert
+
+Inverts the RGB channels of an image. This filter takes no arguments.
+![Invert Filter](assets/invert.png)
+

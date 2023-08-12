@@ -81,7 +81,6 @@ TEST_F(MerleTest, Invert) {
         }
         texture->Clear(Color{0, 0, 255, 255});
         texture->Composite(*image, {25, 25});
-        texture->Grayscale();
         texture->Invert();
         return texture;
       });
