@@ -126,3 +126,13 @@ Set the opacity of an image.
 |`opacity`|The new opacity of the image. The values must be between `0.0` and `1.0`.|
 
 ![Opacity](assets/opacity.png)
+
+### Luminance Threshold
+
+Given a specific luminance value, set values of pixels less than tht value to opaque black, and the others to opaque white.
+
+| Argument | Description|
+|-|-|
+|`luminance`|The luminance threshold. The values must be between `0.0` and `1.0`.|
+
+![Luminance Threshold](assets/luminance_threshold.png)
