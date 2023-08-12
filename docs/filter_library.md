@@ -83,6 +83,16 @@ Adjust the contrast of an image.
 
 | Argument | Description|
 |-|-|
-|`contrast`|The contrast adjustment to apply. `1.0` specifies no adjust. `0.0` to `4.0` is a recommended range.|
+|`contrast`|The contrast adjustment to apply. `1.0` specifies no adjustment. `0.0` to `4.0` is a recommended range.|
 
 ![Contrast Filter](assets/contrast.png)
+
+### Saturation
+
+Increase or decrease the saturation of an image.
+
+| Argument | Description|
+|-|-|
+|`saturation`|The saturation adjustment to apply. `0.0` specifies no adjustment. `-1.0` to `1.0` is a recommended range.|
+
+![Saturation Filter](assets/saturation.png)
