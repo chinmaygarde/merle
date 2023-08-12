@@ -44,3 +44,45 @@ Update the brightness of the image.
 |`brightness`|The brightness adjustment to apply. `0` specifies no change. `0` to `1` is a recommended range to supply.|
 
 ![Brightness Filter](assets/brightness.png)
+
+### RGBA Levels
+
+Adjust the levels of the individual channels of the image.
+
+| Argument | Description|
+|-|-|
+|`red`|The adjust to the red channel of the image. `1` specifies no change. `0` to `1` is a recommended range to supply.|
+|`green`|The adjust to the green channel of the image. `1` specifies no change. `0` to `1` is a recommended range to supply.|
+|`blue`|The adjust to the blue channel of the image. `1` specifies no change. `0` to `1` is a recommended range to supply.|
+|`alpha`|The adjust to the alpha channel of the image. `1` specifies no change. `0` to `1` is a recommended range to supply.|
+
+![RGBA Levels](assets/rgba_levels.png)
+
+### Swizzle
+
+Copy the data from one channel to another. Multiple channels may be copied in one shot allowing channel swizzling.
+
+| Argument | Description|
+|-|-|
+|`red`|The component to copy the red channel to.|
+|`green`|The component to copy the green channel to.|
+|`blue`|The component to copy the blue channel to.|
+|`alpha`|The component to copy the alpha channel to.|
+
+![Swizzle Filter](assets/swizzle.png)
+
+### Sepia
+
+Apply [sepia toning](https://en.wikipedia.org/wiki/Sepia_(color)) to the image. This filter takes no arguments.
+
+![Sepia Filter](assets/sepia.png)
+
+### Contrast
+
+Adjust the contrast of an image.
+
+| Argument | Description|
+|-|-|
+|`contrast`|The contrast adjustment to apply. `1.0` specifies no adjust. `0.0` to `4.0` is a recommended range.|
+
+![Contrast Filter](assets/contrast.png)
