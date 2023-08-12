@@ -27,7 +27,6 @@ endif()
 option(MERLE_ENABLE_TESTS "Build the playgrounds and unittests." ON)
 option(MERLE_ENABLE_BENCHMARKS "Build benchmarks." ON)
 
-add_subdirectory(third_party/glm EXCLUDE_FROM_ALL)
 add_subdirectory(third_party/googletest EXCLUDE_FROM_ALL)
 add_subdirectory(third_party/sdl EXCLUDE_FROM_ALL)
 set(GOOGLETEST_PATH "third_party/googletest" EXCLUDE_FROM_ALL)
@@ -101,7 +100,6 @@ if(MERLE_ENABLE_TESTS)
 
   target_link_libraries(merle_tests
     PUBLIC
-      glm
       gtest_main
       merle
       SDL3::SDL3
