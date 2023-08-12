@@ -16,20 +16,25 @@ project(merle
   LANGUAGES
     C
     CXX
-    OBJC
-    OBJCXX
     ISPC
 )
 
-enable_testing()
+if(APPLE)
+  enable_language(OBJC)
+  enable_language(OBJCXX)
+endif()
 
-add_subdirectory(third_party/sdl)
-add_subdirectory(third_party/googletest)
-set(GOOGLETEST_PATH "third_party/googletest")
+option(MERLE_ENABLE_TESTS "Build the playgrounds and unittests." ON)
+option(MERLE_ENABLE_BENCHMARKS "Build benchmarks." ON)
+
+add_subdirectory(third_party/glm EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/googletest EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/sdl EXCLUDE_FROM_ALL)
+set(GOOGLETEST_PATH "third_party/googletest" EXCLUDE_FROM_ALL)
 set(BENCHMARK_ENABLE_TESTING FALSE)
-add_subdirectory(third_party/googlebenchmark)
-add_subdirectory(third_party/glm)
+add_subdirectory(third_party/googlebenchmark EXCLUDE_FROM_ALL)
 
+enable_testing()
 include(GoogleTest)
 
 add_library(merle
@@ -67,51 +72,55 @@ target_link_libraries(merle
     merle_ispc
 )
 
-add_executable(merle_tests
-  src/application.cc
-  src/application.h
-  src/sdl_utils.cc
-  src/sdl_utils.h
-  src/test_runner.cc
-  src/test_runner.h
-  src/test_runner.h
-  src/tests.cc
-  third_party/imgui/backends/imgui_impl_sdl3.cpp
-  third_party/imgui/backends/imgui_impl_sdl3.h
-  third_party/imgui/backends/imgui_impl_sdlrenderer3.cpp
-  third_party/imgui/backends/imgui_impl_sdlrenderer3.h
-  third_party/imgui/imconfig.h
-  third_party/imgui/imgui.cpp
-  third_party/imgui/imgui.h
-  third_party/imgui/imgui_demo.cpp
-  third_party/imgui/imgui_draw.cpp
-  third_party/imgui/imgui_internal.h
-  third_party/imgui/imgui_tables.cpp
-  third_party/imgui/imgui_widgets.cpp
-)
-
-target_link_libraries(merle_tests
-  PUBLIC
-    glm
-    gtest_main
-    merle
-    SDL3::SDL3
-)
-
 get_filename_component(NS_ASSETS_LOCATION assets ABSOLUTE)
 configure_file(src/fixtures_location.h.in fixtures_location.h @ONLY)
-target_include_directories(merle_tests
-  PUBLIC
-    ${CMAKE_CURRENT_BINARY_DIR}
-    third_party/imgui
-)
 
-gtest_discover_tests(merle_tests)
+if(MERLE_ENABLE_TESTS)
+  add_executable(merle_tests
+    src/application.cc
+    src/application.h
+    src/sdl_utils.cc
+    src/sdl_utils.h
+    src/test_runner.cc
+    src/test_runner.h
+    src/test_runner.h
+    src/tests.cc
+    third_party/imgui/backends/imgui_impl_sdl3.cpp
+    third_party/imgui/backends/imgui_impl_sdl3.h
+    third_party/imgui/backends/imgui_impl_sdlrenderer3.cpp
+    third_party/imgui/backends/imgui_impl_sdlrenderer3.h
+    third_party/imgui/imconfig.h
+    third_party/imgui/imgui.cpp
+    third_party/imgui/imgui.h
+    third_party/imgui/imgui_demo.cpp
+    third_party/imgui/imgui_draw.cpp
+    third_party/imgui/imgui_internal.h
+    third_party/imgui/imgui_tables.cpp
+    third_party/imgui/imgui_widgets.cpp
+  )
 
-add_executable(merle_benchmarks
-  src/benchmarks.cc
-)
+  target_link_libraries(merle_tests
+    PUBLIC
+      glm
+      gtest_main
+      merle
+      SDL3::SDL3
+  )
 
-target_link_libraries(merle_benchmarks merle benchmark::benchmark)
-target_include_directories(merle_benchmarks PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+  target_include_directories(merle_tests
+    PUBLIC
+      ${CMAKE_CURRENT_BINARY_DIR}
+      third_party/imgui
+  )
+
+  gtest_discover_tests(merle_tests)
+endif(MERLE_ENABLE_TESTS)
+
+if(MERLE_ENABLE_BENCHMARKS)
+  add_executable(merle_benchmarks
+    src/benchmarks.cc
+  )
+  target_link_libraries(merle_benchmarks merle benchmark::benchmark)
+  target_include_directories(merle_benchmarks PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+endif()
 

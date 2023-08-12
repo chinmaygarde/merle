@@ -1,4 +1,5 @@
 #include "texture.h"
+
 #include <stdint.h>
 
 #define STB_IMAGE_IMPLEMENTATION

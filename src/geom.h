@@ -151,7 +151,7 @@ struct Degrees {
   constexpr Degrees() = default;
 
   explicit constexpr Degrees(ScalarF p_degrees)
-      : degrees(std::fmodf(p_degrees, 360.0f)) {}
+      : degrees(fmodf(p_degrees, 360.0f)) {}
 
   constexpr operator Radians() const {
     return Radians(degrees * M_PI / 180.0f);

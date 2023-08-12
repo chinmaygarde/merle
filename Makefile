@@ -21,3 +21,6 @@ sync:
 
 docs:
 	mkdocs serve
+
+docker:
+	docker build --platform linux/amd64 . --tag merle
