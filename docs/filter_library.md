@@ -17,3 +17,7 @@ Clears one or more channels of an existing image with a particular color.
 |`clear_alpha`| If the alpha channel of the image should be cleared.|
 
 ![Clear Filter](assets/clear.png)
+### Grayscale
+
+Converts the RGB channels of an image to grayscale. This filter takes no arguments.
+![Grayscale Filter](assets/grayscale.png)
