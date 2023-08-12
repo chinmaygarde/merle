@@ -33,4 +33,14 @@ Update the exposure of the image.
 | Argument | Description|
 |-|-|
 |`exposure`|The exposure adjustment to apply. `0` specifies no change. `-2` to `2` is a recommended range to supply.|
+
 ![Exposure Filter](assets/exposure.png)
+### Brightness
+
+Update the brightness of the image.
+
+| Argument | Description|
+|-|-|
+|`brightness`|The brightness adjustment to apply. `0` specifies no change. `0` to `1` is a recommended range to supply.|
+
+![Brightness Filter](assets/brightness.png)
