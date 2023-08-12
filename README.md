@@ -1,4 +1,4 @@
 Merle
 =====
 
-Nothing to see here. Go away.
+A SIMD image manipulation library.
