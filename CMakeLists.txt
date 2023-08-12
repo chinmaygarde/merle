@@ -12,7 +12,7 @@ endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/tools")
 
-project(neon_sandbox
+project(merle
   LANGUAGES
     C
     CXX
@@ -32,14 +32,14 @@ add_subdirectory(third_party/glm)
 
 include(GoogleTest)
 
-add_library(neon_sandbox_lib
+add_library(merle
   src/geom.h
   src/macros.h
   src/texture.cc
   src/texture.h
 )
 
-target_compile_options(neon_sandbox_lib
+target_compile_options(merle
   PRIVATE
     -Werror
     -Wall
@@ -49,25 +49,25 @@ target_compile_options(neon_sandbox_lib
     -Wno-deprecated-declarations
 )
 
-target_include_directories(neon_sandbox_lib
+target_include_directories(merle
   PUBLIC
     third_party/stb
 )
 
-add_library(neon_sandbox_ispc
+add_library(merle_ispc
   src/texture.ispc
 )
 
-set_property(TARGET neon_sandbox_ispc PROPERTY ISPC_INSTRUCTION_SETS neon-i32x8)
+set_property(TARGET merle_ispc PROPERTY ISPC_INSTRUCTION_SETS neon-i32x8)
 
-target_compile_options(neon_sandbox_ispc PRIVATE "--werror")
+target_compile_options(merle_ispc PRIVATE "--werror")
 
-target_link_libraries(neon_sandbox_lib
+target_link_libraries(merle
   PUBLIC
-    neon_sandbox_ispc
+    merle_ispc
 )
 
-add_executable(neon_sandbox
+add_executable(merle_tests
   src/application.cc
   src/application.h
   src/sdl_utils.cc
@@ -90,28 +90,28 @@ add_executable(neon_sandbox
   third_party/imgui/imgui_widgets.cpp
 )
 
-target_link_libraries(neon_sandbox
+target_link_libraries(merle_tests
   PUBLIC
     glm
     gtest_main
-    neon_sandbox_lib
+    merle
     SDL3::SDL3
 )
 
 get_filename_component(NS_ASSETS_LOCATION assets ABSOLUTE)
 configure_file(src/fixtures_location.h.in fixtures_location.h @ONLY)
-target_include_directories(neon_sandbox
+target_include_directories(merle_tests
   PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
     third_party/imgui
 )
 
-gtest_discover_tests(neon_sandbox)
+gtest_discover_tests(merle_tests)
 
-add_executable(neon_sandbox_benchmarks
+add_executable(merle_benchmarks
   src/benchmarks.cc
 )
 
-target_link_libraries(neon_sandbox_benchmarks neon_sandbox_lib benchmark::benchmark)
-target_include_directories(neon_sandbox_benchmarks PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(merle_benchmarks merle benchmark::benchmark)
+target_include_directories(merle_benchmarks PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 

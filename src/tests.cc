@@ -9,14 +9,14 @@
 
 namespace ns {
 
-using NeonSandboxTest = TestRunner;
+using MerleTest = TestRunner;
 
-TEST_F(NeonSandboxTest, Setup) {
+TEST_F(MerleTest, Setup) {
   Application application;
   ASSERT_FALSE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Clear) {
+TEST_F(MerleTest, Clear) {
   Application application;
   auto texture = std::make_shared<Texture>();
   application.SetRasterizerCallback(
@@ -31,7 +31,7 @@ TEST_F(NeonSandboxTest, Clear) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Composite) {
+TEST_F(MerleTest, Composite) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -49,7 +49,7 @@ TEST_F(NeonSandboxTest, Composite) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Grayscale) {
+TEST_F(MerleTest, Grayscale) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -68,7 +68,7 @@ TEST_F(NeonSandboxTest, Grayscale) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Invert) {
+TEST_F(MerleTest, Invert) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
@@ -88,7 +88,7 @@ TEST_F(NeonSandboxTest, Invert) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Exposure) {
+TEST_F(MerleTest, Exposure) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
@@ -109,7 +109,7 @@ TEST_F(NeonSandboxTest, Exposure) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Brightness) {
+TEST_F(MerleTest, Brightness) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "kalimba.jpg");
@@ -130,7 +130,7 @@ TEST_F(NeonSandboxTest, Brightness) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, RGBALevels) {
+TEST_F(MerleTest, RGBALevels) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -151,7 +151,7 @@ TEST_F(NeonSandboxTest, RGBALevels) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Swizzle) {
+TEST_F(MerleTest, Swizzle) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -183,7 +183,7 @@ TEST_F(NeonSandboxTest, Swizzle) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Sepia) {
+TEST_F(MerleTest, Sepia) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -202,7 +202,7 @@ TEST_F(NeonSandboxTest, Sepia) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Contrast) {
+TEST_F(MerleTest, Contrast) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -223,7 +223,7 @@ TEST_F(NeonSandboxTest, Contrast) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Saturation) {
+TEST_F(MerleTest, Saturation) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
@@ -244,7 +244,7 @@ TEST_F(NeonSandboxTest, Saturation) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Vibrance) {
+TEST_F(MerleTest, Vibrance) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
@@ -265,7 +265,7 @@ TEST_F(NeonSandboxTest, Vibrance) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Hue) {
+TEST_F(MerleTest, Hue) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
@@ -286,7 +286,7 @@ TEST_F(NeonSandboxTest, Hue) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Opacity) {
+TEST_F(MerleTest, Opacity) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
@@ -307,14 +307,14 @@ TEST_F(NeonSandboxTest, Opacity) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, AverageLuminance) {
+TEST_F(MerleTest, AverageLuminance) {
   Texture texture;
   ASSERT_TRUE(texture.Resize({1 << 14, 1 << 14}));
   texture.Clear(kColorWhite);
   ASSERT_EQ(texture.AverageLuminance(), 1.0f);
 }
 
-TEST_F(NeonSandboxTest, LuminanceThreshold) {
+TEST_F(MerleTest, LuminanceThreshold) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "civic_center.jpg");
@@ -335,7 +335,7 @@ TEST_F(NeonSandboxTest, LuminanceThreshold) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, BoxBlur) {
+TEST_F(MerleTest, BoxBlur) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto blur_texture = std::make_shared<Texture>();
@@ -359,7 +359,7 @@ TEST_F(NeonSandboxTest, BoxBlur) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, GaussianBlur) {
+TEST_F(MerleTest, GaussianBlur) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto blur_texture = std::make_shared<Texture>();
@@ -385,7 +385,7 @@ TEST_F(NeonSandboxTest, GaussianBlur) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(NeonSandboxTest, Sobel) {
+TEST_F(MerleTest, Sobel) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto blur_texture = std::make_shared<Texture>();

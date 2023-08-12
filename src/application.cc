@@ -13,7 +13,7 @@ Application::Application(UPoint size) {
 
   // Setup SDL window and renderer.
   sdl_window_ = ::SDL_CreateWindow(
-      "Neon Sandbox",                                               //
+      "Merle Playground",                                           //
       window_size_.x,                                               //
       window_size_.y,                                               //
       SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN  //

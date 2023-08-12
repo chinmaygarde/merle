@@ -1,0 +1,35 @@
+{
+  "build_systems": [
+    {
+      "name": "Merle Build All",
+      "shell_cmd": "ninja && ./merle_benchmarks",
+      "working_dir": "${project_path}/build",
+      "file_regex": "(.*):(\\d+):(\\d+)(.*)",
+      "shell": true,
+    }
+  ],
+  "folders": [
+    {
+      "path": ".",
+      "name": "Merle",
+    }
+  ],
+  "settings":
+  {
+    "LSP":
+    {
+      "clangd":
+      {
+        "enabled": true,
+        "command": [
+          "clangd",
+          "--compile-commands-dir=build",
+          "--clang-tidy",
+          "--header-insertion=never",
+          "-j=36",
+          "--background-index=true"
+        ],
+      },
+    },
+  },
+}

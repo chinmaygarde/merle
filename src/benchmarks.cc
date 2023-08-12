@@ -1,4 +1,3 @@
-#include "CMakeFiles/neon_sandbox_ispc.dir/texture_ispc.h"
 #include "benchmark/benchmark.h"
 #include "geom.h"
 #include "texture.h"

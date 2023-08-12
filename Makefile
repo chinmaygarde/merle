@@ -1,10 +1,10 @@
 .PHONY: build
 
 bench: build
-	./build/neon_sandbox_benchmarks
+	./build/merle_benchmarks
 
 test: build
-	./build/neon_sandbox
+	./build/merle_tests
 
 build: build/build.ninja
 	ninja -C build
