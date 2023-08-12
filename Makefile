@@ -1,4 +1,4 @@
-.PHONY: build
+.PHONY: build docs
 
 bench: build
 	./build/merle_benchmarks
@@ -18,3 +18,6 @@ clean:
 
 sync:
 	git submodule update --init --recursive --jobs 8
+
+docs:
+	mkdocs serve

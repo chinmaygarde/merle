@@ -2,7 +2,7 @@
   "build_systems": [
     {
       "name": "Merle Build All",
-      "shell_cmd": "ninja && ./merle_benchmarks",
+      "shell_cmd": "ninja && ./merle_tests --gtest_filter=\"*\"",
       "working_dir": "${project_path}/build",
       "file_regex": "(.*):(\\d+):(\\d+)(.*)",
       "shell": true,
