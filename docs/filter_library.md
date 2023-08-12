@@ -96,3 +96,13 @@ Increase or decrease the saturation of an image.
 |`saturation`|The saturation adjustment to apply. `0.0` specifies no adjustment. `-1.0` to `1.0` is a recommended range.|
 
 ![Saturation Filter](assets/saturation.png)
+
+### Vibrance
+
+Adjust the vibrance of the image
+
+| Argument | Description|
+|-|-|
+|`vibrance`|The saturation adjustment to apply. `0.0` specifies no adjustment. `-2.0` to `2.0` is a recommended range.|
+
+![Vibrance Filter](assets/vibrance.png)
