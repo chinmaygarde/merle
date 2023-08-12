@@ -129,10 +129,63 @@ Set the opacity of an image.
 
 ### Luminance Threshold
 
-Given a specific luminance value, set values of pixels less than tht value to opaque black, and the others to opaque white.
+Given a specific luminance value, set values of pixels less than that value to opaque black, and the others to opaque white.
 
 | Argument | Description|
 |-|-|
 |`luminance`|The luminance threshold. The values must be between `0.0` and `1.0`.|
 
 ![Luminance Threshold](assets/luminance_threshold.png)
+
+## Image Filters
+
+Image filters apply adjustment to groups of pixels.
+
+### Box Blur
+
+Applies a filter that averages the pixel values around each pixel. The "radius" is the half-width of the box enclosing the pixel being sampled. The width and height of the box equals `2 * radius + 1`. So increasing the size of the radius quickly increasing the number of pixels being sampled and things get expensive fast!
+
+Box blurs are not in-place filters. The source and destination textures must be different.
+
+An edge of `radius` pixels remains undefined in the destination image.
+
+| Argument | Description|
+|-|-|
+|`src`|The source texture to sample pixels from. The size of the `src` texture and the destination texture must match exactly.|
+|`radius`|The half-width of the box surrounding the pixel.|
+
+![Box Blur](assets/box_blur.png)
+
+### Gaussian Blur
+
+Applies a [Gaussian blur](https://en.wikipedia.org/wiki/Gaussian_blur) on the pixel values sampled from a box surrounding each pixel. The "radius" is the half-width of the box enclosing the pixel being sampled. The width and height of the box equals `2 * radius + 1`. So increasing the size of the radius quickly increasing the number of pixels being sampled and things get expensive fast!
+
+Gaussian blurs are not in-place filters. The source and destination textures must be different.
+
+An edge of `radius` pixels remains undefined in the destination image.
+
+| Argument | Description|
+|-|-|
+|`src`|The source texture to sample pixels from. The size of the `src` texture and the destination texture must match exactly.|
+|`radius`|The half-width of the box surrounding the pixel.|
+|`sigma`|The standard deviation of the Gaussian function.|
+
+![Gaussian Blur](assets/gaussian_blur.png)
+
+### Sobel Filter
+
+Finds the edges in an image as determined using the [Sobel operator](https://en.wikipedia.org/wiki/Sobel_operator). This filter runs two 3x3 convolution filters on a single image channel.
+
+Sobel filters run on grayscale images. For this reason, it is possible to select a specific channel in the source image to use as the grayscale component. The target of the Sobel operation can also be directed to a specific channel.
+
+Sobel filters are not in-place filters. The source and destination channels must be different. Unlike convolution kernels that operate on multiple components, it is possible to apply the filter to one channel of an image and store the results into another channel of the same image.
+
+Since these filters operate on a single channel, it is usually necessary to duplicate destination channel across the remaining components to get a true grayscale image. Since the source channel is grayscale, it is also usually necessary to apply the grayscale filter to the source image.
+
+| Argument | Description|
+|-|-|
+|`src`|The source texture to sample pixels from. The size of the `src` texture and the destination texture must match exactly.|
+|`src_component`|The component in the source texture to use as the grayscale component.|
+|`dst_component`|The component in the destination texture to direct the result of the Sobel operation to.|
+
+![Sobel Filter](assets/sobel.png)
