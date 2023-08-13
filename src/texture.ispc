@@ -429,6 +429,7 @@ export void Sobel(uniform uint8 src[],
       gx += low_mid * xt[7];
       gx += low_right * xt[8];
 
+#pragma ignore warning(perf)
       gx /= 8;
 
       // Calculate on Y
@@ -443,8 +444,10 @@ export void Sobel(uniform uint8 src[],
       gy += low_mid * yt[7];
       gy += low_right * yt[8];
 
+#pragma ignore warning(perf)
       gy /= 8;
 
+#pragma ignore warning(perf)
       uint8 magnitude = sqrt((float)(gx * gx + gy * gy));
 
       SET(x, y) = magnitude;
