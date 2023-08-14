@@ -12,7 +12,7 @@ Color filters manipulate each pixel in isolation.
 Clears one or more channels of an existing image with a particular color.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`color`|The color to use to clear the image.|
 |`clear_red`| If the red channel of the image should be cleared.|
 |`clear_green`| If the green channel of the image should be cleared.|
@@ -34,7 +34,7 @@ Inverts the RGB channels of an image. This filter takes no arguments.
 Update the exposure of the image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`exposure`|The exposure adjustment to apply. `0` specifies no change. `-2` to `2` is a recommended range to supply.|
 
 ![Exposure Filter](assets/exposure.png)
@@ -43,7 +43,7 @@ Update the exposure of the image.
 Update the brightness of the image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`brightness`|The brightness adjustment to apply. `0` specifies no change. `0` to `1` is a recommended range to supply.|
 
 ![Brightness Filter](assets/brightness.png)
@@ -53,7 +53,7 @@ Update the brightness of the image.
 Adjust the levels of the individual channels of the image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`red`|The adjust to the red channel of the image. `1` specifies no change. `0` to `1` is a recommended range to supply.|
 |`green`|The adjust to the green channel of the image. `1` specifies no change. `0` to `1` is a recommended range to supply.|
 |`blue`|The adjust to the blue channel of the image. `1` specifies no change. `0` to `1` is a recommended range to supply.|
@@ -66,7 +66,7 @@ Adjust the levels of the individual channels of the image.
 Copy the data from one channel to another. Multiple channels may be copied in one shot allowing channel swizzling.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`red`|The component to copy the red channel to.|
 |`green`|The component to copy the green channel to.|
 |`blue`|The component to copy the blue channel to.|
@@ -85,7 +85,7 @@ Apply [sepia toning](https://en.wikipedia.org/wiki/Sepia_(color)) to the image. 
 Adjust the contrast of an image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`contrast`|The contrast adjustment to apply. `1.0` specifies no adjustment. `0.0` to `4.0` is a recommended range.|
 
 ![Contrast Filter](assets/contrast.png)
@@ -95,7 +95,7 @@ Adjust the contrast of an image.
 Increase or decrease the saturation of an image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`saturation`|The saturation adjustment to apply. `0.0` specifies no adjustment. `-1.0` to `1.0` is a recommended range.|
 
 ![Saturation Filter](assets/saturation.png)
@@ -105,7 +105,7 @@ Increase or decrease the saturation of an image.
 Adjust the vibrance of the image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`vibrance`|The saturation adjustment to apply. `0.0` specifies no adjustment. `-2.0` to `2.0` is a recommended range.|
 
 ![Vibrance Filter](assets/vibrance.png)
@@ -115,7 +115,7 @@ Adjust the vibrance of the image.
 The angle of adjustment of the hue of the image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`hue`|The angle of adjustment of the hue of the image.|
 
 ![Hue Filter](assets/hue.png)
@@ -125,7 +125,7 @@ The angle of adjustment of the hue of the image.
 Set the opacity of an image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`opacity`|The new opacity of the image. The values must be between `0.0` and `1.0`.|
 
 ![Opacity](assets/opacity.png)
@@ -135,7 +135,7 @@ Set the opacity of an image.
 Given a specific luminance value, set values of pixels less than that value to opaque black, and the others to opaque white.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`luminance`|The luminance threshold. The values must be between `0.0` and `1.0`.|
 
 ![Luminance Threshold](assets/luminance_threshold.png)
@@ -153,7 +153,7 @@ Box blurs are not in-place filters. The source and destination textures must be 
 An edge of `radius` pixels remains undefined in the destination image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`src`|The source texture to sample pixels from. The size of the `src` texture and the destination texture must match exactly.|
 |`radius`|The half-width of the box surrounding the pixel.|
 
@@ -168,7 +168,7 @@ Gaussian blurs are not in-place filters. The source and destination textures mus
 An edge of `radius` pixels remains undefined in the destination image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`src`|The source texture to sample pixels from. The size of the `src` texture and the destination texture must match exactly.|
 |`radius`|The half-width of the box surrounding the pixel.|
 |`sigma`|The standard deviation of the Gaussian function.|
@@ -186,7 +186,7 @@ Sobel filters are not in-place filters. The source and destination channels must
 Since these filters operate on a single channel, it is usually necessary to duplicate destination channel across the remaining components to get a true grayscale image. Since the source channel is grayscale, it is also usually necessary to apply the grayscale filter to the source image.
 
 | Argument | Description|
-|-|-|
+|-:|-|
 |`src`|The source texture to sample pixels from. The size of the `src` texture and the destination texture must match exactly.|
 |`src_component`|The component in the source texture to use as the grayscale component.|
 |`dst_component`|The component in the destination texture to direct the result of the Sobel operation to.|

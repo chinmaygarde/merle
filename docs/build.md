@@ -2,7 +2,7 @@
 ## Prerequisites
 - `cmake`
 -  `ninja`: Optional but common tools assume you have this installed.
-- `ispc`
+- [`ispc`](https://ispc.github.io/downloads.html)
 - A C++ 20 compiler and standard library.
 
 ### Platform
@@ -13,6 +13,22 @@
 
     ```sh
     brew install cmake ninja ispc
+    ```
+=== "Linux (Debian)"
+
+    Full instructions to install [ISPC for Debian based distributions are here](https://github.com/ispc/ispc#intel-oneapi-distribution).
+
+    ```sh
+    # Install ISPC from Intel.
+    wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+    echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+    sudo apt-get update
+    sudo apt-get install intel-oneapi-ispc
+    # Add this to your .rc.
+    # If you don't, you'll need to specify the -DCMAKE_ISPC_COMPILER path to CMake.
+    source /opt/intel/oneapi/ispc/latest/env/vars.sh
+    # Now install everything else.
+    sudo apt install -y cmake ninja-build build-essential git
     ```
 
 ## Run Benchmarks
