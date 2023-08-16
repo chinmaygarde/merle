@@ -137,6 +137,15 @@ class Texture {
 
   bool FadeTransition(const Texture& from, const Texture& to, UnitScalarF t);
 
+  enum class Direction {
+    kHorizontal,
+    kVertical,
+  };
+  bool SwipeTransition(const Texture& from,
+                       const Texture& to,
+                       UnitScalarF t,
+                       Direction direction);
+
  private:
   uint8_t* allocation_ = nullptr;
   UPoint size_ = {};

@@ -208,3 +208,16 @@ Linearly interpolates pixel values between images of the same size.
 |`t`|The value from `0.0f` to `1.0f` to use as the amount of the transition that has been completed.|
 
 ![Fade Transition](assets/fade_transition.png)
+
+
+### Swipe Transition
+
+Show pixels from one image or the other based on how much the transition has completed.
+
+| Argument | Description|
+|-:|-|
+|`from`|The first texture to sample pixels from. The size of the `from` texture, the `to` texture and the destination texture must match exactly.|
+|`to`|The second texture to sample pixels from. The size of the `from` texture, the `to` texture and the destination texture must match exactly.|
+|`t`|The value from `0.0f` to `1.0f` to use as the amount of the transition that has been completed.|
+
+![Swipe Transition](assets/swipe_transition.png)

@@ -393,4 +393,54 @@ bool Texture::FadeTransition(const Texture& from,
   return true;
 }
 
+bool Texture::SwipeTransition(const Texture& from,
+                              const Texture& to,
+                              UnitScalarF t,
+                              Direction direction) {
+  if (from.size_ != to.size_ || from.size_ != size_) {
+    return false;
+  }
+  const auto length = size_.x * size_.y;
+  switch (direction) {
+    case Direction::kHorizontal:
+      ispc::SwipeTransitionHorizontal(allocation_ + length * 0,       // dst_r
+                                      allocation_ + length * 1,       // dst_g
+                                      allocation_ + length * 2,       // dst_b
+                                      allocation_ + length * 3,       // dst_a
+                                      from.allocation_ + length * 0,  // from_r
+                                      from.allocation_ + length * 1,  // from_g
+                                      from.allocation_ + length * 2,  // from_b
+                                      from.allocation_ + length * 3,  // from_a
+                                      to.allocation_ + length * 0,    // to_r
+                                      to.allocation_ + length * 1,    // to_g
+                                      to.allocation_ + length * 2,    // to_b
+                                      to.allocation_ + length * 3,    // to_a
+                                      size_.x,                        // width
+                                      size_.y,                        // height
+                                      t                               // t
+      );
+      break;
+    case Direction::kVertical:
+      ispc::SwipeTransitionVertical(allocation_ + length * 0,       // dst_r
+                                    allocation_ + length * 1,       // dst_g
+                                    allocation_ + length * 2,       // dst_b
+                                    allocation_ + length * 3,       // dst_a
+                                    from.allocation_ + length * 0,  // from_r
+                                    from.allocation_ + length * 1,  // from_g
+                                    from.allocation_ + length * 2,  // from_b
+                                    from.allocation_ + length * 3,  // from_a
+                                    to.allocation_ + length * 0,    // to_r
+                                    to.allocation_ + length * 1,    // to_g
+                                    to.allocation_ + length * 2,    // to_b
+                                    to.allocation_ + length * 3,    // to_a
+                                    size_.x,                        // width
+                                    size_.y,                        // height
+                                    t                               // t
+      );
+      break;
+  }
+
+  return true;
+}
+
 }  // namespace ns

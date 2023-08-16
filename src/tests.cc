@@ -454,4 +454,36 @@ TEST_F(MerleTest, FadeTransition) {
   ASSERT_TRUE(Run(application));
 }
 
+TEST_F(MerleTest, SwipeTransition) {
+  Application application;
+  auto boston = CreateSizedImage(NS_ASSETS_LOCATION "boston.jpg", {800, 600},
+                                 kColorBlack);
+  auto kalimba = CreateSizedImage(NS_ASSETS_LOCATION "kalimba.jpg", {800, 600},
+                                  kColorBlack);
+  auto dst = std::make_shared<Texture>();
+  ASSERT_TRUE(dst->Resize({800, 600}));
+  ASSERT_TRUE(boston && kalimba);
+  auto texture = std::make_shared<Texture>();
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        static float transition = 0.25f;
+        ImGui::SliderFloat("Transition", &transition, 0.0f, 1.0f);
+        static const char* kDirectionNames[] = {"Horizontal", "Vertical"};
+        static int dir = 0;
+        ImGui::Combo("Direction", &dir, kDirectionNames,
+                     IM_ARRAYSIZE(kDirectionNames));
+        dst->SwipeTransition(*boston, *kalimba, transition,
+                             static_cast<Texture::Direction>(dir));
+        texture->Clear(kColorBlack);
+        texture->Composite(*dst, {10, 10});
+
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
 }  // namespace ns

@@ -2,8 +2,9 @@
   "build_systems": [
     {
       "name": "Merle Build All",
-      // "shell_cmd": "ninja && ./merle_tests --gtest_filter=\"*FadeTransition\"",
-      "shell_cmd": "ninja && ./merle_benchmarks --benchmark_filter=FadeTransition",
+      "shell_cmd": "ninja && ./merle_tests --gtest_filter=\"*SwipeTransition\"",
+      // "shell_cmd": "ninja && ./merle_benchmarks --benchmark_filter=SwipeTransition*",
+      // "shell_cmd": "ninja && ./merle_benchmarks",
       "working_dir": "${project_path}/build",
       "file_regex": "(.*):(\\d+):(\\d+)(.*)",
       "shell": true,

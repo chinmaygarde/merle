@@ -240,6 +240,34 @@ static void FadeTransition(benchmark::State& state) {
 }
 BENCHMARK(FadeTransition)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void SwipeTransitionHorizontal(benchmark::State& state) {
+  Texture a, b, c;
+  NS_ASSERT(a.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(b.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(c.Resize(kBenchmarkCanvasSize));
+  a.Clear(kColorFuchsia);
+  b.Clear(kColorBlue);
+  c.Clear(kColorRed);
+  while (state.KeepRunning()) {
+    c.SwipeTransition(a, b, 0.75, Texture::Direction::kHorizontal);
+  }
+}
+BENCHMARK(SwipeTransitionHorizontal)->Unit(benchmark::TimeUnit::kMillisecond);
+
+static void SwipeTransitionVertical(benchmark::State& state) {
+  Texture a, b, c;
+  NS_ASSERT(a.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(b.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(c.Resize(kBenchmarkCanvasSize));
+  a.Clear(kColorFuchsia);
+  b.Clear(kColorBlue);
+  c.Clear(kColorRed);
+  while (state.KeepRunning()) {
+    c.SwipeTransition(a, b, 0.75, Texture::Direction::kVertical);
+  }
+}
+BENCHMARK(SwipeTransitionVertical)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

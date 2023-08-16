@@ -499,3 +499,75 @@ export void FadeTransition(uniform uint8 dst_r[],
     dst_a[i] = Mix(from_a[i], to_a[i], t);
   }
 }
+
+export void SwipeTransitionHorizontal(uniform uint8 dst_r[],
+                                      uniform uint8 dst_g[],
+                                      uniform uint8 dst_b[],
+                                      uniform uint8 dst_a[],
+                                      uniform uint8 from_r[],
+                                      uniform uint8 from_g[],
+                                      uniform uint8 from_b[],
+                                      uniform uint8 from_a[],
+                                      uniform uint8 to_r[],
+                                      uniform uint8 to_g[],
+                                      uniform uint8 to_b[],
+                                      uniform uint8 to_a[],
+                                      uniform size_t width,
+                                      uniform size_t height,
+                                      uniform float t) {
+  uniform size_t x_break = width * t;
+  for (uniform size_t y = 0; y < height; y++) {
+    foreach (x = 0...x_break) {
+      size_t offset = width * y + x;
+      dst_r[offset] = from_r[offset];
+      dst_g[offset] = from_g[offset];
+      dst_b[offset] = from_b[offset];
+      dst_a[offset] = from_a[offset];
+    }
+  }
+  for (uniform size_t y = 0; y < height; y++) {
+    foreach (x = x_break... width) {
+      size_t offset = width * y + x;
+      dst_r[offset] = to_r[offset];
+      dst_g[offset] = to_g[offset];
+      dst_b[offset] = to_b[offset];
+      dst_a[offset] = to_a[offset];
+    }
+  }
+}
+
+export void SwipeTransitionVertical(uniform uint8 dst_r[],
+                                    uniform uint8 dst_g[],
+                                    uniform uint8 dst_b[],
+                                    uniform uint8 dst_a[],
+                                    uniform uint8 from_r[],
+                                    uniform uint8 from_g[],
+                                    uniform uint8 from_b[],
+                                    uniform uint8 from_a[],
+                                    uniform uint8 to_r[],
+                                    uniform uint8 to_g[],
+                                    uniform uint8 to_b[],
+                                    uniform uint8 to_a[],
+                                    uniform size_t width,
+                                    uniform size_t height,
+                                    uniform float t) {
+  uniform size_t y_break = height * t;
+  for (uniform size_t y = 0; y < y_break; y++) {
+    foreach (x = 0...width) {
+      size_t offset = width * y + x;
+      dst_r[offset] = from_r[offset];
+      dst_g[offset] = from_g[offset];
+      dst_b[offset] = from_b[offset];
+      dst_a[offset] = from_a[offset];
+    }
+  }
+  for (uniform size_t y = y_break; y < height; y++) {
+    foreach (x = 0...width) {
+      size_t offset = width * y + x;
+      dst_r[offset] = to_r[offset];
+      dst_g[offset] = to_g[offset];
+      dst_b[offset] = to_b[offset];
+      dst_a[offset] = to_a[offset];
+    }
+  }
+}
