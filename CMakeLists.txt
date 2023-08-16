@@ -65,7 +65,7 @@ add_library(merle_ispc
 if (APPLE)
 set_property(TARGET merle_ispc PROPERTY ISPC_INSTRUCTION_SETS neon-i32x8)
 else()
-set_property(TARGET merle_ispc PROPERTY ISPC_INSTRUCTION_SETS avx2-i32x16)
+set_property(TARGET merle_ispc PROPERTY ISPC_INSTRUCTION_SETS avx2-i32x16 avx512skx-x64)
 endif()
 
 target_compile_options(merle_ispc PRIVATE "--werror")
