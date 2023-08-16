@@ -18,16 +18,23 @@
 
     Full instructions to install [ISPC for Debian based distributions are here](https://github.com/ispc/ispc#intel-oneapi-distribution).
 
+    First, install ISPC from Intel.
     ```sh
-    # Install ISPC from Intel.
     wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
     echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
     sudo apt-get update
     sudo apt-get install intel-oneapi-ispc
-    # Add this to your .rc.
-    # If you don't, you'll need to specify the -DCMAKE_ISPC_COMPILER path to CMake.
+    ```
+
+    Add the following to your `.rc`. If you don't, you'll need to specify the `-DCMAKE_ISPC_COMPILER` to point to the path of `ispc` to when invoking `CMake`. The default rules in the `Makefile` won't do this for you!
+
+    ``` sh
     source /opt/intel/oneapi/ispc/latest/env/vars.sh
-    # Now install everything else.
+    ```
+
+    Now, install all other dependencies.
+
+    ```sh
     sudo apt install -y cmake ninja-build build-essential git
     ```
 
