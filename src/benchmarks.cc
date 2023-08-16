@@ -226,6 +226,20 @@ static void HistogramGen(benchmark::State& state) {
 }
 BENCHMARK(HistogramGen)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void FadeTransition(benchmark::State& state) {
+  Texture a, b, c;
+  NS_ASSERT(a.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(b.Resize(kBenchmarkCanvasSize));
+  NS_ASSERT(c.Resize(kBenchmarkCanvasSize));
+  a.Clear(kColorFuchsia);
+  b.Clear(kColorBlue);
+  c.Clear(kColorRed);
+  while (state.KeepRunning()) {
+    c.FadeTransition(a, b, 0.75);
+  }
+}
+BENCHMARK(FadeTransition)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

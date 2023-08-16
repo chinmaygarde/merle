@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <imgui.h>
+#include <memory>
 #include "application.h"
 #include "fixtures_location.h"
 #include "geom.h"
@@ -406,6 +407,49 @@ TEST_F(MerleTest, Sobel) {
         blur_texture->DuplicateChannel(Component::kRed, Component::kBlue);
 
         return blur_texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
+static std::shared_ptr<Texture> CreateSizedImage(const char* path,
+                                                 UPoint size,
+                                                 Color bg_color) {
+  auto src = Texture::CreateFromFile(path);
+  if (!src.has_value()) {
+    return nullptr;
+  }
+  auto tex = std::make_shared<Texture>();
+  if (!tex->Resize(size)) {
+    return nullptr;
+  }
+  tex->Clear(bg_color);
+  tex->Composite(src.value(), {});
+  return tex;
+}
+
+TEST_F(MerleTest, FadeTransition) {
+  Application application;
+  auto boston = CreateSizedImage(NS_ASSETS_LOCATION "boston.jpg", {800, 600},
+                                 kColorBlack);
+  auto kalimba = CreateSizedImage(NS_ASSETS_LOCATION "kalimba.jpg", {800, 600},
+                                  kColorBlack);
+  auto dst = std::make_shared<Texture>();
+  ASSERT_TRUE(dst->Resize({800, 600}));
+  ASSERT_TRUE(boston && kalimba);
+  auto texture = std::make_shared<Texture>();
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        static float transition = 0.25f;
+        ImGui::SliderFloat("Transition", &transition, 0.0f, 1.0f);
+        dst->FadeTransition(*boston, *kalimba, transition);
+        texture->Clear(kColorBlack);
+        texture->Composite(*dst, {10, 10});
+
+        return texture;
       });
   ASSERT_TRUE(Run(application));
 }

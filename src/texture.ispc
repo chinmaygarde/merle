@@ -473,3 +473,29 @@ export void Histogram(uniform uint8 r[],
     atomic_add_local(&ha[a[i]], 1u);
   }
 }
+
+inline uint8 Mix(uint8 x, uint8 y, uniform float t) {
+  return x * (1.0f - t) + y * t;
+}
+
+export void FadeTransition(uniform uint8 dst_r[],
+                           uniform uint8 dst_g[],
+                           uniform uint8 dst_b[],
+                           uniform uint8 dst_a[],
+                           uniform uint8 from_r[],
+                           uniform uint8 from_g[],
+                           uniform uint8 from_b[],
+                           uniform uint8 from_a[],
+                           uniform uint8 to_r[],
+                           uniform uint8 to_g[],
+                           uniform uint8 to_b[],
+                           uniform uint8 to_a[],
+                           uniform size_t len,
+                           uniform float t) {
+  foreach (i = 0 ... len) {
+    dst_r[i] = Mix(from_r[i], to_r[i], t);
+    dst_g[i] = Mix(from_g[i], to_g[i], t);
+    dst_b[i] = Mix(from_b[i], to_b[i], t);
+    dst_a[i] = Mix(from_a[i], to_a[i], t);
+  }
+}

@@ -368,4 +368,29 @@ bool Texture::ConvolutionNxN(const Texture& src,
   return true;
 }
 
+bool Texture::FadeTransition(const Texture& from,
+                             const Texture& to,
+                             UnitScalarF t) {
+  if (from.size_ != to.size_ || from.size_ != size_) {
+    return false;
+  }
+  const auto length = size_.x * size_.y;
+  ispc::FadeTransition(allocation_ + length * 0,       // dst_r
+                       allocation_ + length * 1,       // dst_g
+                       allocation_ + length * 2,       // dst_b
+                       allocation_ + length * 3,       // dst_a
+                       from.allocation_ + length * 0,  // from_r
+                       from.allocation_ + length * 1,  // from_g
+                       from.allocation_ + length * 2,  // from_b
+                       from.allocation_ + length * 3,  // from_a
+                       to.allocation_ + length * 0,    // to_r
+                       to.allocation_ + length * 1,    // to_g
+                       to.allocation_ + length * 2,    // to_b
+                       to.allocation_ + length * 3,    // to_a
+                       length,                         // len
+                       t                               // t
+  );
+  return true;
+}
+
 }  // namespace ns

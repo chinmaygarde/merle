@@ -192,3 +192,19 @@ Since these filters operate on a single channel, it is usually necessary to dupl
 |`dst_component`|The component in the destination texture to direct the result of the Sobel operation to.|
 
 ![Sobel Filter](assets/sobel.png)
+
+## Transitions
+
+Transitions interpolate between two images of the same size.
+
+### Fade Transition
+
+Linearly interpolates pixel values between images of the same size.
+
+| Argument | Description|
+|-:|-|
+|`from`|The first texture to sample pixels from. The size of the `from` texture, the `to` texture and the destination texture must match exactly.|
+|`to`|The second texture to sample pixels from. The size of the `from` texture, the `to` texture and the destination texture must match exactly.|
+|`t`|The value from `0.0f` to `1.0f` to use as the amount of the transition that has been completed.|
+
+![Fade Transition](assets/fade_transition.png)

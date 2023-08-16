@@ -135,6 +135,8 @@ class Texture {
 
   void Historam(Histogram& hist) const;
 
+  bool FadeTransition(const Texture& from, const Texture& to, UnitScalarF t);
+
  private:
   uint8_t* allocation_ = nullptr;
   UPoint size_ = {};
