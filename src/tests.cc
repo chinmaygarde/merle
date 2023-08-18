@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
 #include <imgui.h>
+
 #include <memory>
+
 #include "application.h"
 #include "fixtures_location.h"
 #include "geom.h"
@@ -484,6 +486,11 @@ TEST_F(MerleTest, SwipeTransition) {
         return texture;
       });
   ASSERT_TRUE(Run(application));
+}
+
+TEST_F(MerleTest, CanLaunchTasks) {
+  Texture texture;
+  texture.Task();
 }
 
 }  // namespace ns

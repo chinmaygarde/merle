@@ -39,6 +39,8 @@ include(GoogleTest)
 add_library(merle
   src/geom.h
   src/macros.h
+  src/tasks.cc
+  src/tasks.h
   src/texture.cc
   src/texture.h
 )

@@ -571,3 +571,9 @@ export void SwipeTransitionVertical(uniform uint8 dst_r[],
     }
   }
 }
+
+task void MyTask() {}
+
+export void LaunchMyTask() {
+  launch MyTask();
+}

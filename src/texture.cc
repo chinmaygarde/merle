@@ -443,4 +443,8 @@ bool Texture::SwipeTransition(const Texture& from,
   return true;
 }
 
+void Texture::Task() {
+  ispc::LaunchMyTask();
+}
+
 }  // namespace ns

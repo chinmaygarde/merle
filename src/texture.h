@@ -146,6 +146,8 @@ class Texture {
                        UnitScalarF t,
                        Direction direction);
 
+  void Task();
+
  private:
   uint8_t* allocation_ = nullptr;
   UPoint size_ = {};
