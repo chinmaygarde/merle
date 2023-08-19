@@ -285,7 +285,7 @@ static std::vector<float> CreateGaussianKernel(uint8_t radius, float sigma) {
     for (int8_t x = -radius; x < radius + 1; x++) {
       // https://en.wikipedia.org/wiki/Gaussian_blur
       float gauss = std::exp(-((x * x) + (y * y)) / (2 * sigma * sigma)) /
-                    (2 * M_PI * sigma * sigma);
+                    (2 * kPi * sigma * sigma);
 
       kernel[(y + radius) * kernel_width + (x + radius)] = gauss;
       gaussian_sum += gauss;

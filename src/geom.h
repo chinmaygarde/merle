@@ -12,6 +12,8 @@ namespace ns {
 
 using ScalarF = float;
 
+constexpr float kPi = 3.14159265358979323846;
+
 struct UnitScalarF {
   constexpr UnitScalarF(ScalarF val) : value_(std::clamp(val, 0.0f, 1.0f)) {}
 
@@ -154,7 +156,7 @@ struct Degrees {
       : degrees(fmodf(p_degrees, 360.0f)) {}
 
   constexpr operator Radians() const {
-    return Radians(degrees * M_PI / 180.0f);
+    return Radians(degrees * kPi / 180.0f);
   };
 };
 
