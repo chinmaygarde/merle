@@ -38,6 +38,7 @@ include(GoogleTest)
 
 add_library(merle
   src/geom.h
+  src/ispc_tasksys.cc
   src/macros.h
   src/texture.cc
   src/texture.h
