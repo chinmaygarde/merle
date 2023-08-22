@@ -268,6 +268,16 @@ static void SwipeTransitionVertical(benchmark::State& state) {
 }
 BENCHMARK(SwipeTransitionVertical)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void AverageColor(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  while (state.KeepRunning()) {
+    texture.AverageColor();
+  }
+}
+BENCHMARK(AverageColor)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

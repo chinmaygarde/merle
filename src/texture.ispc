@@ -571,3 +571,25 @@ export void SwipeTransitionVertical(uniform uint8 dst_r[],
     }
   }
 }
+
+export void AverageColor(uniform uint8 r[],
+                         uniform uint8 g[],
+                         uniform uint8 b[],
+                         uniform uint8 a[],
+                         uniform uint64 size,
+                         uniform Color& out_color) {
+  uint64 red_sum = 0;
+  uint64 green_sum = 0;
+  uint64 blue_sum = 0;
+  uint64 alpha_sum = 0;
+  foreach (i = 0 ... size) {
+    red_sum += r[i];
+    green_sum += g[i];
+    blue_sum += b[i];
+    alpha_sum += a[i];
+  }
+  out_color.red = reduce_add(red_sum) / size;
+  out_color.green = reduce_add(green_sum) / size;
+  out_color.blue = reduce_add(blue_sum) / size;
+  out_color.alpha = reduce_add(alpha_sum) / size;
+}

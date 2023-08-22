@@ -443,4 +443,15 @@ bool Texture::SwipeTransition(const Texture& from,
   return true;
 }
 
+Color Texture::AverageColor() const {
+  const auto length = size_.x * size_.y;
+  ispc::Color color = {};
+  ispc::AverageColor(allocation_ + length * 0,  // dst_r
+                     allocation_ + length * 1,  // dst_g
+                     allocation_ + length * 2,  // dst_b
+                     allocation_ + length * 3,  // dst_a
+                     length, color);
+  return Color{color.red, color.green, color.blue, color.alpha};
+}
+
 }  // namespace ns

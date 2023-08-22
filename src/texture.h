@@ -137,6 +137,8 @@ class Texture {
 
   bool FadeTransition(const Texture& from, const Texture& to, UnitScalarF t);
 
+  Color AverageColor() const;
+
   enum class Direction {
     kHorizontal,
     kVertical,

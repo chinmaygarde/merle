@@ -486,4 +486,32 @@ TEST_F(MerleTest, SwipeTransition) {
   ASSERT_TRUE(Run(application));
 }
 
+TEST_F(MerleTest, AverageColor) {
+  Texture texture;
+  ASSERT_TRUE(texture.Resize({500, 500}));
+  texture.Clear(kColorFuchsia);
+  ASSERT_EQ(texture.AverageColor().red, kColorFuchsia.red);
+  ASSERT_EQ(texture.AverageColor().green, kColorFuchsia.green);
+  ASSERT_EQ(texture.AverageColor().blue, kColorFuchsia.blue);
+  ASSERT_EQ(texture.AverageColor().alpha, kColorFuchsia.alpha);
+}
+
+TEST_F(MerleTest, AverageColorApply) {
+  Application application;
+  auto texture = std::make_shared<Texture>();
+  auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
+  ASSERT_TRUE(image.has_value());
+  auto average = image->AverageColor();
+  application.SetRasterizerCallback(
+      [&](const Application& app) -> std::shared_ptr<Texture> {
+        const auto size = app.GetWindowSize();
+        if (!texture->Resize(size)) {
+          return nullptr;
+        }
+        texture->Clear(average);
+        return texture;
+      });
+  ASSERT_TRUE(Run(application));
+}
+
 }  // namespace ns
