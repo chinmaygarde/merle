@@ -344,21 +344,22 @@ export void LuminanceThreshold(uniform uint8 reds[],
   }
 }
 
-export void ConvolutionNxN(uniform uint8 src_r[],
-                           uniform uint8 src_g[],
-                           uniform uint8 src_b[],
-                           uniform uint8 src_a[],
-                           uniform uint8 dst_r[],
-                           uniform uint8 dst_g[],
-                           uniform uint8 dst_b[],
-                           uniform uint8 dst_a[],
-                           uniform int64 width,
-                           uniform int64 height,
-                           uniform float kernel[],
-                           uniform int64 kernel_size) {
+task void ConvolutionNxNTask(uniform uint8 src_r[],
+                             uniform uint8 src_g[],
+                             uniform uint8 src_b[],
+                             uniform uint8 src_a[],
+                             uniform uint8 dst_r[],
+                             uniform uint8 dst_g[],
+                             uniform uint8 dst_b[],
+                             uniform uint8 dst_a[],
+                             uniform int64 width,
+                             uniform size_t y_begin,
+                             uniform size_t y_end,
+                             uniform float kernel[],
+                             uniform int64 kernel_size) {
   uniform int64 kernel_width = sqrt((uniform float)kernel_size);
   uniform int64 radius = (kernel_width - 1u) / 2u;
-  for (uniform size_t y = radius; y < height - radius; y++) {
+  for (uniform size_t y = y_begin; y < y_end; y++) {
     foreach (x = radius...(width - radius)) {
       float sr = 0.0f;
       float sg = 0.0f;
@@ -381,6 +382,39 @@ export void ConvolutionNxN(uniform uint8 src_r[],
       dst_b[offset] = sb;
       dst_a[offset] = sa;
     }
+  }
+}
+
+export void ConvolutionNxN(uniform uint8 src_r[],
+                           uniform uint8 src_g[],
+                           uniform uint8 src_b[],
+                           uniform uint8 src_a[],
+                           uniform uint8 dst_r[],
+                           uniform uint8 dst_g[],
+                           uniform uint8 dst_b[],
+                           uniform uint8 dst_a[],
+                           uniform int64 width,
+                           uniform int64 height,
+                           uniform float kernel[],
+                           uniform int64 kernel_size) {
+  uniform int64 kernel_width = sqrt((uniform float)kernel_size);
+  uniform int64 radius = (kernel_width - 1u) / 2u;
+  uniform int64 y_window = height / num_cores();
+  for (uniform size_t y = radius; y < height - radius; y += y_window) {
+    launch ConvolutionNxNTask(src_r,                               //
+                              src_g,                               //
+                              src_b,                               //
+                              src_a,                               //
+                              dst_r,                               //
+                              dst_g,                               //
+                              dst_b,                               //
+                              dst_a,                               //
+                              width,                               //
+                              y,                                   //
+                              min(y + y_window, height - radius),  //
+                              kernel,                              //
+                              kernel_size                          //
+    );
   }
 }
 
