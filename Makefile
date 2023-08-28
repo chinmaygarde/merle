@@ -15,6 +15,7 @@ build/build.ninja:
 
 clean:
 	rm -rf build
+	rm -rf site
 
 sync:
 	git submodule update --init --recursive --jobs 8
