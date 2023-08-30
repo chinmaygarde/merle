@@ -632,17 +632,8 @@ export uniform bool AllEqual(uniform uint8 c[],
                              uniform uint64 size,
                              uniform uint8 val) {
   bool eq = false;
-  uniform int rem = size % programCount;
-  for (uniform size_t i = 0; i < size - rem; i += programCount) {
-    eq |= c[i + programIndex] == val;
+  foreach (i = 0 ... size) {
+    eq |= c[i] == val;
   }
-  if (!all(eq)) {
-    return false;
-  }
-  for (uniform size_t i = size - rem; i < size; i++) {
-    if (c[i] != val) {
-      return false;
-    }
-  }
-  return true;
+  return all(eq);
 }
