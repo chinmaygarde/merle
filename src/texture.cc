@@ -454,4 +454,12 @@ Color Texture::AverageColor() const {
   return Color{color.red, color.green, color.blue, color.alpha};
 }
 
+bool Texture::IsOpaque() const {
+  const auto length = size_.x * size_.y;
+  return ispc::AllEqual(allocation_ + length * 3,  // dst_a
+                        length,                    // length
+                        255                        // value
+  );
+}
+
 }  // namespace ns

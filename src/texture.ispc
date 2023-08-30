@@ -627,3 +627,22 @@ export void AverageColor(uniform uint8 r[],
   out_color.blue = reduce_add(blue_sum) / size;
   out_color.alpha = reduce_add(alpha_sum) / size;
 }
+
+export uniform bool AllEqual(uniform uint8 c[],
+                             uniform uint64 size,
+                             uniform uint8 val) {
+  bool eq = false;
+  uniform int rem = size % programCount;
+  for (uniform size_t i = 0; i < size - rem; i += programCount) {
+    eq |= c[i + programIndex] == val;
+  }
+  if (!all(eq)) {
+    return false;
+  }
+  for (uniform size_t i = size - rem; i < size; i++) {
+    if (c[i] != val) {
+      return false;
+    }
+  }
+  return true;
+}

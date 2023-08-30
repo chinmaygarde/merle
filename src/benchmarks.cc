@@ -278,6 +278,16 @@ static void AverageColor(benchmark::State& state) {
 }
 BENCHMARK(AverageColor)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void IsOpaque(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite);
+  while (state.KeepRunning()) {
+    NS_ASSERT(texture.IsOpaque());
+  }
+}
+BENCHMARK(IsOpaque)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

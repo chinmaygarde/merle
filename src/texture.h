@@ -139,6 +139,8 @@ class Texture {
 
   Color AverageColor() const;
 
+  bool IsOpaque() const;
+
   enum class Direction {
     kHorizontal,
     kVertical,

@@ -235,3 +235,7 @@ Get a color where each component is the average of all the pixels in the image. 
 ### Average Luminance
 
 Gets the average luminance of all the pixels in the image. This query takes no arguments.
+
+### Is Opaque
+
+Gets if the image is completely opaque.
