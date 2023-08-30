@@ -221,3 +221,14 @@ Show pixels from one image or the other based on how much the transition has com
 |`t`|The value from `0.0f` to `1.0f` to use as the amount of the transition that has been completed.|
 
 ![Swipe Transition](assets/swipe_transition.png)
+
+## Queries
+
+Query image properties.
+
+### Average Color
+
+Get a color where each component is the average of all the pixels in the image. This query takes no arguments.
+
+![Average](assets/average.png)
+

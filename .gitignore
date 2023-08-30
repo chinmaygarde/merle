@@ -6,3 +6,4 @@ build/
 *.ini
 Testing/
 site/
+.vscode/
