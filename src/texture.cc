@@ -332,20 +332,6 @@ void Texture::DuplicateChannel(Component src, Component dst) {
   );
 }
 
-void Texture::Historam(Histogram& hist) const {
-  const auto length = size_.x * size_.y;
-  ispc::Histogram(allocation_ + length * 0,  // r
-                  allocation_ + length * 1,  // g
-                  allocation_ + length * 2,  // b
-                  allocation_ + length * 3,  // a
-                  length,                    // length
-                  hist.values.data() + 0,    // hr
-                  hist.values.data() + 1,    // hg
-                  hist.values.data() + 2,    // hb
-                  hist.values.data() + 3     // ha
-  );
-}
-
 bool Texture::ConvolutionNxN(const Texture& src,
                              const std::vector<float>& kernel) {
   if (size_ != src.size_) {

@@ -215,17 +215,6 @@ static void DuplicateChannel(benchmark::State& state) {
 }
 BENCHMARK(DuplicateChannel)->Unit(benchmark::TimeUnit::kMillisecond);
 
-static void HistogramGen(benchmark::State& state) {
-  Texture texture;
-  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
-  texture.Clear(kColorFuchsia);
-  Histogram hist;
-  while (state.KeepRunning()) {
-    texture.Historam(hist);
-  }
-}
-BENCHMARK(HistogramGen)->Unit(benchmark::TimeUnit::kMillisecond);
-
 static void FadeTransition(benchmark::State& state) {
   Texture a, b, c;
   NS_ASSERT(a.Resize(kBenchmarkCanvasSize));

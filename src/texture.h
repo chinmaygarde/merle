@@ -16,17 +16,6 @@ enum class Component : uint8_t {
   kAlpha,
 };
 
-struct Histogram {
-  std::vector<uint64_t> values;
-
-  Histogram() { Reset(); }
-
-  void Reset() {
-    values.clear();
-    values.resize(255u * 4u);
-  }
-};
-
 class Texture {
  public:
   static std::optional<Texture> CreateFromFile(const char* name);
@@ -132,8 +121,6 @@ class Texture {
              Component dst_component);
 
   void DuplicateChannel(Component src, Component dst);
-
-  void Historam(Histogram& hist) const;
 
   bool FadeTransition(const Texture& from, const Texture& to, UnitScalarF t);
 
