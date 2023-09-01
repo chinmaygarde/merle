@@ -298,8 +298,11 @@ export void Hue(uniform uint8 reds[],
     hue += hue_adjustment;
 
     // Convert back to YIQ
-    Q = chroma * sin(hue);
-    I = chroma * cos(hue);
+    float sine = 0.0;
+    float cosine = 0.0;
+    sincos(hue, &sine, &cosine);
+    Q = chroma * sine;
+    I = chroma * cosine;
 
     // Convert back to RGB
     Vec3 yIQ = {YPrime, I, Q};

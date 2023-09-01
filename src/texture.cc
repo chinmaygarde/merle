@@ -357,7 +357,7 @@ bool Texture::ConvolutionNxN(const Texture& src,
 bool Texture::FadeTransition(const Texture& from,
                              const Texture& to,
                              UnitScalarF t) {
-  if (from.size_ != to.size_ || from.size_ != size_) {
+  if (from.size_ != to.size_) {
     return false;
   }
   const auto length = size_.x * size_.y;
@@ -383,7 +383,7 @@ bool Texture::SwipeTransition(const Texture& from,
                               const Texture& to,
                               UnitScalarF t,
                               Direction direction) {
-  if (from.size_ != to.size_ || from.size_ != size_) {
+  if (from.size_ != to.size_) {
     return false;
   }
   const auto length = size_.x * size_.y;
