@@ -323,7 +323,7 @@ inline void* TaskGroupBase::AllocMemory(int64_t size, int32_t alignment) {
 ///////////////////////////////////////////////////////////////////////////
 // Atomics and the like
 
-static inline void lMemFence() {
+inline void lMemFence() {
   // Windows atomic functions already contain the fence
 #if !defined ISPC_IS_WINDOWS
   __sync_synchronize();
@@ -342,9 +342,9 @@ static void* lAtomicCompareAndSwapPointer(void** v,
 #endif  // ISPC_IS_WINDOWS
 }
 
-static int32_t lAtomicCompareAndSwap32(volatile int32_t* v,
-                                       int32_t newValue,
-                                       int32_t oldValue) {
+int32_t lAtomicCompareAndSwap32(volatile int32_t* v,
+                                int32_t newValue,
+                                int32_t oldValue) {
 #ifdef ISPC_IS_WINDOWS
   return InterlockedCompareExchange((volatile LONG*)v, newValue, oldValue);
 #else
