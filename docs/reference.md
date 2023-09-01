@@ -112,7 +112,7 @@ Adjust the vibrance of the image.
 
 ### Hue
 
-The angle of adjustment of the hue of the image.
+Apply an angle adjustment to the hue of an image.
 
 | Argument | Description|
 |-:|-|
