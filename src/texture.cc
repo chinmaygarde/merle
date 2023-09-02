@@ -56,35 +56,35 @@ void Texture::Clear(Color color,
                     bool clear_alpha) {
   const auto length = size_.x * size_.y;
   if (clear_red) {
-    ::memset(allocation_ + length * 0, color.red, length);
+    ::memset(GetRedMutable(), color.red, length);
   }
   if (clear_green) {
-    ::memset(allocation_ + length * 1, color.green, length);
+    ::memset(GetGreenMutable(), color.green, length);
   }
   if (clear_blue) {
-    ::memset(allocation_ + length * 2, color.blue, length);
+    ::memset(GetBlueMutable(), color.blue, length);
   }
   if (clear_alpha) {
-    ::memset(allocation_ + length * 3, color.alpha, length);
+    ::memset(GetAlphaMutable(), color.alpha, length);
   }
 }
 
 void Texture::PremultiplyAlpha() {
   const auto length = size_.x * size_.y;
-  ispc::PremultiplyAlpha(allocation_ + length * 0,  // r
-                         allocation_ + length * 1,  // g
-                         allocation_ + length * 2,  // b
-                         allocation_ + length * 3,  // a
-                         length                     // length
+  ispc::PremultiplyAlpha(GetRedMutable(),    // r
+                         GetGreenMutable(),  // g
+                         GetBlueMutable(),   // b
+                         GetAlphaMutable(),  // a
+                         length              // length
   );
 }
 
 void Texture::Grayscale() {
   const auto length = size_.GetArea();
-  ispc::Grayscale(allocation_ + length * 0,  // red
-                  allocation_ + length * 1,  // green
-                  allocation_ + length * 2,  // blue
-                  length                     // length
+  ispc::Grayscale(GetRedMutable(),    // red
+                  GetGreenMutable(),  // green
+                  GetBlueMutable(),   // blue
+                  length              // length
   );
 }
 
@@ -123,10 +123,10 @@ bool Texture::CopyToRGBA(Texture& texture) const {
     return false;
   }
   const auto length = size_.x * size_.y;
-  ispc::CopyToRGBA(allocation_ + length * 0,  // red
-                   allocation_ + length * 1,  // green
-                   allocation_ + length * 2,  // blue
-                   allocation_ + length * 3,  // alpha
+  ispc::CopyToRGBA(GetRed(),    // red
+                   GetGreen(),  // green
+                   GetBlue(),   // blue
+                   GetAlpha(),  // alpha
                    reinterpret_cast<ispc::Color*>(
                        texture.GetAllocationMutable()),  // color(out)
                    length                                // length
@@ -136,20 +136,20 @@ bool Texture::CopyToRGBA(Texture& texture) const {
 
 void Texture::Invert() {
   const auto length = size_.x * size_.y;
-  ispc::Invert(allocation_ + length * 0,  // red
-               allocation_ + length * 1,  // green
-               allocation_ + length * 2,  // blue
-               length                     // length
+  ispc::Invert(GetRedMutable(),    // red
+               GetGreenMutable(),  // green
+               GetBlueMutable(),   // blue
+               length              // length
   );
 }
 
 void Texture::Exposure(float exposure) {
   const auto length = size_.x * size_.y;
-  ispc::Exposure(allocation_ + length * 0,  // red
-                 allocation_ + length * 1,  // green
-                 allocation_ + length * 2,  // blue
-                 exposure,                  // exposure
-                 length                     // length
+  ispc::Exposure(GetRedMutable(),    // red
+                 GetGreenMutable(),  // green
+                 GetBlueMutable(),   // blue
+                 exposure,           // exposure
+                 length              // length
   );
 }
 
@@ -165,15 +165,15 @@ void Texture::Brightness(float brightness) {
 
 void Texture::RGBALevels(float red, float green, float blue, float alpha) {
   const auto length = size_.x * size_.y;
-  ispc::RGBALevels(allocation_ + length * 0,  // red
-                   allocation_ + length * 1,  // green
-                   allocation_ + length * 2,  // blue
-                   allocation_ + length * 3,  // alpha
-                   red,                       // red level
-                   green,                     // green level
-                   blue,                      // blue level
-                   alpha,                     // alpha level
-                   length                     // length
+  ispc::RGBALevels(GetRedMutable(),    // red
+                   GetGreenMutable(),  // green
+                   GetBlueMutable(),   // blue
+                   GetAlphaMutable(),  // alpha
+                   red,                // red level
+                   green,              // green level
+                   blue,               // blue level
+                   alpha,              // alpha level
+                   length              // length
   );
 }
 
@@ -182,10 +182,10 @@ void Texture::Swizzle(Component red,
                       Component blue,
                       Component alpha) {
   const auto length = size_.x * size_.y;
-  ispc::Swizzle(allocation_ + length * 0,             // red
-                allocation_ + length * 1,             // green
-                allocation_ + length * 2,             // blue
-                allocation_ + length * 3,             // alpha
+  ispc::Swizzle(GetRedMutable(),                      // red
+                GetGreenMutable(),                    // green
+                GetBlueMutable(),                     // blue
+                GetAlphaMutable(),                    // alpha
                 static_cast<ispc::Component>(red),    // red swizzle
                 static_cast<ispc::Component>(green),  // green swizzle
                 static_cast<ispc::Component>(blue),   // blue swizzle
@@ -196,11 +196,11 @@ void Texture::Swizzle(Component red,
 
 void Texture::ColorMatrix(const Matrix& matrix) {
   const auto length = size_.x * size_.y;
-  ispc::ColorMatrix(allocation_ + length * 0,  // red
-                    allocation_ + length * 1,  // green
-                    allocation_ + length * 2,  // blue
-                    allocation_ + length * 3,  // alpha
-                    length,                    // length
+  ispc::ColorMatrix(GetRedMutable(),    // red
+                    GetGreenMutable(),  // green
+                    GetBlueMutable(),   // blue
+                    GetAlphaMutable(),  // alpha
+                    length,             // length
                     reinterpret_cast<const ispc::Matrix&>(matrix.e));
 }
 
@@ -215,68 +215,68 @@ void Texture::Sepia() {
 
 void Texture::Contrast(float contrast) {
   const auto length = size_.x * size_.y;
-  ispc::Contrast(allocation_ + length * 0,  // red
-                 allocation_ + length * 1,  // green
-                 allocation_ + length * 2,  // blue
-                 length,                    // length
-                 contrast                   // contrast
+  ispc::Contrast(GetRedMutable(),    // red
+                 GetGreenMutable(),  // green
+                 GetBlueMutable(),   // blue
+                 length,             // length
+                 contrast            // contrast
   );
 }
 
 void Texture::Saturation(float saturation) {
   const auto length = size_.x * size_.y;
-  ispc::Saturation(allocation_ + length * 0,  // red
-                   allocation_ + length * 1,  // green
-                   allocation_ + length * 2,  // blue
-                   length,                    // length
-                   saturation                 // saturation
+  ispc::Saturation(GetRedMutable(),    // red
+                   GetGreenMutable(),  // green
+                   GetBlueMutable(),   // blue
+                   length,             // length
+                   saturation          // saturation
   );
 }
 
 void Texture::Vibrance(float vibrance) {
   const auto length = size_.x * size_.y;
-  ispc::Saturation(allocation_ + length * 0,  // red
-                   allocation_ + length * 1,  // green
-                   allocation_ + length * 2,  // blue
-                   length,                    // length
-                   vibrance                   // vibrance
+  ispc::Saturation(GetRedMutable(),    // red
+                   GetGreenMutable(),  // green
+                   GetBlueMutable(),   // blue
+                   length,             // length
+                   vibrance            // vibrance
   );
 }
 
 void Texture::Hue(Radians hue) {
   const auto length = size_.x * size_.y;
-  ispc::Hue(allocation_ + length * 0,  // red
-            allocation_ + length * 1,  // green
-            allocation_ + length * 2,  // blue
-            length,                    // length
-            hue.radians                // hue
+  ispc::Hue(GetRedMutable(),    // red
+            GetGreenMutable(),  // green
+            GetBlueMutable(),   // blue
+            length,             // length
+            hue.radians         // hue
   );
 }
 
 void Texture::Opacity(UnitScalarF opacity) {
   const auto length = size_.x * size_.y;
-  ispc::Opacity(allocation_ + length * 3,  // alphas
-                length,                    // length
-                opacity                    // opacity
+  ispc::Opacity(GetAlphaMutable(),  // alphas
+                length,             // length
+                opacity             // opacity
   );
 }
 
 float Texture::AverageLuminance() const {
   const auto length = size_.x * size_.y;
-  return ispc::AverageLuminance(allocation_ + length * 0,  // red
-                                allocation_ + length * 1,  // green
-                                allocation_ + length * 2,  // blue
-                                length                     // length
+  return ispc::AverageLuminance(GetRed(),    // red
+                                GetGreen(),  // green
+                                GetBlue(),   // blue
+                                length       // length
   );
 }
 
 void Texture::LuminanceThreshold(float luminance) {
   const auto length = size_.x * size_.y;
-  ispc::LuminanceThreshold(allocation_ + length * 0,  // red
-                           allocation_ + length * 1,  // green
-                           allocation_ + length * 2,  // blue
-                           length,                    // length
-                           luminance                  // luma threshold
+  ispc::LuminanceThreshold(GetRedMutable(),    // red
+                           GetGreenMutable(),  // green
+                           GetBlueMutable(),   // blue
+                           length,             // length
+                           luminance           // luma threshold
   );
 }
 
@@ -350,15 +350,14 @@ bool Texture::ConvolutionNxN(const Texture& src,
   if (size_ != src.size_) {
     return false;
   }
-  const auto length = size_.x * size_.y;
-  ispc::ConvolutionNxN(src.allocation_ + length * 0,       // src r
-                       src.allocation_ + length * 1,       // src g
-                       src.allocation_ + length * 2,       // src b
-                       src.allocation_ + length * 3,       // src a
-                       allocation_ + length * 0,           // dst r
-                       allocation_ + length * 1,           // dst g
-                       allocation_ + length * 2,           // dst b
-                       allocation_ + length * 3,           // dst a
+  ispc::ConvolutionNxN(src.GetRed(),                       // src r
+                       src.GetGreen(),                     // src g
+                       src.GetBlue(),                      // src b
+                       src.GetAlpha(),                     // src a
+                       GetRedMutable(),                    // dst r
+                       GetGreenMutable(),                  // dst g
+                       GetBlueMutable(),                   // dst b
+                       GetAlphaMutable(),                  // dst a
                        size_.x,                            // width
                        size_.y,                            // height
                        const_cast<float*>(kernel.data()),  // kernel
@@ -374,20 +373,20 @@ bool Texture::FadeTransition(const Texture& from,
     return false;
   }
   const auto length = size_.x * size_.y;
-  ispc::FadeTransition(allocation_ + length * 0,       // dst_r
-                       allocation_ + length * 1,       // dst_g
-                       allocation_ + length * 2,       // dst_b
-                       allocation_ + length * 3,       // dst_a
-                       from.allocation_ + length * 0,  // from_r
-                       from.allocation_ + length * 1,  // from_g
-                       from.allocation_ + length * 2,  // from_b
-                       from.allocation_ + length * 3,  // from_a
-                       to.allocation_ + length * 0,    // to_r
-                       to.allocation_ + length * 1,    // to_g
-                       to.allocation_ + length * 2,    // to_b
-                       to.allocation_ + length * 3,    // to_a
-                       length,                         // len
-                       t                               // t
+  ispc::FadeTransition(GetRedMutable(),    // dst_r
+                       GetGreenMutable(),  // dst_g
+                       GetBlueMutable(),   // dst_b
+                       GetAlphaMutable(),  // dst_a
+                       from.GetRed(),      // from_r
+                       from.GetGreen(),    // from_g
+                       from.GetBlue(),     // from_b
+                       from.GetAlpha(),    // from_a
+                       to.GetRed(),        // to_r
+                       to.GetGreen(),      // to_g
+                       to.GetBlue(),       // to_b
+                       to.GetAlpha(),      // to_a
+                       length,             // len
+                       t                   // t
   );
   return true;
 }
@@ -399,42 +398,42 @@ bool Texture::SwipeTransition(const Texture& from,
   if (from.size_ != to.size_) {
     return false;
   }
-  const auto length = size_.x * size_.y;
+
   switch (direction) {
     case Direction::kHorizontal:
-      ispc::SwipeTransitionHorizontal(allocation_ + length * 0,       // dst_r
-                                      allocation_ + length * 1,       // dst_g
-                                      allocation_ + length * 2,       // dst_b
-                                      allocation_ + length * 3,       // dst_a
-                                      from.allocation_ + length * 0,  // from_r
-                                      from.allocation_ + length * 1,  // from_g
-                                      from.allocation_ + length * 2,  // from_b
-                                      from.allocation_ + length * 3,  // from_a
-                                      to.allocation_ + length * 0,    // to_r
-                                      to.allocation_ + length * 1,    // to_g
-                                      to.allocation_ + length * 2,    // to_b
-                                      to.allocation_ + length * 3,    // to_a
-                                      size_.x,                        // width
-                                      size_.y,                        // height
-                                      t                               // t
+      ispc::SwipeTransitionHorizontal(GetRedMutable(),    // dst_r
+                                      GetGreenMutable(),  // dst_g
+                                      GetBlueMutable(),   // dst_b
+                                      GetAlphaMutable(),  // dst_a
+                                      from.GetRed(),      // from_r
+                                      from.GetGreen(),    // from_g
+                                      from.GetBlue(),     // from_b
+                                      from.GetAlpha(),    // from_a
+                                      to.GetRed(),        // to_r
+                                      to.GetGreen(),      // to_g
+                                      to.GetBlue(),       // to_b
+                                      to.GetAlpha(),      // to_a
+                                      size_.x,            // width
+                                      size_.y,            // height
+                                      t                   // t
       );
       break;
     case Direction::kVertical:
-      ispc::SwipeTransitionVertical(allocation_ + length * 0,       // dst_r
-                                    allocation_ + length * 1,       // dst_g
-                                    allocation_ + length * 2,       // dst_b
-                                    allocation_ + length * 3,       // dst_a
-                                    from.allocation_ + length * 0,  // from_r
-                                    from.allocation_ + length * 1,  // from_g
-                                    from.allocation_ + length * 2,  // from_b
-                                    from.allocation_ + length * 3,  // from_a
-                                    to.allocation_ + length * 0,    // to_r
-                                    to.allocation_ + length * 1,    // to_g
-                                    to.allocation_ + length * 2,    // to_b
-                                    to.allocation_ + length * 3,    // to_a
-                                    size_.x,                        // width
-                                    size_.y,                        // height
-                                    t                               // t
+      ispc::SwipeTransitionVertical(GetRedMutable(),    // dst_r
+                                    GetGreenMutable(),  // dst_g
+                                    GetBlueMutable(),   // dst_b
+                                    GetAlphaMutable(),  // dst_a
+                                    from.GetRed(),      // from_r
+                                    from.GetGreen(),    // from_g
+                                    from.GetBlue(),     // from_b
+                                    from.GetAlpha(),    // from_a
+                                    to.GetRed(),        // to_r
+                                    to.GetGreen(),      // to_g
+                                    to.GetBlue(),       // to_b
+                                    to.GetAlpha(),      // to_a
+                                    size_.x,            // width
+                                    size_.y,            // height
+                                    t                   // t
       );
       break;
   }
@@ -445,19 +444,19 @@ bool Texture::SwipeTransition(const Texture& from,
 Color Texture::AverageColor() const {
   const auto length = size_.x * size_.y;
   ispc::Color color = {};
-  ispc::AverageColor(allocation_ + length * 0,  // dst_r
-                     allocation_ + length * 1,  // dst_g
-                     allocation_ + length * 2,  // dst_b
-                     allocation_ + length * 3,  // dst_a
+  ispc::AverageColor(GetRed(),    // dst_r
+                     GetGreen(),  // dst_g
+                     GetBlue(),   // dst_b
+                     GetAlpha(),  // dst_a
                      length, color);
   return Color{color.red, color.green, color.blue, color.alpha};
 }
 
 bool Texture::IsOpaque() const {
   const auto length = size_.x * size_.y;
-  return ispc::AllEqual(allocation_ + length * 3,  // dst_a
-                        length,                    // length
-                        255                        // value
+  return ispc::AllEqual(GetAlpha(),  // dst_a
+                        length,      // length
+                        255          // value
   );
 }
 

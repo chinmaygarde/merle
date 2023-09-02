@@ -32,10 +32,10 @@ export void Clear(uniform uint8 red[],
   }
 }
 
-export void CopyToRGBA(uniform uint8 red[],
-                       uniform uint8 green[],
-                       uniform uint8 blue[],
-                       uniform uint8 alpha[],
+export void CopyToRGBA(uniform const uint8 red[],
+                       uniform const uint8 green[],
+                       uniform const uint8 blue[],
+                       uniform const uint8 alpha[],
                        uniform Color rgba[],
                        uniform uint64 size) {
   foreach (i = 0 ... size) {
@@ -333,9 +333,9 @@ export void Opacity(uniform uint8 alphas[],
   }
 }
 
-export uniform float AverageLuminance(uniform uint8 reds[],
-                                      uniform uint8 greens[],
-                                      uniform uint8 blues[],
+export uniform float AverageLuminance(uniform const uint8 reds[],
+                                      uniform const uint8 greens[],
+                                      uniform const uint8 blues[],
                                       uniform int64 size) {
   double luma = 0.0;
   foreach (i = 0 ... size) {
@@ -360,10 +360,10 @@ export void LuminanceThreshold(uniform uint8 reds[],
   }
 }
 
-task void ConvolutionNxNTask(uniform uint8 src_r[],
-                             uniform uint8 src_g[],
-                             uniform uint8 src_b[],
-                             uniform uint8 src_a[],
+task void ConvolutionNxNTask(uniform const uint8 src_r[],
+                             uniform const uint8 src_g[],
+                             uniform const uint8 src_b[],
+                             uniform const uint8 src_a[],
                              uniform uint8 dst_r[],
                              uniform uint8 dst_g[],
                              uniform uint8 dst_b[],
@@ -401,10 +401,10 @@ task void ConvolutionNxNTask(uniform uint8 src_r[],
   }
 }
 
-export void ConvolutionNxN(uniform uint8 src_r[],
-                           uniform uint8 src_g[],
-                           uniform uint8 src_b[],
-                           uniform uint8 src_a[],
+export void ConvolutionNxN(uniform const uint8 src_r[],
+                           uniform const uint8 src_g[],
+                           uniform const uint8 src_b[],
+                           uniform const uint8 src_a[],
                            uniform uint8 dst_r[],
                            uniform uint8 dst_g[],
                            uniform uint8 dst_b[],
@@ -515,14 +515,14 @@ export void FadeTransition(uniform uint8 dst_r[],
                            uniform uint8 dst_g[],
                            uniform uint8 dst_b[],
                            uniform uint8 dst_a[],
-                           uniform uint8 from_r[],
-                           uniform uint8 from_g[],
-                           uniform uint8 from_b[],
-                           uniform uint8 from_a[],
-                           uniform uint8 to_r[],
-                           uniform uint8 to_g[],
-                           uniform uint8 to_b[],
-                           uniform uint8 to_a[],
+                           uniform const uint8 from_r[],
+                           uniform const uint8 from_g[],
+                           uniform const uint8 from_b[],
+                           uniform const uint8 from_a[],
+                           uniform const uint8 to_r[],
+                           uniform const uint8 to_g[],
+                           uniform const uint8 to_b[],
+                           uniform const uint8 to_a[],
                            uniform size_t len,
                            uniform float t) {
   foreach (i = 0 ... len) {
@@ -537,14 +537,14 @@ export void SwipeTransitionHorizontal(uniform uint8 dst_r[],
                                       uniform uint8 dst_g[],
                                       uniform uint8 dst_b[],
                                       uniform uint8 dst_a[],
-                                      uniform uint8 from_r[],
-                                      uniform uint8 from_g[],
-                                      uniform uint8 from_b[],
-                                      uniform uint8 from_a[],
-                                      uniform uint8 to_r[],
-                                      uniform uint8 to_g[],
-                                      uniform uint8 to_b[],
-                                      uniform uint8 to_a[],
+                                      uniform const uint8 from_r[],
+                                      uniform const uint8 from_g[],
+                                      uniform const uint8 from_b[],
+                                      uniform const uint8 from_a[],
+                                      uniform const uint8 to_r[],
+                                      uniform const uint8 to_g[],
+                                      uniform const uint8 to_b[],
+                                      uniform const uint8 to_a[],
                                       uniform size_t width,
                                       uniform size_t height,
                                       uniform float t) {
@@ -573,14 +573,14 @@ export void SwipeTransitionVertical(uniform uint8 dst_r[],
                                     uniform uint8 dst_g[],
                                     uniform uint8 dst_b[],
                                     uniform uint8 dst_a[],
-                                    uniform uint8 from_r[],
-                                    uniform uint8 from_g[],
-                                    uniform uint8 from_b[],
-                                    uniform uint8 from_a[],
-                                    uniform uint8 to_r[],
-                                    uniform uint8 to_g[],
-                                    uniform uint8 to_b[],
-                                    uniform uint8 to_a[],
+                                    uniform const uint8 from_r[],
+                                    uniform const uint8 from_g[],
+                                    uniform const uint8 from_b[],
+                                    uniform const uint8 from_a[],
+                                    uniform const uint8 to_r[],
+                                    uniform const uint8 to_g[],
+                                    uniform const uint8 to_b[],
+                                    uniform const uint8 to_a[],
                                     uniform size_t width,
                                     uniform size_t height,
                                     uniform float t) {
@@ -605,10 +605,10 @@ export void SwipeTransitionVertical(uniform uint8 dst_r[],
   }
 }
 
-export void AverageColor(uniform uint8 r[],
-                         uniform uint8 g[],
-                         uniform uint8 b[],
-                         uniform uint8 a[],
+export void AverageColor(uniform const uint8 r[],
+                         uniform const uint8 g[],
+                         uniform const uint8 b[],
+                         uniform const uint8 a[],
                          uniform uint64 size,
                          uniform Color& out_color) {
   uint64 red_sum = 0;
@@ -627,7 +627,7 @@ export void AverageColor(uniform uint8 r[],
   out_color.alpha = reduce_add(alpha_sum) / size;
 }
 
-export uniform bool AllEqual(uniform uint8 c[],
+export uniform bool AllEqual(uniform const uint8 c[],
                              uniform uint64 size,
                              uniform uint8 val) {
   bool eq = false;
