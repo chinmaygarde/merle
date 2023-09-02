@@ -32,6 +32,8 @@ class Texture {
 
   size_t GetBytesPerPixel() const { return sizeof(Color); }
 
+  size_t GetPixelCount() const { return size_.GetArea(); }
+
   const uint8_t* GetAllocation(Component comp = Component::kRed,
                                UPoint point = {}) const {
     const uint8_t* allocation =
@@ -42,6 +44,38 @@ class Texture {
   uint8_t* GetAllocationMutable(Component comp = Component::kRed,
                                 UPoint point = {}) {
     return const_cast<uint8_t*>(GetAllocation(comp, point));
+  }
+
+  const uint8_t* GetRed(UPoint point = {}) const {
+    return GetAllocation(Component::kRed, point);
+  }
+
+  const uint8_t* GetGreen(UPoint point = {}) const {
+    return GetAllocation(Component::kGreen, point);
+  }
+
+  const uint8_t* GetBlue(UPoint point = {}) const {
+    return GetAllocation(Component::kBlue, point);
+  }
+
+  const uint8_t* GetAlpha(UPoint point = {}) const {
+    return GetAllocation(Component::kAlpha, point);
+  }
+
+  auto GetRedMutable(UPoint point = {}) {
+    return GetAllocationMutable(Component::kRed, point);
+  }
+
+  auto GetGreenMutable(UPoint point = {}) {
+    return GetAllocationMutable(Component::kGreen, point);
+  }
+
+  auto GetBlueMutable(UPoint point = {}) {
+    return GetAllocationMutable(Component::kBlue, point);
+  }
+
+  auto GetAlphaMutable(UPoint point = {}) {
+    return GetAllocationMutable(Component::kAlpha, point);
   }
 
   bool Resize(UPoint size) {

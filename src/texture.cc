@@ -36,15 +36,12 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
     return std::nullopt;
   }
 
-  auto allocation = texture.GetAllocationMutable();
-  auto length = texture.GetSize().GetArea();
-
   ispc::FromRGBA(reinterpret_cast<ispc::Color*>(decoded),  // rgba
-                 allocation + length * 0,                  // red
-                 allocation + length * 1,                  // green
-                 allocation + length * 2,                  // blue
-                 allocation + length * 3,                  // alpha
-                 length                                    // length
+                 texture.GetRedMutable(),                  // red
+                 texture.GetGreenMutable(),                // green
+                 texture.GetBlueMutable(),                 // blue
+                 texture.GetAlphaMutable(),                // alpha
+                 texture.GetPixelCount()                   // length
   );
 
   ::stbi_image_free(decoded);
@@ -158,11 +155,11 @@ void Texture::Exposure(float exposure) {
 
 void Texture::Brightness(float brightness) {
   const auto length = size_.x * size_.y;
-  ispc::Brightness(allocation_ + length * 0,  // red
-                   allocation_ + length * 1,  // green
-                   allocation_ + length * 2,  // blue
-                   brightness,                // brightness
-                   length                     // length
+  ispc::Brightness(GetRedMutable(),    // red
+                   GetGreenMutable(),  // green
+                   GetBlueMutable(),   // blue
+                   brightness,         // brightness
+                   length              // length
   );
 }
 
