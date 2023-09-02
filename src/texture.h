@@ -32,9 +32,17 @@ class Texture {
 
   size_t GetBytesPerPixel() const { return sizeof(Color); }
 
-  uint8_t* GetAllocationMutable() { return allocation_; }
+  const uint8_t* GetAllocation(Component comp = Component::kRed,
+                               UPoint point = {}) const {
+    const uint8_t* allocation =
+        allocation_ + size_.GetArea() * static_cast<uint8_t>(comp);
+    return (allocation + size_.x * point.y) + point.x;
+  }
 
-  const uint8_t* GetAllocation() const { return allocation_; }
+  uint8_t* GetAllocationMutable(Component comp = Component::kRed,
+                                UPoint point = {}) {
+    return const_cast<uint8_t*>(GetAllocation(comp, point));
+  }
 
   const uint8_t* GetComponent(Component comp, UPoint point) const {
     const uint8_t* comp_allocation =
