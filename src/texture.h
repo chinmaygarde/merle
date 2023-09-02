@@ -63,6 +63,8 @@ class Texture {
              bool clear_blue = true,
              bool clear_alpha = true);
 
+  void PremultiplyAlpha();
+
   void Grayscale();
 
   void Invert();
@@ -104,7 +106,7 @@ class Texture {
 
   bool CopyToRGBA(Texture& texture) const;
 
-  void Composite(const Texture& texture, UPoint point);
+  void Composite(const Texture& texture, Point point);
 
   float AverageLuminance() const;
 

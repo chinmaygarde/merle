@@ -65,6 +65,19 @@ export void FromRGBA(uniform Color rgba[],
   }
 }
 
+export void PremultiplyAlpha(uniform uint8 r[],
+                             uniform uint8 g[],
+                             uniform uint8 b[],
+                             uniform uint8 a[],
+                             uniform uint64 size) {
+  foreach (i = 0 ... size) {
+    float alpha = a[i] / 255.0f;
+    r[i] *= alpha;
+    g[i] *= alpha;
+    b[i] *= alpha;
+  }
+}
+
 export void Grayscale(uniform uint8 reds[],
                       uniform uint8 greens[],
                       uniform uint8 blues[],

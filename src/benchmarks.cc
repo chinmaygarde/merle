@@ -277,6 +277,16 @@ static void IsOpaque(benchmark::State& state) {
 }
 BENCHMARK(IsOpaque)->Unit(benchmark::TimeUnit::kMillisecond);
 
+static void PremultiplyAlpha(benchmark::State& state) {
+  Texture texture;
+  NS_ASSERT(texture.Resize(kBenchmarkCanvasSize));
+  texture.Clear(kColorWhite.WithAlpha(128));
+  while (state.KeepRunning()) {
+    texture.PremultiplyAlpha();
+  }
+}
+BENCHMARK(PremultiplyAlpha)->Unit(benchmark::TimeUnit::kMillisecond);
+
 }  // namespace ns
 
 BENCHMARK_MAIN();

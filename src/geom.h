@@ -77,9 +77,12 @@ struct TPoint {
 };
 
 template <class T>
+using TSize = TPoint<T>;
+
+template <class T>
 struct TRect {
   TPoint<T> origin;
-  TPoint<T> size;
+  TSize<T> size;
 
   constexpr TRect() = default;
 
@@ -89,7 +92,7 @@ struct TRect {
   constexpr TRect(T x, T y, T width, T height)
       : origin({x, y}), size({width, height}) {}
 
-  constexpr TRect(TPoint<T> sz) : origin({0, 0}), size(sz.x, sz.y) {}
+  constexpr TRect(TSize<T> sz) : origin({0, 0}), size(sz.x, sz.y) {}
 
   constexpr std::array<T, 4> GetLTRB() const {
     const auto left = std::min(origin.x, origin.x + size.x);
@@ -135,9 +138,12 @@ struct TRect {
   constexpr bool operator!=(const TRect& other) const = default;
 };
 
-using Point = TPoint<int32_t>;
 using UPoint = TPoint<uint32_t>;
-using Rect = TRect<uint32_t>;
+using USize = TSize<uint32_t>;
+
+using Point = TPoint<int32_t>;
+using Size = TSize<int32_t>;
+using Rect = TRect<int32_t>;
 
 struct Radians {
   ScalarF radians = 0.0;

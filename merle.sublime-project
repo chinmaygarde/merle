@@ -2,8 +2,8 @@
   "build_systems": [
     {
       "name": "Merle Build All",
-      // "shell_cmd": "ninja && ./merle_tests --gtest_filter=\"*Hue\"",
-      "shell_cmd": "ninja && ./merle_benchmarks --benchmark_filter=Hue*",
+      "shell_cmd": "ninja && ./merle_tests --gtest_filter=\"*Composite\"",
+      // "shell_cmd": "ninja && ./merle_benchmarks --benchmark_filter=PremultiplyAlpha*",
       // "shell_cmd": "ninja && ./merle_benchmarks",
       "working_dir": "${project_path}/build",
       "file_regex": "(.*):(\\d+):(\\d+)(.*)",

@@ -1,6 +1,9 @@
 #include "texture.h"
 
+#include <_types/_uint32_t.h>
 #include <stdint.h>
+#include <sys/_types/_int32_t.h>
+#include "geom.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -69,6 +72,16 @@ void Texture::Clear(Color color,
   }
 }
 
+void Texture::PremultiplyAlpha() {
+  const auto length = size_.x * size_.y;
+  ispc::PremultiplyAlpha(allocation_ + length * 0,  // r
+                         allocation_ + length * 1,  // g
+                         allocation_ + length * 2,  // b
+                         allocation_ + length * 3,  // a
+                         length                     // length
+  );
+}
+
 void Texture::Grayscale() {
   const auto length = size_.GetArea();
   ispc::Grayscale(allocation_ + length * 0,  // red
@@ -78,30 +91,36 @@ void Texture::Grayscale() {
   );
 }
 
-void Texture::Composite(const Texture& texture, UPoint point) {
-  Rect texture_rect(point, texture.GetSize());
-  const auto& rect = Rect{size_}.Intersection(texture_rect);
-  if (!rect.has_value()) {
+void Texture::Composite(const Texture& texture, Point offset) {
+  Rect src_rect(offset, Size{static_cast<int32_t>(texture.GetSize().x),
+                             static_cast<int32_t>(texture.GetSize().y)});
+  const auto& dst_rect =
+      Rect{Size{static_cast<int32_t>(size_.x), static_cast<int32_t>(size_.y)}}
+          .Intersection(src_rect);
+
+  if (!dst_rect.has_value()) {
     return;
   }
 
-  for (uint32_t y = 0; y < rect->size.y; y++) {
-    ::memcpy(const_cast<uint8_t*>(
-                 GetComponent(Component::kRed, {point.x, point.y + y})),  //
-             texture.GetComponent(Component::kRed, {0, y}),               //
-             rect->size.x);
-    ::memcpy(const_cast<uint8_t*>(
-                 GetComponent(Component::kGreen, {point.x, point.y + y})),  //
-             texture.GetComponent(Component::kGreen, {0, y}),               //
-             rect->size.x);
-    ::memcpy(const_cast<uint8_t*>(
-                 GetComponent(Component::kBlue, {point.x, point.y + y})),  //
-             texture.GetComponent(Component::kBlue, {0, y}),               //
-             rect->size.x);
-    ::memcpy(const_cast<uint8_t*>(
-                 GetComponent(Component::kAlpha, {point.x, point.y + y})),  //
-             texture.GetComponent(Component::kAlpha, {0, y}),               //
-             rect->size.x);
+  for (auto y = 0; y < dst_rect->size.y; y++) {
+    const auto src_point = UPoint{static_cast<uint32_t>(offset.x),
+                                  static_cast<uint32_t>(offset.y + y)};
+    const auto dst_point = UPoint(0, static_cast<uint32_t>(y));
+    ::memcpy(const_cast<uint8_t*>(GetComponent(Component::kRed, src_point)),  //
+             texture.GetComponent(Component::kRed, dst_point),                //
+             dst_rect->size.x);
+    ::memcpy(
+        const_cast<uint8_t*>(GetComponent(Component::kGreen, src_point)),  //
+        texture.GetComponent(Component::kGreen, dst_point),                //
+        dst_rect->size.x);
+    ::memcpy(
+        const_cast<uint8_t*>(GetComponent(Component::kBlue, src_point)),  //
+        texture.GetComponent(Component::kBlue, dst_point),                //
+        dst_rect->size.x);
+    ::memcpy(
+        const_cast<uint8_t*>(GetComponent(Component::kAlpha, src_point)),  //
+        texture.GetComponent(Component::kAlpha, dst_point),                //
+        dst_rect->size.x);
   }
 }
 

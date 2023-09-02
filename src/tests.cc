@@ -44,7 +44,12 @@ TEST_F(MerleTest, Composite) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        static int xy[2] = {25, 25};
+        const auto image_size = image->GetSize();
+        ImGui::SliderInt2("Offset", xy, -image_size.x - 25, size.x + 25);
+        // const auto offset = Point{static_cast<int32_t>(std::max(0, xy[0])),
+        //                           static_cast<int32_t>(std::max(0, xy[1]))};
+        texture->Composite(*image, Point{xy[0], xy[1]});
         return texture;
       });
   ASSERT_TRUE(Run(application));
