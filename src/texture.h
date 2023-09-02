@@ -1,5 +1,6 @@
 #pragma once
 
+#include <_types/_uint8_t.h>
 #include <stdint.h>
 #include <optional>
 #include <vector>
@@ -39,6 +40,10 @@ class Texture {
     const uint8_t* comp_allocation =
         allocation_ + size_.GetArea() * static_cast<uint8_t>(comp);
     return (comp_allocation + size_.x * point.y) + point.x;
+  }
+
+  uint8_t* GetComponentMutable(Component comp, UPoint point) {
+    return const_cast<uint8_t*>(GetComponent(comp, point));
   }
 
   bool Resize(UPoint size) {
