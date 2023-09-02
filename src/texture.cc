@@ -106,17 +106,17 @@ void Texture::Composite(const Texture& texture, Point offset) {
     const auto src_point = UPoint{static_cast<uint32_t>(offset.x),
                                   static_cast<uint32_t>(offset.y + y)};
     const auto dst_point = UPoint(0, static_cast<uint32_t>(y));
-    ::memcpy(GetComponentMutable(Component::kRed, src_point),   //
-             texture.GetComponent(Component::kRed, dst_point),  //
+    ::memcpy(GetAllocationMutable(Component::kRed, src_point),   //
+             texture.GetAllocation(Component::kRed, dst_point),  //
              dst_rect->size.x);
-    ::memcpy(GetComponentMutable(Component::kGreen, src_point),   //
-             texture.GetComponent(Component::kGreen, dst_point),  //
+    ::memcpy(GetAllocationMutable(Component::kGreen, src_point),   //
+             texture.GetAllocation(Component::kGreen, dst_point),  //
              dst_rect->size.x);
-    ::memcpy(GetComponentMutable(Component::kBlue, src_point),   //
-             texture.GetComponent(Component::kBlue, dst_point),  //
+    ::memcpy(GetAllocationMutable(Component::kBlue, src_point),   //
+             texture.GetAllocation(Component::kBlue, dst_point),  //
              dst_rect->size.x);
-    ::memcpy(GetComponentMutable(Component::kAlpha, src_point),   //
-             texture.GetComponent(Component::kAlpha, dst_point),  //
+    ::memcpy(GetAllocationMutable(Component::kAlpha, src_point),   //
+             texture.GetAllocation(Component::kAlpha, dst_point),  //
              dst_rect->size.x);
   }
 }
