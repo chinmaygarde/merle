@@ -32,7 +32,7 @@ class Texture {
 
   size_t GetBytesPerPixel() const { return sizeof(Color); }
 
-  uint8_t* GetAllocation() { return allocation_; }
+  uint8_t* GetAllocationMutable() { return allocation_; }
 
   const uint8_t* GetAllocation() const { return allocation_; }
 

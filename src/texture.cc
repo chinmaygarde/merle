@@ -36,7 +36,7 @@ std::optional<Texture> Texture::CreateFromFile(const char* name) {
     return std::nullopt;
   }
 
-  auto allocation = texture.GetAllocation();
+  auto allocation = texture.GetAllocationMutable();
   auto length = texture.GetSize().GetArea();
 
   ispc::FromRGBA(reinterpret_cast<ispc::Color*>(decoded),  // rgba
@@ -126,13 +126,13 @@ bool Texture::CopyToRGBA(Texture& texture) const {
     return false;
   }
   const auto length = size_.x * size_.y;
-  ispc::CopyToRGBA(
-      allocation_ + length * 0,                                 // red
-      allocation_ + length * 1,                                 // green
-      allocation_ + length * 2,                                 // blue
-      allocation_ + length * 3,                                 // alpha
-      reinterpret_cast<ispc::Color*>(texture.GetAllocation()),  // color(out)
-      length                                                    // length
+  ispc::CopyToRGBA(allocation_ + length * 0,  // red
+                   allocation_ + length * 1,  // green
+                   allocation_ + length * 2,  // blue
+                   allocation_ + length * 3,  // alpha
+                   reinterpret_cast<ispc::Color*>(
+                       texture.GetAllocationMutable()),  // color(out)
+                   length                                // length
   );
   return true;
 }
