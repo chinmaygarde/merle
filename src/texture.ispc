@@ -434,7 +434,7 @@ export void ConvolutionNxN(uniform const uint8 src_r[],
   }
 }
 
-export void Sobel(uniform uint8 src[],
+export void Sobel(uniform const uint8 src[],
                   uniform uint8 dst[],
                   uniform int64 width,
                   uniform int64 height) {
