@@ -143,7 +143,7 @@ class Texture {
 
   bool CopyToRGBA(Texture& texture) const;
 
-  void Composite(const Texture& texture, Point point);
+  void Replace(const Texture& texture, Point point);
 
   float AverageLuminance() const;
 

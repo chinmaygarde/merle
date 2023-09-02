@@ -88,7 +88,7 @@ void Texture::Grayscale() {
   );
 }
 
-void Texture::Composite(const Texture& texture, Point offset) {
+void Texture::Replace(const Texture& texture, Point offset) {
   Rect src_rect(offset, Size{static_cast<int32_t>(texture.GetSize().x),
                              static_cast<int32_t>(texture.GetSize().y)});
   const auto& dst_rect =

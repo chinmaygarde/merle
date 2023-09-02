@@ -32,7 +32,7 @@ TEST_F(MerleTest, Clear) {
   ASSERT_TRUE(Run(application));
 }
 
-TEST_F(MerleTest, Composite) {
+TEST_F(MerleTest, Replace) {
   Application application;
   auto texture = std::make_shared<Texture>();
   auto image = Texture::CreateFromFile(NS_ASSETS_LOCATION "boston.jpg");
@@ -49,7 +49,7 @@ TEST_F(MerleTest, Composite) {
         ImGui::SliderInt2("Offset", xy, -image_size.x - 25, size.x + 25);
         // const auto offset = Point{static_cast<int32_t>(std::max(0, xy[0])),
         //                           static_cast<int32_t>(std::max(0, xy[1]))};
-        texture->Composite(*image, Point{xy[0], xy[1]});
+        texture->Replace(*image, Point{xy[0], xy[1]});
         return texture;
       });
   ASSERT_TRUE(Run(application));
@@ -67,7 +67,7 @@ TEST_F(MerleTest, Grayscale) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         texture->Grayscale();
         return texture;
       });
@@ -86,7 +86,7 @@ TEST_F(MerleTest, Invert) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         texture->Invert();
         return texture;
       });
@@ -105,7 +105,7 @@ TEST_F(MerleTest, Exposure) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float exposure = 0.0f;
         ImGui::SliderFloat("Exposure", &exposure, -2.0f, 2.0f);
         texture->Exposure(exposure);
@@ -126,7 +126,7 @@ TEST_F(MerleTest, Brightness) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float brightness = 0.0f;
         ImGui::SliderFloat("Brightness", &brightness, 0.0f, 3.0f);
         texture->Brightness(brightness);
@@ -147,7 +147,7 @@ TEST_F(MerleTest, RGBALevels) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float vals[] = {1.0f, 1.0f, 1.0f, 1.0f};
         ImGui::SliderFloat4("RGBA Levels", vals, 0.0f, 1.0f);
         texture->RGBALevels(vals[0], vals[1], vals[2], vals[3]);
@@ -168,7 +168,7 @@ TEST_F(MerleTest, Swizzle) {
       return nullptr;
     }
     texture->Clear(Color{0, 0, 255, 255});
-    texture->Composite(*image, {25, 25});
+    texture->Replace(*image, {25, 25});
     static const char* kComponentNames[] = {"Red", "Green", "Blue", "Alpha"};
     static int red = 0;
     ImGui::Combo("Red", &red, kComponentNames, IM_ARRAYSIZE(kComponentNames));
@@ -200,7 +200,7 @@ TEST_F(MerleTest, Sepia) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         texture->Sepia();
         return texture;
       });
@@ -219,7 +219,7 @@ TEST_F(MerleTest, Contrast) {
           return nullptr;
         }
         texture->Clear(Color{0, 0, 255, 255});
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float contrast = 1.0f;
         ImGui::SliderFloat("Contrast", &contrast, 0.0f, 4.0f);
         texture->Contrast(contrast);
@@ -240,7 +240,7 @@ TEST_F(MerleTest, Saturation) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float saturation = 0.0f;
         ImGui::SliderFloat("Saturation", &saturation, -1.0f, 1.0f);
         texture->Saturation(saturation);
@@ -261,7 +261,7 @@ TEST_F(MerleTest, Vibrance) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float vibrance = 0.0f;
         ImGui::SliderFloat("Vibrance", &vibrance, -2.0f, 2.0f);
         texture->Saturation(vibrance);
@@ -282,7 +282,7 @@ TEST_F(MerleTest, Hue) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float hue = 0.0f;
         ImGui::SliderFloat("Hue Adjustment (Degrees)", &hue, 0.0f, 360.0f);
         texture->Hue(Degrees{hue});
@@ -303,7 +303,7 @@ TEST_F(MerleTest, Opacity) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float opacity = 0.5f;
         ImGui::SliderFloat("Opacity", &opacity, 0.0f, 1.0f);
         texture->Opacity(opacity);
@@ -331,7 +331,7 @@ TEST_F(MerleTest, LuminanceThreshold) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
         static float luma = texture->AverageLuminance();
         ImGui::SliderFloat("Luminance Threshold", &luma, 0.0f, 1.0f);
         texture->LuminanceThreshold(luma);
@@ -353,7 +353,7 @@ TEST_F(MerleTest, BoxBlur) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
 
         static int radius = 1;
         ImGui::SliderInt("Radius", &radius, 0, 4);
@@ -377,7 +377,7 @@ TEST_F(MerleTest, GaussianBlur) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {25, 25});
+        texture->Replace(*image, {25, 25});
 
         static int radius = 1;
         ImGui::SliderInt("Blur Radius", &radius, 0, 15);
@@ -403,7 +403,7 @@ TEST_F(MerleTest, Sobel) {
           return nullptr;
         }
         texture->Clear(kColorBlack);
-        texture->Composite(*image, {0, 0});
+        texture->Replace(*image, {0, 0});
         texture->Grayscale();
 
         blur_texture->Clear(kColorRed);
@@ -428,7 +428,7 @@ static std::shared_ptr<Texture> CreateSizedImage(const char* path,
     return nullptr;
   }
   tex->Clear(bg_color);
-  tex->Composite(src.value(), {});
+  tex->Replace(src.value(), {});
   return tex;
 }
 
@@ -452,7 +452,7 @@ TEST_F(MerleTest, FadeTransition) {
         ImGui::SliderFloat("Transition", &transition, 0.0f, 1.0f);
         dst->FadeTransition(*boston, *kalimba, transition);
         texture->Clear(kColorBlack);
-        texture->Composite(*dst, {10, 10});
+        texture->Replace(*dst, {10, 10});
 
         return texture;
       });
@@ -484,7 +484,7 @@ TEST_F(MerleTest, SwipeTransition) {
         dst->SwipeTransition(*boston, *kalimba, transition,
                              static_cast<Texture::Direction>(dir));
         texture->Clear(kColorBlack);
-        texture->Composite(*dst, {10, 10});
+        texture->Replace(*dst, {10, 10});
 
         return texture;
       });
