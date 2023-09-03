@@ -180,7 +180,7 @@ class Texture {
   uint8_t* allocation_ = nullptr;
   UPoint size_ = {};
 
-  NS_DISALLOW_COPY_AND_ASSIGN(Texture);
+  MERLE_DISALLOW_COPY_AND_ASSIGN(Texture);
 };
 
 }  // namespace merle

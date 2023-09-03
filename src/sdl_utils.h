@@ -22,7 +22,7 @@ struct SDLTextureNoCopyCaster {
   SDL_Surface* surface_ = nullptr;
   SDL_Texture* texture_ = nullptr;
 
-  NS_DISALLOW_COPY_AND_ASSIGN(SDLTextureNoCopyCaster);
+  MERLE_DISALLOW_COPY_AND_ASSIGN(SDLTextureNoCopyCaster);
 };
 
 }  // namespace merle

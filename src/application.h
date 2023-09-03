@@ -42,7 +42,7 @@ class Application {
 
   bool OnRender();
 
-  NS_DISALLOW_COPY_AND_ASSIGN(Application);
+  MERLE_DISALLOW_COPY_AND_ASSIGN(Application);
 };
 
 }  // namespace merle

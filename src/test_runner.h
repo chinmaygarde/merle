@@ -20,7 +20,7 @@ class TestRunner : public ::testing::Test {
   void TearDown() override;
 
  private:
-  NS_DISALLOW_COPY_AND_ASSIGN(TestRunner);
+  MERLE_DISALLOW_COPY_AND_ASSIGN(TestRunner);
 };
 
 }  // namespace merle

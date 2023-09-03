@@ -11,7 +11,7 @@
 namespace merle {
 
 TestRunner::TestRunner() {
-  NS_ASSERT(::SDL_Init(SDL_INIT_VIDEO) == 0);
+  MERLE_ASSERT(::SDL_Init(SDL_INIT_VIDEO) == 0);
 }
 
 static bool gSkipRemainingTests = false;
