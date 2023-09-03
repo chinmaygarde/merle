@@ -1,6 +1,6 @@
 #include "sdl_utils.h"
 
-namespace ns {
+namespace merle {
 
 SDLTextureNoCopyCaster::SDLTextureNoCopyCaster(SDL_Renderer* renderer,
                                                const void* pixels,
@@ -47,4 +47,4 @@ SDLTextureNoCopyCaster::operator SDL_Texture*() const {
   return texture_;
 }
 
-}  // namespace ns
+}  // namespace merle

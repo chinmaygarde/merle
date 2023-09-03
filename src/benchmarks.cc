@@ -2,7 +2,7 @@
 #include "geom.h"
 #include "texture.h"
 
-namespace ns {
+namespace merle {
 
 static constexpr UPoint kBenchmarkCanvasSize = {1 << 14, 1 << 14};
 
@@ -287,6 +287,6 @@ static void PremultiplyAlpha(benchmark::State& state) {
 }
 BENCHMARK(PremultiplyAlpha)->Unit(benchmark::TimeUnit::kMillisecond);
 
-}  // namespace ns
+}  // namespace merle
 
 BENCHMARK_MAIN();

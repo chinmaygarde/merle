@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 #include "macros.h"
 
-namespace ns {
+namespace merle {
 
 class Application;
 
@@ -23,4 +23,4 @@ class TestRunner : public ::testing::Test {
   NS_DISALLOW_COPY_AND_ASSIGN(TestRunner);
 };
 
-}  // namespace ns
+}  // namespace merle

@@ -8,7 +8,7 @@
 #include "geom.h"
 #include "macros.h"
 
-namespace ns {
+namespace merle {
 
 enum class Component : uint8_t {
   kRed,
@@ -183,4 +183,4 @@ class Texture {
   NS_DISALLOW_COPY_AND_ASSIGN(Texture);
 };
 
-}  // namespace ns
+}  // namespace merle

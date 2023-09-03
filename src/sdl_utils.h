@@ -3,7 +3,7 @@
 #include <SDL3/SDL.h>
 #include "macros.h"
 
-namespace ns {
+namespace merle {
 
 struct SDLTextureNoCopyCaster {
   SDLTextureNoCopyCaster(SDL_Renderer* renderer,
@@ -25,4 +25,4 @@ struct SDLTextureNoCopyCaster {
   NS_DISALLOW_COPY_AND_ASSIGN(SDLTextureNoCopyCaster);
 };
 
-}  // namespace ns
+}  // namespace merle

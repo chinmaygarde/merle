@@ -8,7 +8,7 @@
 #include "application.h"
 #include "fixtures_location.h"
 
-namespace ns {
+namespace merle {
 
 TestRunner::TestRunner() {
   NS_ASSERT(::SDL_Init(SDL_INIT_VIDEO) == 0);
@@ -78,4 +78,4 @@ void TestRunner::SetUp() {
 
 void TestRunner::TearDown() {}
 
-}  // namespace ns
+}  // namespace merle

@@ -10,7 +10,7 @@
 #include "sdl_utils.h"
 #include "texture.h"
 
-namespace ns {
+namespace merle {
 
 class Rasterizer;
 
@@ -45,4 +45,4 @@ class Application {
   NS_DISALLOW_COPY_AND_ASSIGN(Application);
 };
 
-}  // namespace ns
+}  // namespace merle

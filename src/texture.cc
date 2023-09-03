@@ -13,7 +13,7 @@
 
 #include "texture_ispc.h"
 
-namespace ns {
+namespace merle {
 
 std::optional<Texture> Texture::CreateFromFile(const char* name) {
   int x = 0;
@@ -441,4 +441,4 @@ bool Texture::IsOpaque() const {
   );
 }
 
-}  // namespace ns
+}  // namespace merle

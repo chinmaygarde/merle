@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <optional>
 
-namespace ns {
+namespace merle {
 
 using ScalarF = float;
 
@@ -385,4 +385,4 @@ constexpr Color kColorYellowGreen = {154, 205, 50, 255};
 
 static_assert(sizeof(kColorRed) == sizeof(uint32_t));
 
-}  // namespace ns
+}  // namespace merle

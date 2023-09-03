@@ -8,7 +8,7 @@
 #include "test_runner.h"
 #include "texture.h"
 
-namespace ns {
+namespace merle {
 
 using MerleTest = TestRunner;
 
@@ -519,4 +519,4 @@ TEST_F(MerleTest, AverageColorApply) {
   ASSERT_TRUE(Run(application));
 }
 
-}  // namespace ns
+}  // namespace merle

@@ -6,7 +6,7 @@
 #include "SDL_render.h"
 #include "SDL_video.h"
 
-namespace ns {
+namespace merle {
 
 Application::Application(UPoint size) {
   window_size_ = size;
@@ -142,4 +142,4 @@ void Application::SetRasterizerCallback(ApplicationCallback callback) {
   application_callback_ = callback;
 }
 
-}  // namespace ns
+}  // namespace merle
