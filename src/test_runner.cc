@@ -2,7 +2,9 @@
 
 #include <SDL3/SDL.h>
 #include <backends/imgui_impl_sdl3.h>
+#include <gtest/gtest.h>
 
+#include <chrono>
 #include <sstream>
 
 #include "application.h"
@@ -16,11 +18,26 @@ TestRunner::TestRunner() {
 
 static bool gSkipRemainingTests = false;
 
+static std::string CreateWindowTitle(std::chrono::nanoseconds frame_time) {
+  std::stringstream stream;
+
+  stream << "Merle: "
+         << ::testing::UnitTest::GetInstance()->current_test_info()->name()
+         << " ("
+         << std::chrono::duration_cast<std::chrono::milliseconds>(frame_time)
+                .count()
+         << " ms)";
+  return stream.str();
+}
+
 bool TestRunner::Run(Application& application) const {
   bool is_running = true;
   bool success = true;
   while (is_running) {
     success = is_running = application.Render();
+    ::SDL_SetWindowTitle(
+        application.GetSDLWindow(),
+        CreateWindowTitle(application.GetLastRenderDuration()).c_str());
     ::SDL_Event event;
     if (::SDL_PollEvent(&event) == 1) {
       ImGui_ImplSDL3_ProcessEvent(&event);

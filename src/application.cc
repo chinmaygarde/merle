@@ -1,10 +1,13 @@
 #include "application.h"
 
-#include <backends/imgui_impl_sdl3.h>
-#include <backends/imgui_impl_sdlrenderer3.h>
+#include <chrono>
+
 #include <imgui.h>
 #include "SDL_render.h"
 #include "SDL_video.h"
+
+#include <backends/imgui_impl_sdl3.h>
+#include <backends/imgui_impl_sdlrenderer3.h>
 
 namespace merle {
 
@@ -89,7 +92,10 @@ bool Application::OnRender() {
   ImGui_ImplSDL3_NewFrame();
   ImGui::NewFrame();
 
+  auto start_time = std::chrono::high_resolution_clock::now();
   const auto texture = application_callback_(*this);
+  last_render_duration_ =
+      std::chrono::high_resolution_clock::now() - start_time;
 
   ImGui::Render();
 
@@ -140,6 +146,18 @@ UPoint Application::GetWindowSize() const {
 
 void Application::SetRasterizerCallback(ApplicationCallback callback) {
   application_callback_ = callback;
+}
+
+SDL_Window* Application::GetSDLWindow() const {
+  return sdl_window_;
+}
+
+SDL_Renderer* Application::GetSDLRenderer() const {
+  return sdl_renderer_;
+}
+
+std::chrono::nanoseconds Application::GetLastRenderDuration() const {
+  return last_render_duration_;
 }
 
 }  // namespace merle
