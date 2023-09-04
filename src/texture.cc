@@ -1,8 +1,6 @@
 #include "texture.h"
 
-#include <_types/_uint32_t.h>
 #include <stdint.h>
-#include <sys/_types/_int32_t.h>
 #include "geom.h"
 
 #define STB_IMAGE_IMPLEMENTATION

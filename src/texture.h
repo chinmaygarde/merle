@@ -1,6 +1,5 @@
 #pragma once
 
-#include <_types/_uint8_t.h>
 #include <stdint.h>
 #include <optional>
 #include <vector>
