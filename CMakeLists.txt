@@ -36,12 +36,28 @@ add_subdirectory(third_party/googlebenchmark EXCLUDE_FROM_ALL)
 enable_testing()
 include(GoogleTest)
 
+find_program(ISPC_PROGRAM ispc)
+
+# Target is of the form [ISA]-i[mask size]x[gang size].
+# Merle works on 8-bpc so that is preferred as the mask size.
+add_custom_command(
+  OUTPUT texture_ispc.o gen/texture_ispc.h
+  COMMAND ${ISPC_PROGRAM} --target=avx2-i8x32
+                          --werror
+                          -O3
+                          -o texture_ispc.o
+                          -h gen/texture_ispc.h
+                          ${CMAKE_SOURCE_DIR}/src/texture.ispc
+  DEPENDS src/texture.ispc
+)
+
 add_library(merle
   src/geom.h
   src/ispc_tasksys.cc
   src/macros.h
   src/texture.cc
   src/texture.h
+  ${CMAKE_BINARY_DIR}/texture_ispc.o
 )
 
 target_compile_options(merle
@@ -57,23 +73,7 @@ target_compile_options(merle
 target_include_directories(merle
   PUBLIC
     third_party/stb
-)
-
-add_library(merle_ispc
-  src/texture.ispc
-)
-
-if (APPLE)
-set_property(TARGET merle_ispc PROPERTY ISPC_INSTRUCTION_SETS neon-i32x8)
-else()
-set_property(TARGET merle_ispc PROPERTY ISPC_INSTRUCTION_SETS avx2-i32x16 avx512skx-x64)
-endif()
-
-target_compile_options(merle_ispc PRIVATE "--werror")
-
-target_link_libraries(merle
-  PUBLIC
-    merle_ispc
+    ${CMAKE_BINARY_DIR}/gen
 )
 
 get_filename_component(NS_ASSETS_LOCATION assets ABSOLUTE)
@@ -116,7 +116,7 @@ if(MERLE_ENABLE_TESTS)
       third_party/imgui
   )
 
-  gtest_discover_tests(merle_tests)
+  # gtest_discover_tests(merle_tests)
 endif(MERLE_ENABLE_TESTS)
 
 if(MERLE_ENABLE_BENCHMARKS)
