@@ -38,11 +38,18 @@ include(GoogleTest)
 
 find_program(ISPC_PROGRAM ispc)
 
+
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
+set(ISPC_TARGET "--target=neon-i32x8")
+else()
+set(ISPC_TARGET "--target=avx2-i8x32")
+endif()
+
 # Target is of the form [ISA]-i[mask size]x[gang size].
 # Merle works on 8-bpc so that is preferred as the mask size.
 add_custom_command(
   OUTPUT texture_ispc.o gen/texture_ispc.h
-  COMMAND ${ISPC_PROGRAM} --target=avx2-i8x32
+  COMMAND ${ISPC_PROGRAM} ${ISPC_TARGET}
                           --werror
                           -O3
                           -o texture_ispc.o
