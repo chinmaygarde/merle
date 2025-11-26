@@ -1,0 +1,10 @@
+{
+  "builtin-baseline": "d30fdf55cfca16e12bc3ad99cbc615997014b61b",
+  "dependencies": [
+    "benchmark",
+    "gtest",
+    "stb",
+    "sdl3",
+    {"name": "imgui", "features": ["sdl3-binding", "sdl3-renderer-binding"]}
+  ]
+}

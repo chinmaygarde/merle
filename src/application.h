@@ -6,8 +6,8 @@
 #include <functional>
 #include <memory>
 
-#include "SDL_render.h"
-#include "SDL_video.h"
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 #include "geom.h"
 #include "macros.h"
 #include "sdl_utils.h"

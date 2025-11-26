@@ -1,8 +1,8 @@
 #include "test_runner.h"
 
 #include <SDL3/SDL.h>
-#include <backends/imgui_impl_sdl3.h>
 #include <gtest/gtest.h>
+#include <imgui_impl_sdl3.h>
 
 #include <chrono>
 #include <sstream>
@@ -13,7 +13,7 @@
 namespace merle {
 
 TestRunner::TestRunner() {
-  MERLE_ASSERT(::SDL_Init(SDL_INIT_VIDEO) == 0);
+  MERLE_ASSERT(::SDL_Init(SDL_INIT_VIDEO));
 }
 
 static bool gSkipRemainingTests = false;
@@ -43,13 +43,13 @@ bool TestRunner::Run(Application& application) const {
       ImGui_ImplSDL3_ProcessEvent(&event);
       switch (event.type) {
         case SDL_EVENT_KEY_UP:
-          switch (event.key.keysym.sym) {
-            case SDL_KeyCode::SDLK_q:
-            case SDL_KeyCode::SDLK_ESCAPE:
-              if ((event.key.keysym.mod & SDL_KMOD_LSHIFT) ||
-                  (event.key.keysym.mod & SDL_KMOD_RSHIFT) ||
-                  (event.key.keysym.mod & SDL_KMOD_LCTRL) ||
-                  (event.key.keysym.mod & SDL_KMOD_RCTRL)) {
+          switch (event.key.key) {
+            case SDLK_Q:
+            case SDLK_ESCAPE:
+              if ((event.key.mod & SDL_KMOD_LSHIFT) ||
+                  (event.key.mod & SDL_KMOD_RSHIFT) ||
+                  (event.key.mod & SDL_KMOD_LCTRL) ||
+                  (event.key.mod & SDL_KMOD_RCTRL)) {
                 gSkipRemainingTests = true;
               }
               is_running = false;
