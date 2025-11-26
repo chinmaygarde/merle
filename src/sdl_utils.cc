@@ -10,11 +10,11 @@ SDLTextureNoCopyCaster::SDLTextureNoCopyCaster(SDL_Renderer* renderer,
   if (pixels == nullptr) {
     return;
   }
-  auto surface = ::SDL_CreateSurfaceFrom(const_cast<void*>(pixels),  // pixels
-                                         width,                      // width
+  auto surface = ::SDL_CreateSurfaceFrom(width,                      // width
                                          height,                     // height
-                                         width * bytes_per_pixel,    // pitch
-                                         SDL_PIXELFORMAT_ABGR8888    // format
+                                         SDL_PIXELFORMAT_ABGR8888,   // format
+                                         const_cast<void*>(pixels),  // pixels
+                                         width * bytes_per_pixel     // pitch
   );
   if (surface == NULL) {
     std::cerr << "Could not create surface: " << SDL_GetError() << std::endl;

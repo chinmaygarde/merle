@@ -2,12 +2,12 @@
 
 #include <chrono>
 
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 #include <imgui.h>
-#include "SDL_render.h"
-#include "SDL_video.h"
 
-#include <backends/imgui_impl_sdl3.h>
-#include <backends/imgui_impl_sdlrenderer3.h>
+#include <imgui_impl_sdl3.h>
+#include <imgui_impl_sdlrenderer3.h>
 
 namespace merle {
 
@@ -27,10 +27,8 @@ Application::Application(UPoint size) {
     return;
   }
 
-  sdl_renderer_ = ::SDL_CreateRenderer(
-      sdl_window_,                                          //
-      nullptr,                                              // driver name
-      SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED  //
+  sdl_renderer_ = ::SDL_CreateRenderer(sdl_window_,  //
+                                       nullptr       // driver name
   );
 
   SDL_SetWindowSize(sdl_window_, 1280, 900);
@@ -85,6 +83,7 @@ bool Application::OnRender() {
   }
 
   if (!application_callback_) {
+    std::cerr << "Application callback was not set." << std::endl;
     return false;
   }
 
@@ -123,14 +122,15 @@ bool Application::OnRender() {
 
   ::SDL_SetRenderDrawColor(sdl_renderer_, 0, 0, 0, 255);
   ::SDL_RenderClear(sdl_renderer_);
-  if (::SDL_RenderTexture(sdl_renderer_,  //
-                          sdl_texture,    //
-                          nullptr,        //
-                          nullptr         //
-                          ) != 0) {
+  if (!::SDL_RenderTexture(sdl_renderer_,  //
+                           sdl_texture,    //
+                           nullptr,        //
+                           nullptr         //
+                           )) {
+    std::cerr << "Could not copy texture: " << SDL_GetError() << std::endl;
     return false;
   }
-  ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
+  ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), sdl_renderer_);
   ::SDL_RenderPresent(sdl_renderer_);
   return true;
 }

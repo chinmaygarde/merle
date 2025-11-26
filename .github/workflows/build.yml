@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build with CMake
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v4
+    - name: 'Install Dependencies (Linux)'
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y autoconf automake libtool pkg-config libltdl-dev ispc
+    - name: 'Install Dependencies (macOS)'
+      if: runner.os == 'macOS'
+      run: |
+        brew install ispc
+    - uses: extractions/setup-just@v3
+    - name: Setup VCPKG
+      uses: lukka/run-vcpkg@v11
+    - name: Pull Dependencies
+      run: just sync
+    - name: Generate Build Directory
+      run: just setup release
+    - name: Build with CMake
+      run: just build release

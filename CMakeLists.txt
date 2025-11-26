@@ -27,12 +27,6 @@ endif()
 option(MERLE_ENABLE_TESTS "Build the playgrounds and unittests." ON)
 option(MERLE_ENABLE_BENCHMARKS "Build benchmarks." ON)
 
-add_subdirectory(third_party/googletest EXCLUDE_FROM_ALL)
-add_subdirectory(third_party/sdl EXCLUDE_FROM_ALL)
-set(GOOGLETEST_PATH "third_party/googletest" EXCLUDE_FROM_ALL)
-set(BENCHMARK_ENABLE_TESTING FALSE)
-add_subdirectory(third_party/googlebenchmark EXCLUDE_FROM_ALL)
-
 enable_testing()
 include(GoogleTest)
 
@@ -77,9 +71,10 @@ target_compile_options(merle
     -Wno-deprecated-declarations
 )
 
+find_package(Stb REQUIRED)
 target_include_directories(merle
   PUBLIC
-    third_party/stb
+    ${Stb_INCLUDE_DIR}
     ${CMAKE_BINARY_DIR}/gen
 )
 
@@ -87,6 +82,10 @@ get_filename_component(NS_ASSETS_LOCATION assets ABSOLUTE)
 configure_file(src/fixtures_location.h.in fixtures_location.h @ONLY)
 
 if(MERLE_ENABLE_TESTS)
+  find_package(SDL3 CONFIG REQUIRED)
+  find_package(GTest CONFIG REQUIRED)
+  find_package(imgui CONFIG REQUIRED)
+
   add_executable(merle_tests
     src/application.cc
     src/application.h
@@ -96,41 +95,34 @@ if(MERLE_ENABLE_TESTS)
     src/test_runner.h
     src/test_runner.h
     src/tests.cc
-    third_party/imgui/backends/imgui_impl_sdl3.cpp
-    third_party/imgui/backends/imgui_impl_sdl3.h
-    third_party/imgui/backends/imgui_impl_sdlrenderer3.cpp
-    third_party/imgui/backends/imgui_impl_sdlrenderer3.h
-    third_party/imgui/imconfig.h
-    third_party/imgui/imgui.cpp
-    third_party/imgui/imgui.h
-    third_party/imgui/imgui_demo.cpp
-    third_party/imgui/imgui_draw.cpp
-    third_party/imgui/imgui_internal.h
-    third_party/imgui/imgui_tables.cpp
-    third_party/imgui/imgui_widgets.cpp
   )
 
   target_link_libraries(merle_tests
     PUBLIC
-      gtest_main
+      GTest::gtest
+      GTest::gtest_main
       merle
       SDL3::SDL3
+      imgui::imgui
   )
 
   target_include_directories(merle_tests
     PUBLIC
       ${CMAKE_CURRENT_BINARY_DIR}
-      third_party/imgui
   )
 
   # gtest_discover_tests(merle_tests)
 endif(MERLE_ENABLE_TESTS)
 
 if(MERLE_ENABLE_BENCHMARKS)
+  find_package(benchmark CONFIG REQUIRED)
   add_executable(merle_benchmarks
     src/benchmarks.cc
   )
   target_link_libraries(merle_benchmarks merle benchmark::benchmark)
-  target_include_directories(merle_benchmarks PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+  target_include_directories(merle_benchmarks
+    PUBLIC
+      ${CMAKE_CURRENT_BINARY_DIR}
+  )
 endif()
 
