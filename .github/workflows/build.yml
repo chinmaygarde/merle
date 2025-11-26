@@ -31,6 +31,4 @@ jobs:
     - name: Pull Dependencies
       run: just sync
     - name: Generate Build Directory
-      run: just setup release
-    - name: Build with CMake
-      run: just build release
+      run: just build
